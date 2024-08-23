@@ -26,7 +26,7 @@ const BasicMap = ({ latitud, longitud }) => {
       <MapContainer
         center={initialPosition}
         zoom={16}
-        scrollWheelZoom
+        scrollWheelZoom={false}
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />

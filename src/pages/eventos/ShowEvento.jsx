@@ -57,11 +57,11 @@ export const ShowEvento = () => {
                 <strong>Detalle de Planificación:</strong> {activeEvento.detalle_planificacion}
               </div>
               <div className='border-b py-2 px-4'>
-                <strong>Categoría:</strong> {activeEvento.categoria_id}
+                <strong>Categoría:</strong> {activeEvento.categoria.nombre}
               </div>
             </div>
 
-            <div className=''>
+            <div>
               <BasicMap latitud={ubicacion.latitud} longitud={ubicacion.longitud} />
             </div>
           </div>
