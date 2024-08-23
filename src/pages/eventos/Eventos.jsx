@@ -19,7 +19,8 @@ export const Eventos = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const { data: eventos, isLoading } = useQuery({
     queryKey: ['eventos', currentPage],
-    queryFn: () => getEventos(currentPage)
+    queryFn: () => getEventos(currentPage),
+    keepPreviousData: true
   })
 
   if (isLoading) {
@@ -159,8 +160,10 @@ export const Eventos = () => {
                       {/* Paginado */}
                       <div className='flex justify-center mt-8'>
                         <Pagination
-                          currentPage={eventos.currentPage}
-                          totalPages={eventos.totalPages}
+                          paginate={{
+                            current: eventos.current,
+                            totalPages: eventos.totalPages
+                          }}
                           onPageChange={(page) => setCurrentPage(page)}
                           text
                         />

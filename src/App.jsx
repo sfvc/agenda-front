@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from 'react'
+import React, { lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { Create, ShowEvento, Eventos } from './pages/eventos'
 import Layout from './layout/Layout'
@@ -12,7 +12,7 @@ function App () {
         {
            (
              <>
-               <Route path='/' element={<Navigate to='/dashboard' />} />
+               <Route path='/' element={<Navigate to='/eventos' />} />
 
                <Route path='/*' element={<Layout />}>
                  <Route path='dashboard' element={<Dashboard />} />

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import Card from '@/components/ui/Card'
 import Textinput from '@/components/ui/Textinput'
 import DatePicker from '../ui/DatePicker'
 import Loading from '@/components/Loading'
-import { createEvent } from '@/services'
+import { createEvent } from '../../services/eventService'
+import { useMutation } from '@tanstack/react-query'
 
 const initialForm = {
   nombre: '',
@@ -15,42 +15,45 @@ const initialForm = {
 }
 
 const CrearEventoData = () => {
-  const dispatch = useDispatch()
   const [formData, setFormData] = useState(initialForm)
   const [isLoading, setIsLoading] = useState(false)
 
+  const mutation = useMutation(createEvent, {
+    onMutate: () => {
+      setIsLoading(true)
+    },
+    onError: (error) => {
+      console.error('Error al crear el evento:', error)
+      setIsLoading(false)
+    },
+    onSettled: () => {
+      setIsLoading(false)
+    }
+  })
+
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: value
     }))
   }
 
   const handleDateChange = (date) => {
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       fecha: date ? date[0] : ''
     }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setIsLoading(true)
-
-    try {
-      await dispatch(createEvent(formData))
-      // Aquí podrías redirigir o mostrar un mensaje de éxito
-    } catch (error) {
-      console.error('Error al crear el evento:', error)
-    } finally {
-      setIsLoading(false)
-    }
+    mutation.mutate(formData) // Llama a la mutación con los datos del formulario
   }
 
   return (
     <>
-      {isLoading
+      {mutation.isLoading || isLoading
         ? (
           <Loading className='mt-28 md:mt-64' />
           )
@@ -127,7 +130,7 @@ const CrearEventoData = () => {
                 </div>
 
                 <div className='col-span-2 flex justify-end'>
-                  <button type='submit' className='btn-primary'>
+                  <button type='submit' className='btn-primary' disabled={mutation.isLoading}>
                     Crear Evento
                   </button>
                 </div>

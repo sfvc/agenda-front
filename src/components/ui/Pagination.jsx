@@ -25,18 +25,18 @@ const Pagination = ({
 
   const calculatePageNumbers = () => {
     const totalPages = paginate.totalPages
-    const totalPagesToShow = Math.min(PAGES_TO_SHOW, totalPages)
 
     const pageNumbers = []
+    const startPage = Math.max(1, currentPage - PREVIUS_PAGES_TO_SHOW)
+    const endPage = Math.min(totalPages, currentPage + PAGES_TO_SHOW - 1)
 
-    if (currentPage > 1) {
-      for (let j = currentPage - PREVIUS_PAGES_TO_SHOW; j < currentPage; j++) {
-        if (j > 0) pageNumbers.push(j)
-      }
+    for (let i = startPage; i < currentPage; i++) {
+      pageNumbers.push(i)
     }
 
-    for (let i = currentPage; i < currentPage + totalPagesToShow; i++) {
-      if (i > lastPage) break
+    pageNumbers.push(currentPage)
+
+    for (let i = currentPage + 1; i <= endPage; i++) {
       pageNumbers.push(i)
     }
 
