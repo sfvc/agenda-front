@@ -1,0 +1,47 @@
+[
+    {
+      "label": "ID",
+      "field": "id"
+    },
+    {
+      "label": "Nombre",
+      "field": "nombre"
+    },
+    {
+      "label": "Email",
+      "field": "email_solicitante"
+    },
+    {
+      "label": "Teléfono",
+      "field": "telefono_solicitante"
+    },
+    {
+      "label": "Descripción",
+      "field": "descripcion"
+    },
+    {
+      "label": "fecha",
+      "field": "fecha"
+    },
+    {
+      "label": "Ubicación",
+      "field": "ubicacion"
+    },
+    {
+      "label": "Planificacion",
+      "field": "detalle_planificacion"
+    },
+    {
+      "label": "Categoría",
+      "field": "categoria"
+    },
+    {
+      "label": "Estado",
+      "field": "estado"
+    },
+    {
+      "label": "Acciones",
+      "field": "acciones"
+    }
+  ]
+  
