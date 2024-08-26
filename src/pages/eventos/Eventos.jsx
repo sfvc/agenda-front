@@ -10,8 +10,8 @@ import EditButton from '@/components/buttons/EditButton'
 import ViewButton from '@/components/buttons/ViewButton'
 import AgendaButton from '@/components/buttons/AgendaButton'
 import { TextInput } from 'flowbite-react'
-import { formatDate } from '../../components/Format'
-import columnEventos from '../../json/columnsEventos.json'
+import { formatDate } from '@/components/Format'
+import columnEventos from '@/json/columnsEventos.json'
 
 export const Eventos = () => {
   const navigate = useNavigate()
@@ -37,26 +37,12 @@ export const Eventos = () => {
   }
 
   async function onEdit (id) {
-
+    navigate(`/eventos/editar/${id}`)
   }
 
   async function onDelete (id) {
 
   }
-
-  // async function onSearch ({ target: { value } }) {
-  //   setSearch(value)
-  //   if (value.length === 0) await loadingEvento()
-  //   if (value.length <= 1) return false
-  //   await startSearchEvento(value)
-  // }
-
-  // async function loadingEvento (page = 1) {
-  //   !isLoading && setIsLoading(true)
-
-  //   // await startloadingEvento(page)
-  //   setIsLoading(false)
-  // }
 
   return (
     <>
@@ -137,7 +123,7 @@ export const Eventos = () => {
                                   <td className='table-td'>{evento.descripcion}</td>
                                   <td className='table-td'>{formatDate(evento.fecha)}</td>
                                   <td className='table-td'>{evento.ubicacion}</td>
-                                  <td className='table-td'>{evento.detalle_planificacion}</td>
+                                  {/* <td className='table-td'>{evento.detalle_planificacion}</td> */}
                                   <td className='table-td'>{evento.categoria.nombre}</td>
                                   <td className='table-td'>
                                     <span className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 ${evento.estado === 'A_REALIZAR' ? 'text-black bg-success-500 dark:bg-success-400' : evento.estado === 'PENDIENTE' ? 'text-black bg-warning-500 dark:bg-warning-500' : 'text-black bg-danger-500 dark:bg-danger-500'}`}>

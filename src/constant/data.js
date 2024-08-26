@@ -14,6 +14,12 @@ export const menuItems = [
     title: 'Eventos',
     icon: 'heroicons-outline:calendar-days',
     link: 'eventos'
+  },
+
+  {
+    title: 'Categorias',
+    icon: 'heroicons-outline:building-storefront',
+    link: 'categorias'
   }
 ]
 
@@ -33,6 +39,12 @@ export const menuNormal = [
     title: 'Eventos',
     icon: 'heroicons-outline:calendar-days',
     link: 'eventos'
+  },
+
+  {
+    title: 'Categorias',
+    icon: 'heroicons-outline:building-storefront',
+    link: 'categorias'
   }
 ]
 

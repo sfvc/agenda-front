@@ -1,6 +1,7 @@
 import React, { lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { Create, ShowEvento, Eventos } from './pages/eventos'
+import { Categorias } from './pages/Categorias'
 import Layout from './layout/Layout'
 import Error from './pages/404'
 const Dashboard = lazy(() => import('./pages/dashboard'))
@@ -23,6 +24,9 @@ function App () {
                  <Route path='eventos/crear' element={<Create />} />
                  <Route path='eventos/editar/:id' element={<Create />} />
                  <Route path='eventos/ver/:id' element={<ShowEvento />} />
+
+                 {/* Otras paginas */}
+                 <Route path='categorias' element={<Categorias />} />
                </Route>
 
                <Route path='/404' element={<Error />} />

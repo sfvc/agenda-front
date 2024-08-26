@@ -28,10 +28,6 @@
       "field": "ubicacion"
     },
     {
-      "label": "Planificacion",
-      "field": "detalle_planificacion"
-    },
-    {
       "label": "Categoría",
       "field": "categoria"
     },

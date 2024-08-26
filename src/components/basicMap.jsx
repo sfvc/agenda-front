@@ -1,10 +1,12 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
 
-const BasicMap = ({ latitud, longitud }) => {
-  const initialPosition = [latitud, longitud]
+const BasicMap = ({ onLocationChange, isActive }) => {
+  const initialPosition = [-28.46867672033115, -65.77899050151645]
+  const [position, setPosition] = useState(initialPosition)
   const [address, setAddress] = useState('')
+  const previousPosition = useRef(initialPosition)
 
   useEffect(() => {
     const getAddressFromCoordinates = async (lat, lng) => {
@@ -13,24 +15,53 @@ const BasicMap = ({ latitud, longitud }) => {
         const response = await fetch(url)
         const data = await response.json()
         setAddress(data.display_name)
+        onLocationChange(lat, lng, data.display_name)
       } catch (error) {
         console.error('Error:', error)
       }
     }
 
-    getAddressFromCoordinates(latitud, longitud)
-  }, [latitud, longitud])
+    if (isActive) {
+      getAddressFromCoordinates(position[0], position[1])
+    }
+
+    if (position[0] !== previousPosition.current[0] || position[1] !== previousPosition.current[1]) {
+      getAddressFromCoordinates(position[0], position[1])
+      previousPosition.current = position
+    }
+  }, [position, onLocationChange])
+
+  const handleMapClick = (event) => {
+    if (!isActive) {
+      const { lat, lng } = event.latlng
+      setPosition([lat, lng])
+    }
+  }
+
+  const handleMarkerDragEnd = (event) => {
+    if (!isActive) {
+      const { lat, lng } = event.target.getLatLng()
+      setPosition([lat, lng])
+    }
+  }
 
   return (
-    <div className='h-screen w-scren'>
+    <div className='h-full'>
       <MapContainer
-        center={initialPosition}
+        center={position}
         zoom={16}
-        scrollWheelZoom={false}
+        scrollWheelZoom
         style={{ height: '100%', width: '100%' }}
+        onClick={handleMapClick}
       >
         <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
-        <Marker position={initialPosition}>
+        <Marker
+          position={position}
+          draggable={!isActive}
+          eventHandlers={{
+            dragend: handleMarkerDragEnd
+          }}
+        >
           <Popup>{address}</Popup>
         </Marker>
       </MapContainer>

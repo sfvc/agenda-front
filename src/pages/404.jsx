@@ -1,10 +1,25 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Illustration from '@/assets/images/logo/logo.png'
+import useDarkMode from '@/hooks/useDarkMode'
+import useSemiDark from '@/hooks/useSemiDark'
+import logoCatamarcaClaro from '@/assets/images/logo/logo_CATACAPI_claro.png'
+import logoCatamarcaOscuro from '@/assets/images/logo/logo_CATACAPI_oscuro.png'
+
 function Error () {
+  const [isDark] = useDarkMode()
+  const [isSemiDark] = useSemiDark()
+
   return (
     <div className='min-h-screen flex flex-col justify-center items-center text-center py-20 dark:bg-slate-900'>
-      <img src={Illustration} alt='' className='pointer-events-none' />
+      <div className='logo-icon'>
+        {!isDark && !isSemiDark
+          ? (
+            <img src={logoCatamarcaOscuro} alt='Logo Capital' className='w-56 rounded-md' />
+            )
+          : (
+            <img src={logoCatamarcaClaro} alt='Logo Capital' className='w-56 rounded-md' />
+            )}
+      </div>
       <div className='max-w-[546px] mx-auto w-full mt-12'>
         <h4 className='text-slate-900 mb-4'>
           Página no encontrada

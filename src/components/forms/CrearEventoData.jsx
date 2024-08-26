@@ -1,24 +1,39 @@
 import React, { useState } from 'react'
 import Card from '@/components/ui/Card'
 import Textinput from '@/components/ui/Textinput'
-import DatePicker from '../ui/DatePicker'
+import Numberinput from '@/components/ui/Numberinput'
+import Textarea from '@/components/ui/Textarea'
+import { SelectForm } from '@/components/agenda/forms'
+import DatePicker from '@/components/ui/DatePicker'
 import Loading from '@/components/Loading'
-import { createEvent } from '../../services/eventService'
-import { useMutation } from '@tanstack/react-query'
+import { createEvent } from '@/services/eventService'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
+import { getCategoryById } from '@/services/categoryService'
+import BasicMap from '@/components/basicMap'
 
 const initialForm = {
-  nombre: '',
+  nombre_solicitante: '',
+  email_solicitante: '',
+  telefono_solicitante: '',
   descripcion: '',
   fecha: '',
+  categoria: '',
   ubicacion: '',
-  organizador: ''
+  estado: 'PENDIENTE'
 }
 
 const CrearEventoData = () => {
   const [formData, setFormData] = useState(initialForm)
   const [isLoading, setIsLoading] = useState(false)
+  const { register } = useForm()
+  const { data: categorias } = useQuery({
+    queryKey: ['categoria'],
+    queryFn: getCategoryById
+  })
 
-  const mutation = useMutation(createEvent, {
+  const mutation = useMutation({
+    mutationFn: createEvent,
     onMutate: () => {
       setIsLoading(true)
     },
@@ -48,7 +63,15 @@ const CrearEventoData = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    mutation.mutate(formData) // Llama a la mutación con los datos del formulario
+    mutation.mutate(formData)
+  }
+
+  // Función para manejar el cambio de ubicación
+  const handleLocationChange = (latitud, longitud, direccion) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      ubicacion: JSON.stringify({ latitud, longitud, direccion })
+    }))
   }
 
   return (
@@ -59,23 +82,92 @@ const CrearEventoData = () => {
           )
         : (
           <div>
-            <h4 className='card-title text-center bg-green-500 dark:bg-gray-700 text-white rounded-md p-2'>
+            <h4 className='card-title text-center bg-blue-500 dark:bg-gray-700 text-white rounded-md p-2'>
               Crear Evento
             </h4>
 
             <Card>
               <form onSubmit={handleSubmit} className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+
                 <div>
-                  <label htmlFor='nombre' className='form-label'>
-                    Nombre del Evento
-                    <strong className='obligatorio'>(*)</strong>
+                  <label htmlFor='nombre_solicitante' className='form-label'>
+                    Nombre del Solicitante
                   </label>
                   <Textinput
-                    name='nombre'
+                    name='nombre_solicitante'
                     type='text'
-                    placeholder='Ingrese el nombre del evento'
-                    value={formData.nombre}
+                    placeholder='Ingrese el nombre'
                     onChange={handleChange}
+                    register={register}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor='email_solicitante' className='form-label'>
+                    Email del Solicitante
+                  </label>
+                  <Textinput
+                    name='email_solicitante'
+                    type='email'
+                    placeholder='Ingrese un email'
+                    onChange={handleChange}
+                    register={register}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor='telefono_solicitante' className='form-label'>
+                    Teléfono del Solicitante
+                  </label>
+                  <Numberinput
+                    type='number'
+                    name='telefono_solicitante'
+                    placeholder='Ingrese el teléfono'
+                    onChange={handleChange}
+                    register={register}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor='fecha' className='form-label'>
+                    Fecha del Evento
+                  </label>
+                  <DatePicker
+                    placeholder='Seleccione la fecha del evento'
+                    onChange={handleDateChange}
+                    register={register}
+                  />
+                </div>
+
+                <SelectForm
+                  register={register('categoria_id')}
+                  title='Categoria'
+                  options={categorias}
+                />
+
+                <div>
+                  <label htmlFor='detalle_planificacion' className='form-label'>
+                    Detalle de la Planificacion
+                  </label>
+                  <Textinput
+                    name='detalle_planificacion'
+                    type='text'
+                    placeholder='Ingrese el detalle de la planificacion'
+                    onChange={handleChange}
+                    register={register}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor='ubicacion' className='form-label'>
+                    Ubicacion
+                  </label>
+                  <Textinput
+                    name='ubicacion'
+                    type='text'
+                    placeholder='Ingrese la ubicacion'
+                    onChange={handleChange}
+                    register={register}
                   />
                 </div>
 
@@ -83,59 +175,22 @@ const CrearEventoData = () => {
                   <label htmlFor='descripcion' className='form-label'>
                     Descripción
                   </label>
-                  <Textinput
+                  <Textarea
                     name='descripcion'
                     type='text'
                     placeholder='Ingrese una descripción del evento'
-                    value={formData.descripcion}
                     onChange={handleChange}
+                    register={register}
                   />
                 </div>
 
-                <div>
-                  <label htmlFor='fecha' className='form-label'>
-                    Fecha
-                  </label>
-                  <DatePicker
-                    value={formData.fecha ? [new Date(formData.fecha)] : null}
-                    placeholder='Seleccione la fecha del evento'
-                    onChange={handleDateChange}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor='ubicacion' className='form-label'>
-                    Ubicación
-                  </label>
-                  <Textinput
-                    name='ubicacion'
-                    type='text'
-                    placeholder='Ingrese la ubicación del evento'
-                    value={formData.ubicacion}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor='organizador' className='form-label'>
-                    Organizador
-                  </label>
-                  <Textinput
-                    name='organizador'
-                    type='text'
-                    placeholder='Ingrese el nombre del organizador'
-                    value={formData.organizador}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className='col-span-2 flex justify-end'>
-                  <button type='submit' className='btn-primary' disabled={mutation.isLoading}>
-                    Crear Evento
-                  </button>
-                </div>
               </form>
             </Card>
+
+            <div className='h-96 w-full'>
+              <BasicMap onLocationChange={handleLocationChange} />
+            </div>
+
           </div>
           )}
     </>

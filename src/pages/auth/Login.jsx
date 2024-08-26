@@ -32,7 +32,8 @@ const Login = () => {
                 <LoginForm />
               </div>
               <div className='auth-footer text-center'>
-                Copyright &copy; <span>{(new Date().getFullYear())} Municipalidad de San Fernando del Valle de Catamarca</span>
+                {/* Copyright &copy; <span>{(new Date().getFullYear())} Municipalidad de San Fernando del Valle de Catamarca</span> */}
+                Copyright &copy; <span>{(new Date().getFullYear())} Dirección de Modernización.</span>
               </div>
             </div>
           </div>

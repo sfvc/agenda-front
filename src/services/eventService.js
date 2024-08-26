@@ -1,4 +1,4 @@
-import { agendaApi } from '../api'
+import { agendaApi } from '@/api'
 
 export const fetchEvents = async () => {
   const response = await agendaApi.get('/evento')

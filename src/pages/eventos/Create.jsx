@@ -15,13 +15,12 @@ export const Create = () => {
   const [, setActiveEvento] = useState(null)
 
   const FormValidationSchema = yup.object().shape({
-    nombre: yup.string().required('El nombre es requerido'),
-    apellido: yup.string().required('El apellido es requerido'),
+    nombre_solicitante: yup.string().required('El nombre es requerido'),
+    email_solicitante: yup.string().required('El email es requerido'),
+    telefono_solicitante: yup.string().required('El telefono es requerido'),
+    descripcion: yup.string().required('La descripcion es requerida'),
     fecha: yup.string().required('La fecha es requerida'),
-    ubicacion: yup.string().required('La ubicación es requerida'),
-    contacto: yup.string().required('El contacto es requerido'),
-    categoria: yup.string().required('La categoría es requerida'),
-    estado: yup.string().required('El estado es requerido')
+    categoria: yup.string().required('La categoría es requerida')
   })
 
   const {
@@ -33,17 +32,17 @@ export const Create = () => {
   } = useForm({
     resolver: yupResolver(FormValidationSchema),
     defaultValues: {
-      nombre: '',
+      nombre_solicitante: '',
+      email_solicitante: '',
+      telefono_solicitante: '',
       descripcion: '',
       fecha: '',
-      ubicacion: '',
-      contacto: '',
-      categoria: '',
-      estado: ''
+      categoria: ''
     }
   })
 
   const onSubmit = async (data) => {
+    console.log('Datos a enviar:', data)
     if (!id) {
       await startSavingEvento(data)
     } else {
@@ -96,10 +95,6 @@ export const Create = () => {
         : (
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <CrearEventoData register={register} errors={errors} setValue={setValue} watch={watch} />
-
-              <CrearEventoData register={register} errors={errors} setValue={setValue} watch={watch} />
-
               <CrearEventoData register={register} errors={errors} setValue={setValue} watch={watch} />
             </div>
 
