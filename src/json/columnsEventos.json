@@ -20,13 +20,14 @@
       "field": "descripcion"
     },
     {
+      "label": "ubicacion",
+      "field": "ubicacion"
+    },
+    {
       "label": "fecha",
       "field": "fecha"
     },
-    {
-      "label": "Ubicación",
-      "field": "ubicacion"
-    },
+
     {
       "label": "Categoría",
       "field": "categoria"

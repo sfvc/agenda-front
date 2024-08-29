@@ -72,9 +72,13 @@ export const Create = () => {
       try {
         const evento = await getEventoById(id)
         setActiveEvento(evento)
-        Object.entries(evento).forEach(([key, value]) => {
-          setValue(key, value)
-        })
+
+        setValue('nombre_solicitante', evento.nombre_solicitante)
+        setValue('email_solicitante', evento.email_solicitante)
+        setValue('telefono_solicitante', evento.telefono_solicitante)
+        setValue('descripcion', evento.descripcion)
+        setValue('fecha', evento.fecha)
+        setValue('categoria', evento.categoria)
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }

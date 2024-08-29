@@ -8,7 +8,6 @@ import DatePicker from '@/components/ui/DatePicker'
 import Loading from '@/components/Loading'
 import { createEvent } from '@/services/eventService'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
 import { getCategoryById } from '@/services/categoryService'
 import BasicMap from '@/components/basicMap'
 
@@ -23,10 +22,9 @@ const initialForm = {
   estado: 'PENDIENTE'
 }
 
-const CrearEventoData = () => {
+const CrearEventoData = ({ register, setValue }) => {
   const [formData, setFormData] = useState(initialForm)
   const [isLoading, setIsLoading] = useState(false)
-  const { register } = useForm()
   const { data: categorias } = useQuery({
     queryKey: ['categoria'],
     queryFn: getCategoryById

@@ -26,7 +26,8 @@ export const CategoryForm = ({ fnAction, refetchCategories, activeCategory, onCl
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    reset
   } = useForm({
     defaultValues: {
       nombre: activeCategory?.nombre || ''
@@ -39,6 +40,7 @@ export const CategoryForm = ({ fnAction, refetchCategories, activeCategory, onCl
       await fnAction(data)
       toast.success('Categoría creada exitosamente')
       refetchCategories()
+      reset()
       onClose()
     } catch (error) {
       toast.error('Hubo un error al crear la categoría')
