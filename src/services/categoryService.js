@@ -1,7 +1,7 @@
 import { agendaApi } from '@/api'
 
-export const fetchCategory = async () => {
-  const response = await agendaApi.get('/categoria')
+export const fetchCategory = async (page = 1) => {
+  const response = await agendaApi.get(`/categoria?page=${page}`)
   return response.data
 }
 

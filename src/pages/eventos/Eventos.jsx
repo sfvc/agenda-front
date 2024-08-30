@@ -43,7 +43,7 @@ export const Eventos = () => {
   async function onDelete (id) {
 
   }
-  async function onSearch (params) {
+  async function onSearch () {
 
   }
 
