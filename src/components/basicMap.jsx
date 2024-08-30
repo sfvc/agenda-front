@@ -2,34 +2,46 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import React, { useState, useEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
 
-const BasicMap = ({ onLocationChange, isActive }) => {
-  const initialPosition = [-28.46867672033115, -65.77899050151645]
-  const [position, setPosition] = useState(initialPosition)
-  const [address, setAddress] = useState('')
+const BasicMap = ({ onLocationChange, isActive, editPosition }) => {
+  const initialPosition = {
+    latitud: -28.46867672033115,
+    longitud: -65.77899050151645
+  }
+
   const previousPosition = useRef(initialPosition)
 
-  useEffect(() => {
-    const getAddressFromCoordinates = async (lat, lng) => {
-      const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
-      try {
-        const response = await fetch(url)
-        const data = await response.json()
-        setAddress(data.display_name)
-        onLocationChange(lat, lng, data.display_name)
-      } catch (error) {
-        console.error('Error:', error)
+  const [position, setPosition] = useState(() => {
+    if (editPosition) {
+      return [editPosition.latitud, editPosition.longitud]
+    }
+  })
+
+  const [address, setAddress] = useState('')
+
+  if (!isActive) {
+    useEffect(() => {
+      const getAddressFromCoordinates = async (lat, lng) => {
+        const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+        try {
+          const response = await fetch(url)
+          const data = await response.json()
+          setAddress(data.display_name)
+          onLocationChange(lat, lng, data.display_name)
+        } catch (error) {
+          console.error('Error:', error)
+        }
       }
-    }
 
-    if (isActive) {
-      getAddressFromCoordinates(position[0], position[1])
-    }
+      if (isActive) {
+        getAddressFromCoordinates(position[0], position[1])
+      }
 
-    if (position[0] !== previousPosition.current[0] || position[1] !== previousPosition.current[1]) {
-      getAddressFromCoordinates(position[0], position[1])
-      previousPosition.current = position
-    }
-  }, [position, onLocationChange])
+      if (position[0] !== previousPosition.current[0] || position[1] !== previousPosition.current[1]) {
+        getAddressFromCoordinates(position[0], position[1])
+        previousPosition.current = position
+      }
+    }, [position, onLocationChange])
+  }
 
   const handleMapClick = (event) => {
     if (!isActive) {

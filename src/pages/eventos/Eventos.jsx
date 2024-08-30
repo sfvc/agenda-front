@@ -133,7 +133,7 @@ export const Eventos = () => {
                                     <td className='table-td'>{evento.email_solicitante}</td>
                                     <td className='table-td'>{evento.telefono_solicitante}</td>
                                     <td className='table-td'>{evento.descripcion}</td>
-                                    <td className='table-td'>{parseUbicacion(evento.ubicacion)}</td>
+                                    {/* <td className='table-td'>{parseUbicacion(evento.ubicacion)}</td> */}
                                     <td className='table-td'>{formatDate(evento.fecha)}</td>
                                     <td className='table-td'>{evento.detalle_planificacion}</td>
                                     <td className='table-td'>{evento.categoria.nombre}</td>

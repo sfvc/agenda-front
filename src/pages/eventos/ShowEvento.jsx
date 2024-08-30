@@ -7,7 +7,13 @@ import BasicMap from '@/components/basicMap'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import Loading from '@/components/Loading'
 
-export const ShowEvento = () => {
+const initialPosition={
+  latitud:-28.46867672033115,
+  longitud:-65.77899050151645
+}
+
+export const ShowEvento = ({ isActive }) => {
+  const [position, setPosition]= useState(initialPosition)
   const [activeEvento, setActiveEvento] = useState(null)
   const navigate = useNavigate()
   const { id } = useParams()
@@ -19,6 +25,7 @@ export const ShowEvento = () => {
       try {
         const evento = await fetchEventById(id)
         setActiveEvento(evento)
+        setPosition(JSON.parse(evento.ubicacion))
       } catch (error) {
         console.error('Error fetching event:', error)
       } finally {
@@ -28,8 +35,6 @@ export const ShowEvento = () => {
 
     getEvent()
   }, [id])
-
-  const ubicacion = activeEvento ? JSON.parse(activeEvento.ubicacion) : { latitud: 0, longitud: 0 }
 
   return (
     <>
@@ -188,8 +193,7 @@ export const ShowEvento = () => {
 
                     <div className='lg:col-span-8 col-span-12'>
                       <BasicMap
-                        latitud={ubicacion?.latitud || 0}
-                        longitud={ubicacion?.longitud || 0}
+                        editPosition={position}
                         onLocationChange={() => {}}
                         isActive={activeEvento?.estado}
                       />

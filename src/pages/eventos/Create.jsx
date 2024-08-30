@@ -24,8 +24,13 @@ const initialForm = {
   ubicacion: '',
   estado: 'PENDIENTE'
 }
+const initialPosition={
+  latitud:-28.46867672033115,
+  longitud:-65.77899050151645
+}
 
 export const Create = () => {
+  const [position, setPosition]= useState(initialPosition)
   const { id } = useParams()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
@@ -76,6 +81,7 @@ export const Create = () => {
     }
   }
 
+  
   const loadEvento = async () => {
     if (id) {
       try {
@@ -88,6 +94,8 @@ export const Create = () => {
         setValue('detalle_planificacion', evento.detalle_planificacion)
         setValue('descripcion', evento.descripcion)
         setValue('ubicacion', evento.ubicacion)
+        setPosition(JSON.parse(evento.ubicacion))
+
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
@@ -210,7 +218,7 @@ export const Create = () => {
           </Card>
 
           <div className='h-96 w-full'>
-            <BasicMap onLocationChange={handleLocationChange} />
+            <BasicMap onLocationChange={handleLocationChange} editPosition={position}/>
           </div>
 
           <div className='flex justify-end gap-4 mt-8'>
