@@ -27,34 +27,34 @@ export const Eventos = () => {
     return <Loading />
   }
 
-  function addEvento() {
+  function addEvento () {
     navigate('/eventos/crear')
   }
 
-  async function showEvento(id) {
+  async function showEvento (id) {
     await onEdit(id)
     navigate(`/eventos/ver/${id}`)
   }
 
-  async function onEdit(id) {
+  async function onEdit (id) {
     navigate(`/eventos/editar/${id}`)
   }
 
-  async function onDelete(id) {
+  async function onDelete (id) {
 
   }
-  async function onSearch(params) {
+  async function onSearch (params) {
 
   }
 
   const parseUbicacion = (ubicacion) => {
     try {
-      const parsed = JSON.parse(ubicacion);
-      return parsed.direccion || 'Dirección no disponible';
+      const parsed = JSON.parse(ubicacion)
+      return parsed.direccion || 'Dirección no disponible'
     } catch {
-      return 'Dirección no disponible';
+      return 'Dirección no disponible'
     }
-  };
+  }
   return (
     <>
       {
@@ -126,30 +126,30 @@ export const Eventos = () => {
                           {
                             (eventos.items.length > 0)
                               ? (eventos.items.map((evento) => {
-                                return (
-                                  <tr key={evento.id}>
-                                    <td className='table-td'>{evento.id}</td>
-                                    <td className='table-td'>{evento.nombre_solicitante}</td>
-                                    <td className='table-td'>{evento.email_solicitante}</td>
-                                    <td className='table-td'>{evento.telefono_solicitante}</td>
-                                    <td className='table-td'>{evento.descripcion}</td>
-                                    <td className='table-td'>{parseUbicacion(evento.ubicacion)}</td>
-                                    <td className='table-td'>{formatDate(evento.fecha)}</td>
-                                    <td className='table-td'>{evento.detalle_planificacion}</td>
-                                    <td className='table-td'>{evento.categoria.nombre}</td>
-                                    <td className='table-td'>
-                                      <span className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 ${evento.estado === 'A_REALIZAR' ? 'text-black bg-success-500 dark:bg-success-400' : evento.estado === 'PENDIENTE' ? 'text-black bg-warning-500 dark:bg-warning-500' : 'text-black bg-danger-500 dark:bg-danger-500'}`}>
-                                        {evento.estado}
-                                      </span>
-                                    </td>
-                                    <td className='table-td flex justify-start gap-2'>
-                                      <ViewButton evento={evento} onView={showEvento} />
-                                      <EditButton evento={evento} onEdit={onEdit} />
-                                      <AgendaButton evento={evento} onDelete={onDelete} />
-                                    </td>
-                                  </tr>
-                                );
-                              }))
+                                  return (
+                                    <tr key={evento.id}>
+                                      <td className='table-td'>{evento.id}</td>
+                                      <td className='table-td'>{evento.nombre_solicitante}</td>
+                                      <td className='table-td'>{evento.email_solicitante}</td>
+                                      <td className='table-td'>{evento.telefono_solicitante}</td>
+                                      <td className='table-td'>{evento.descripcion}</td>
+                                      <td className='table-td'>{parseUbicacion(evento.ubicacion)}</td>
+                                      <td className='table-td'>{formatDate(evento.fecha)}</td>
+                                      <td className='table-td'>{evento.detalle_planificacion}</td>
+                                      <td className='table-td'>{evento.categoria.nombre}</td>
+                                      <td className='table-td'>
+                                        <span className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 ${evento.estado === 'A_REALIZAR' ? 'text-black bg-success-500 dark:bg-success-400' : evento.estado === 'PENDIENTE' ? 'text-black bg-warning-500 dark:bg-warning-500' : 'text-black bg-danger-500 dark:bg-danger-500'}`}>
+                                          {evento.estado}
+                                        </span>
+                                      </td>
+                                      <td className='table-td flex justify-start gap-2'>
+                                        <ViewButton evento={evento} onView={showEvento} />
+                                        <EditButton evento={evento} onEdit={onEdit} />
+                                        <AgendaButton evento={evento} onDelete={onDelete} />
+                                      </td>
+                                    </tr>
+                                  )
+                                }))
                               : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
                           }
                         </tbody>
@@ -173,7 +173,7 @@ export const Eventos = () => {
                 </div>
               </Card>
             </>
-          )
+            )
       }
     </>
   )

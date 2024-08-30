@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import SidebarLogo from './Logo'
 import Navmenu from './Navmenu'
-import { menuItems, menuNormal } from '@/constant/data'
+import { menuNormal } from '@/constant/data'
 import SimpleBar from 'simplebar-react'
 import useSidebar from '@/hooks/useSidebar'
 import useSemiDark from '@/hooks/useSemiDark'
@@ -61,7 +61,7 @@ const Sidebar = ({ user }) => {
           scrollableNodeProps={{ ref: scrollableNodeRef }}
         >
           {/* Opciones de menu */}
-          <Navmenu menus={(user.roles_id === 1) ? menuItems : menuNormal} />
+          <Navmenu menus={menuNormal} />
         </SimpleBar>
       </div>
     </div>

@@ -1,28 +1,3 @@
-export const menuItems = [
-  {
-    isHeadr: true,
-    title: 'menu'
-  },
-
-  {
-    title: 'Dashboard',
-    icon: 'heroicons-outline:presentation-chart-line',
-    link: 'dashboard'
-  },
-
-  {
-    title: 'Eventos',
-    icon: 'heroicons-outline:calendar-days',
-    link: 'eventos'
-  },
-
-  {
-    title: 'Categorias',
-    icon: 'heroicons-outline:building-storefront',
-    link: 'categorias'
-  }
-]
-
 export const menuNormal = [
   {
     isHeadr: true,

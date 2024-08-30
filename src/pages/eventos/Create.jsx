@@ -59,18 +59,18 @@ export const Create = () => {
   }
 
   const onSubmit = async (items) => {
-    items.categoria_id = parseInt(items.categoria_id);
-    items.estado = "PENDIENTE";
+    items.categoria_id = parseInt(items.categoria_id)
+    items.estado = 'PENDIENTE'
 
     try {
       if (!id) {
-        await createEvento(items);
+        await createEvento(items)
         toast.success('Evento creado exitosamente')
       } else {
-        await updateEvento(id, items);
+        await updateEvento(id, items)
       }
-      console.log('Enviando datos:', items);
-      navigate('/eventos');
+      console.log('Enviando datos:', items)
+      navigate('/eventos')
     } catch (error) {
       toast.error('Hubo un error al crear el evento')
     }
@@ -101,119 +101,121 @@ export const Create = () => {
 
   return (
     <>
-      {isLoading ? (
-        <Loading className='mt-28 md:mt-64' />
-      ) : (
-        <div>
-          <Card>
-            <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+      {isLoading
+        ? (
+          <Loading className='mt-28 md:mt-64' />
+          )
+        : (
+          <div>
+            <Card>
+              <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 
-              <div>
-                <label htmlFor='nombre_solicitante' className='form-label'>
-                  Nombre del Solicitante
-                </label>
-                <Textinput
-                  name='nombre_solicitante'
-                  type='text'
-                  placeholder='Ingrese el nombre'
-                  register={register}
-                  onChange={handleChange}
-                  errors={errors.nombre_solicitante}
+                <div>
+                  <label htmlFor='nombre_solicitante' className='form-label'>
+                    Nombre del Solicitante
+                  </label>
+                  <Textinput
+                    name='nombre_solicitante'
+                    type='text'
+                    placeholder='Ingrese el nombre'
+                    register={register}
+                    onChange={handleChange}
+                    errors={errors.nombre_solicitante}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor='email_solicitante' className='form-label'>
+                    Email del Solicitante
+                  </label>
+                  <Textinput
+                    name='email_solicitante'
+                    type='email'
+                    placeholder='Ingrese un email'
+                    register={register}
+                    onChange={handleChange}
+                    errors={errors.email_solicitante}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor='telefono_solicitante' className='form-label'>
+                    Teléfono del Solicitante
+                  </label>
+                  <Textinput
+                    type='text'
+                    name='telefono_solicitante'
+                    placeholder='Ingrese el teléfono'
+                    register={register}
+                    onChange={handleChange}
+                    errors={errors.telefono_solicitante}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor='fecha' className='form-label'>
+                    Fecha del Evento
+                  </label>
+                  <DatePicker
+                    placeholder='Seleccione la fecha del evento'
+                    onChange={handleDateChange}
+                  />
+                </div>
+
+                <SelectForm
+                  register={register('categoria_id')}
+                  title='Categoria'
+                  options={categorias}
+                  errors={errors.categoria}
                 />
-              </div>
 
-              <div>
-                <label htmlFor='email_solicitante' className='form-label'>
-                  Email del Solicitante
-                </label>
-                <Textinput
-                  name='email_solicitante'
-                  type='email'
-                  placeholder='Ingrese un email'
-                  register={register}
-                  onChange={handleChange}
-                  errors={errors.email_solicitante}
-                />
-              </div>
+                <div>
+                  <label htmlFor='detalle_planificacion' className='form-label'>
+                    Detalle de la Planificación
+                  </label>
+                  <Textinput
+                    name='detalle_planificacion'
+                    type='text'
+                    placeholder='Ingrese el detalle de la planificación'
+                    register={register}
+                    onChange={handleChange}
+                    errors={errors.detalle_planificacion}
+                  />
+                </div>
 
-              <div>
-                <label htmlFor='telefono_solicitante' className='form-label'>
-                  Teléfono del Solicitante
-                </label>
-                <Textinput
-                  type='text'
-                  name='telefono_solicitante'
-                  placeholder='Ingrese el teléfono'
-                  register={register}
-                  onChange={handleChange}
-                  errors={errors.telefono_solicitante}
-                />
-              </div>
+                <div className='hidden'>
+                  <label htmlFor='ubicacion' className='form-label'>
+                    Ubicación
+                  </label>
+                  <Textinput
+                    name='ubicacion'
+                    type='text'
+                    placeholder='Ingrese la ubicación'
+                    register={register}
+                    errors={errors.ubicacion}
+                  />
+                </div>
 
-              <div>
-                <label htmlFor='fecha' className='form-label'>
-                  Fecha del Evento
-                </label>
-                <DatePicker
-                  placeholder='Seleccione la fecha del evento'
-                  onChange={handleDateChange}
-                />
-              </div>
+                <div>
+                  <label htmlFor='descripcion' className='form-label'>
+                    Descripción
+                  </label>
+                  <Textarea
+                    name='descripcion'
+                    placeholder='Ingrese una descripción del evento'
+                    register={register}
+                    errors={errors.descripcion}
+                  />
+                </div>
 
-              <SelectForm
-                register={register('categoria_id')}
-                title='Categoria'
-                options={categorias}
-                errors={errors.categoria}
-              />
+              </form>
+            </Card>
 
-              <div>
-                <label htmlFor='detalle_planificacion' className='form-label'>
-                  Detalle de la Planificación
-                </label>
-                <Textinput
-                  name='detalle_planificacion'
-                  type='text'
-                  placeholder='Ingrese el detalle de la planificación'
-                  register={register}
-                  onChange={handleChange}
-                  errors={errors.detalle_planificacion}
-                />
-              </div>
+            <div className='h-96 w-full'>
+              <BasicMap onLocationChange={handleLocationChange} />
+            </div>
 
-              <div className='hidden'>
-                <label htmlFor='ubicacion' className='form-label'>
-                  Ubicación
-                </label>
-                <Textinput
-                  name='ubicacion'
-                  type='text'
-                  placeholder='Ingrese la ubicación'
-                  register={register}
-                  errors={errors.ubicacion}
-                />
-              </div>
-
-              <div>
-                <label htmlFor='descripcion' className='form-label'>
-                  Descripción
-                </label>
-                <Textarea
-                  name='descripcion'
-                  placeholder='Ingrese una descripción del evento'
-                  register={register}
-                  errors={errors.descripcion}
-                />
-              </div>
-
-            </form>
-          </Card>
-
-          <div className='h-96 w-full'>
-            <BasicMap onLocationChange={handleLocationChange} />
-          </div>
-
-          <div className='flex justify-end gap-4 mt-8'>
+            <div className='flex justify-end gap-4 mt-8'>
               <div className='ltr:text-right rtl:text-left'>
                 <button
                   className='btn-danger items-center text-center py-2 px-6 rounded-lg'
@@ -232,8 +234,8 @@ export const Create = () => {
                 />
               </div>
             </div>
-        </div>
-      )}
+          </div>
+          )}
     </>
   )
 }

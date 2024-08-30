@@ -13,9 +13,7 @@ import useMobileMenu from '@/hooks/useMobileMenu'
 import { ToastContainer } from 'react-toastify'
 import Loading from '@/components/Loading'
 import { motion } from 'framer-motion'
-import { useSelector } from 'react-redux'
 const Layout = () => {
-  const { user } = useSelector(state => state.auth)
   const { width, breakpoints } = useWidth()
   const [collapsed] = useSidebar()
 
@@ -40,11 +38,10 @@ const Layout = () => {
       <ToastContainer />
       <Header className={width > breakpoints.xl ? switchHeaderClass() : ''} />
       {menuType === 'vertical' && width > breakpoints.xl && !menuHidden && (
-        <Sidebar user={user} />
+        <Sidebar />
       )}
 
       <MobileMenu
-        user={user}
         className={`${
           width < breakpoints.xl && mobileMenu
             ? 'left-0 visible opacity-100  z-[9999]'
