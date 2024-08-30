@@ -1,69 +1,78 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
-import Loading from '@/components/Loading'
-import Button from '@/components/ui/Button'
+import { SelectForm } from '@/components/agenda/forms'
 import { getEventoById, createEvento, updateEvento } from '@/services/eventService'
-import CrearEventoData from '@/components/forms/CrearEventoData'
+import { useQuery } from '@tanstack/react-query'
+import { getCategoryById } from '@/services/categoryService'
+import Button from '@/components/ui/Button'
+import Loading from '@/components/Loading'
+import Card from '@/components/ui/Card'
+import Textinput from '@/components/ui/Textinput'
+import Textarea from '@/components/ui/Textarea'
+import DatePicker from '@/components/ui/DatePicker'
+import BasicMap from '@/components/basicMap'
+import { toast } from 'react-toastify'
+
+const initialForm = {
+  nombre_solicitante: '',
+  email_solicitante: '',
+  telefono_solicitante: '',
+  descripcion: '',
+  fecha: '',
+  categoria: '',
+  ubicacion: '',
+  estado: 'PENDIENTE'
+}
 
 export const Create = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
-  const [, setActiveEvento] = useState(null)
-
-  const FormValidationSchema = yup.object().shape({
-    nombre_solicitante: yup.string().required('El nombre es requerido'),
-    email_solicitante: yup.string().required('El email es requerido'),
-    telefono_solicitante: yup.string().required('El telefono es requerido'),
-    descripcion: yup.string().required('La descripcion es requerida'),
-    fecha: yup.string().required('La fecha es requerida'),
-    categoria: yup.string().required('La categoría es requerida')
+  const [, setFormData] = useState(initialForm)
+  const { data: categorias } = useQuery({
+    queryKey: ['categoria'],
+    queryFn: getCategoryById
   })
 
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-    setValue,
-    watch
-  } = useForm({
-    resolver: yupResolver(FormValidationSchema),
-    defaultValues: {
-      nombre_solicitante: '',
-      email_solicitante: '',
-      telefono_solicitante: '',
-      descripcion: '',
-      fecha: '',
-      categoria: ''
-    }
-  })
+    setValue
+  } = useForm()
 
-  const onSubmit = async (data) => {
-    console.log('Datos a enviar:', data)
-    if (!id) {
-      await startSavingEvento(data)
-    } else {
-      await startUpdateEvento(id, data)
-    }
-    navigate('/eventos')
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }))
   }
 
-  const startSavingEvento = async (data) => {
-    try {
-      await createEvento(data)
-    } catch (error) {
-      console.error('Error al crear el evento:', error)
-    }
+  const handleDateChange = (date) => {
+    setValue('fecha', date ? date[0] : '')
   }
 
-  const startUpdateEvento = async (eventoId, data) => {
+  const handleLocationChange = (latitud, longitud, direccion) => {
+    setValue('ubicacion', JSON.stringify({ latitud, longitud, direccion }))
+  }
+
+  const onSubmit = async (items) => {
+    items.categoria_id = parseInt(items.categoria_id);
+    items.estado = "PENDIENTE";
+
     try {
-      await updateEvento(eventoId, data)
+      if (!id) {
+        await createEvento(items);
+        toast.success('Evento creado exitosamente')
+      } else {
+        await updateEvento(id, items);
+      }
+      console.log('Enviando datos:', items);
+      navigate('/eventos');
     } catch (error) {
-      console.error('Error al actualizar el evento:', error)
+      toast.error('Hubo un error al crear el evento')
     }
   }
 
@@ -71,14 +80,14 @@ export const Create = () => {
     if (id) {
       try {
         const evento = await getEventoById(id)
-        setActiveEvento(evento)
-
         setValue('nombre_solicitante', evento.nombre_solicitante)
         setValue('email_solicitante', evento.email_solicitante)
         setValue('telefono_solicitante', evento.telefono_solicitante)
-        setValue('descripcion', evento.descripcion)
         setValue('fecha', evento.fecha)
         setValue('categoria', evento.categoria)
+        setValue('detalle_planificacion', evento.detalle_planificacion)
+        setValue('descripcion', evento.descripcion)
+        setValue('ubicacion', evento.ubicacion)
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
@@ -92,17 +101,119 @@ export const Create = () => {
 
   return (
     <>
-      {isLoading
-        ? (
-          <Loading className='mt-28 md:mt-64' />
-          )
-        : (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <CrearEventoData register={register} errors={errors} setValue={setValue} watch={watch} />
-            </div>
+      {isLoading ? (
+        <Loading className='mt-28 md:mt-64' />
+      ) : (
+        <div>
+          <Card>
+            <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 
-            <div className='flex justify-end gap-4 mt-8'>
+              <div>
+                <label htmlFor='nombre_solicitante' className='form-label'>
+                  Nombre del Solicitante
+                </label>
+                <Textinput
+                  name='nombre_solicitante'
+                  type='text'
+                  placeholder='Ingrese el nombre'
+                  register={register}
+                  onChange={handleChange}
+                  errors={errors.nombre_solicitante}
+                />
+              </div>
+
+              <div>
+                <label htmlFor='email_solicitante' className='form-label'>
+                  Email del Solicitante
+                </label>
+                <Textinput
+                  name='email_solicitante'
+                  type='email'
+                  placeholder='Ingrese un email'
+                  register={register}
+                  onChange={handleChange}
+                  errors={errors.email_solicitante}
+                />
+              </div>
+
+              <div>
+                <label htmlFor='telefono_solicitante' className='form-label'>
+                  Teléfono del Solicitante
+                </label>
+                <Textinput
+                  type='text'
+                  name='telefono_solicitante'
+                  placeholder='Ingrese el teléfono'
+                  register={register}
+                  onChange={handleChange}
+                  errors={errors.telefono_solicitante}
+                />
+              </div>
+
+              <div>
+                <label htmlFor='fecha' className='form-label'>
+                  Fecha del Evento
+                </label>
+                <DatePicker
+                  placeholder='Seleccione la fecha del evento'
+                  onChange={handleDateChange}
+                />
+              </div>
+
+              <SelectForm
+                register={register('categoria_id')}
+                title='Categoria'
+                options={categorias}
+                errors={errors.categoria}
+              />
+
+              <div>
+                <label htmlFor='detalle_planificacion' className='form-label'>
+                  Detalle de la Planificación
+                </label>
+                <Textinput
+                  name='detalle_planificacion'
+                  type='text'
+                  placeholder='Ingrese el detalle de la planificación'
+                  register={register}
+                  onChange={handleChange}
+                  errors={errors.detalle_planificacion}
+                />
+              </div>
+
+              <div className='hidden'>
+                <label htmlFor='ubicacion' className='form-label'>
+                  Ubicación
+                </label>
+                <Textinput
+                  name='ubicacion'
+                  type='text'
+                  placeholder='Ingrese la ubicación'
+                  register={register}
+                  errors={errors.ubicacion}
+                />
+              </div>
+
+              <div>
+                <label htmlFor='descripcion' className='form-label'>
+                  Descripción
+                </label>
+                <Textarea
+                  name='descripcion'
+                  placeholder='Ingrese una descripción del evento'
+                  register={register}
+                  errors={errors.descripcion}
+                />
+              </div>
+
+            </form>
+          </Card>
+
+          <div className='h-96 w-full'>
+            <BasicMap onLocationChange={handleLocationChange} />
+          </div>
+
+          <div className='flex justify-end gap-4 mt-8'>
               <div className='ltr:text-right rtl:text-left'>
                 <button
                   className='btn-danger items-center text-center py-2 px-6 rounded-lg'
@@ -117,12 +228,12 @@ export const Create = () => {
                   text={isSubmitting ? 'Guardando' : 'Guardar'}
                   className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
                   disabled={isSubmitting}
-                  onClick={isSubmitting ? undefined : handleSubmit}
+                  onClick={handleSubmit(onSubmit)}
                 />
               </div>
             </div>
-          </form>
-          )}
+        </div>
+      )}
     </>
   )
 }
