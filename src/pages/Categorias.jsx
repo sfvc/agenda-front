@@ -34,6 +34,10 @@ export const Categorias = () => {
     setIsModalOpen(false)
   }
 
+  async function onSearch () {
+
+  }
+
   return (
     <>
       {
@@ -51,7 +55,7 @@ export const Categorias = () => {
                         <TextInput
                           name='search'
                           placeholder='Buscar'
-                          // onChange={onSearch}
+                          onChange={onSearch}
                           value={search}
                         />
 

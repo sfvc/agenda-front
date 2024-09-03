@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Navmenu from './Navmenu'
-import { menuItems, menuNormal } from '@/constant/data' // Menu de los usuarios
+import { menuNormal } from '@/constant/data' // Menu de los usuarios
 import SimpleBar from 'simplebar-react'
 import useSemiDark from '@/hooks/useSemiDark'
 import useDarkMode from '@/hooks/useDarkMode'
@@ -64,7 +64,7 @@ const MobileMenu = ({ className = 'custom-class', user }) => {
         scrollableNodeProps={{ ref: scrollableNodeRef }}
       >
         {/* Opciones de menu */}
-        <Navmenu menus={(user.roles_id === 1) ? menuItems : menuNormal} />
+        <Navmenu menus={menuNormal} />
       </SimpleBar>
     </div>
   )

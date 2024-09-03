@@ -7,7 +7,6 @@ import useNavbarType from '@/hooks/useNavbarType'
 import useMenulayout from '@/hooks/useMenulayout'
 import useSkin from '@/hooks/useSkin'
 import Logo from './Tools/Logo'
-// import Profile from './Tools/Profile'
 import useRtl from '@/hooks/useRtl'
 import useMobileMenu from '@/hooks/useMobileMenu'
 
@@ -113,8 +112,6 @@ const Header = ({ className = 'custom-class' }) => {
             {/* <MonoChrome /> */}
             {/* {width >= breakpoints.md && <Message />} */}
             {/* {width >= breakpoints.md && <Notification />} */}
-            {/* {width >= breakpoints.md && <Profile />} */}
-            {/* <Profile /> */}
             {width <= breakpoints.md && (
               <div
                 className='cursor-pointer text-slate-900 dark:text-white text-2xl'
