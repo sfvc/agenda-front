@@ -20,6 +20,12 @@ export const menuNormal = [
     title: 'Categorias',
     icon: 'heroicons-outline:building-storefront',
     link: 'categorias'
+  },
+
+  {
+    title: 'Contactos',
+    icon: 'heroicons-outline:user-group',
+    link: 'contactos'
   }
 ]
 

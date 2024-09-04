@@ -22,15 +22,15 @@ const initialForm = {
   fecha: '',
   categoria: '',
   ubicacion: '',
-  estado: 'PENDIENTE'
+  // estado: 'PENDIENTE'
 }
-const initialPosition={
-  latitud:-28.46867672033115,
-  longitud:-65.77899050151645
+const initialPosition = {
+  latitud: -28.46867672033115,
+  longitud: -65.77899050151645
 }
 
 export const Create = () => {
-  const [position, setPosition]= useState(initialPosition)
+  const [position, setPosition] = useState(initialPosition)
   const { id } = useParams()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
@@ -65,7 +65,7 @@ export const Create = () => {
 
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
-    items.estado = 'PENDIENTE'
+    // items.estado = 'PENDIENTE'
 
     try {
       if (!id) {
@@ -81,7 +81,7 @@ export const Create = () => {
     }
   }
 
-  
+
   const loadEvento = async () => {
     if (id) {
       try {
@@ -91,7 +91,7 @@ export const Create = () => {
         setValue('telefono_solicitante', evento.telefono_solicitante)
         setValue('fecha', evento.fecha)
         setValue('categoria', evento.categoria)
-        setValue('detalle_planificacion', evento.detalle_planificacion)
+        // setValue('detalle_planificacion', evento.detalle_planificacion)
         setValue('descripcion', evento.descripcion)
         setValue('ubicacion', evento.ubicacion)
         setPosition(JSON.parse(evento.ubicacion))
@@ -112,7 +112,7 @@ export const Create = () => {
       {isLoading
         ? (
           <Loading className='mt-28 md:mt-64' />
-          )
+        )
         : (
           <div>
             <Card>
@@ -177,7 +177,7 @@ export const Create = () => {
                   errors={errors.categoria}
                 />
 
-                <div>
+                {/* <div>
                   <label htmlFor='detalle_planificacion' className='form-label'>
                     Detalle de la Planificación
                   </label>
@@ -189,7 +189,7 @@ export const Create = () => {
                     onChange={handleChange}
                     errors={errors.detalle_planificacion}
                   />
-                </div>
+                </div> */}
 
                 <div className='hidden'>
                   <label htmlFor='ubicacion' className='form-label'>
@@ -227,7 +227,7 @@ export const Create = () => {
               <div className='ltr:text-right rtl:text-left'>
                 <button
                   className='btn-danger items-center text-center py-2 px-6 rounded-lg'
-                  onClick={() => navigate('/eventos')}
+                  onClick={() => navigate('/contactos')}
                 >
                   Volver
                 </button>
@@ -243,7 +243,7 @@ export const Create = () => {
               </div>
             </div>
           </div>
-          )}
+        )}
     </>
   )
 }

@@ -14,11 +14,12 @@ const BasicMap = ({ onLocationChange, isActive, editPosition }) => {
     if (editPosition) {
       return [editPosition.latitud, editPosition.longitud]
     }
+    return [initialPosition.latitud, initialPosition.longitud]
   })
 
   const [address, setAddress] = useState('')
 
-  if (!isActive) {
+  // if (!isActive) {
     useEffect(() => {
       const getAddressFromCoordinates = async (lat, lng) => {
         const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
@@ -40,8 +41,8 @@ const BasicMap = ({ onLocationChange, isActive, editPosition }) => {
         getAddressFromCoordinates(position[0], position[1])
         previousPosition.current = position
       }
-    }, [position, onLocationChange])
-  }
+    }, [position, onLocationChange,isActive])
+  // }
 
   const handleMapClick = (event) => {
     if (!isActive) {
