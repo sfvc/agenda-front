@@ -227,7 +227,7 @@ export const Create = () => {
               <div className='ltr:text-right rtl:text-left'>
                 <button
                   className='btn-danger items-center text-center py-2 px-6 rounded-lg'
-                  onClick={() => navigate('/contactos')}
+                  onClick={() => navigate('/eventos')}
                 >
                   Volver
                 </button>

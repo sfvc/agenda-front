@@ -13,9 +13,11 @@ import { TextInput } from 'flowbite-react'
 import { formatDate } from '@/components/Format'
 import columnEventos from '@/json/columnsEventos.json'
 
+
 export const Eventos = () => {
   const navigate = useNavigate()
   const [search] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const { data: eventos, isLoading } = useQuery({
     queryKey: ['eventos', currentPage],
@@ -40,12 +42,19 @@ export const Eventos = () => {
     navigate(`/eventos/editar/${id}`)
   }
 
-  async function onDelete(id) {
-
+  async function onDelete(id,estado) {
+    
+    navigate(`/eventos/editar_estado/${id}/${estado}`)
   }
+
   async function onSearch() {
 
   }
+
+  const onClose = () => {
+    setIsModalOpen(false)
+  }
+
   function separarTresPrimerosElementos(cadena) {
     // Divide la cadena por comas y recorta espacios adicionales
     const elementos = cadena.split(',').map(elemento => elemento.trim());
@@ -58,9 +67,7 @@ export const Eventos = () => {
   const parseUbicacion = (ubicacion) => {
     try {
       const parsed = JSON.parse(ubicacion)
-
       const resultado = separarTresPrimerosElementos(parsed.direccion);
-      console.log(resultado);
       return resultado || 'Dirección no disponible'
     } catch {
       return 'Dirección no disponible'
@@ -97,14 +104,14 @@ export const Eventos = () => {
                       </div>
                     </div>
 
-                    <DeleteModal
+                    {/* <DeleteModal
                       themeClass='bg-slate-900 dark:bg-slate-800 dark:border-b dark:border-slate-700'
                       centered
                       title='Acciones del Evento'
                       message='¿Estás seguro de que deseas eliminar este evento?'
                       labelBtn='Aceptar'
                       btnFunction={() => onDelete}
-                    />
+                    /> */}
 
                     <div className='flex gap-4'>
                       <button
@@ -146,17 +153,18 @@ export const Eventos = () => {
                                     <td className='table-td'>{evento.descripcion}</td>
                                     <td className='table-td'>{parseUbicacion(evento.ubicacion)}</td>
                                     <td className='table-td'>{formatDate(evento.fecha)}</td>
-                                    <td className='table-td'>{evento.detalle_planificacion}</td>
+                                    {/* <td className='table-td'>{evento.detalle_planificacion}</td> */}
                                     <td className='table-td'>{evento.categoria.nombre}</td>
                                     <td className='table-td'>
                                       <span className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 ${evento.estado === 'A_REALIZAR' ? 'text-black bg-success-500 dark:bg-success-400' : evento.estado === 'PENDIENTE' ? 'text-black bg-warning-500 dark:bg-warning-500' : 'text-black bg-danger-500 dark:bg-danger-500'}`}>
                                         {evento.estado}
                                       </span>
                                     </td>
-                                    <td className='table-td flex justify-start gap-2'>
+                                    <td className='table-td  '>
                                       <ViewButton evento={evento} onView={showEvento} />
                                       <EditButton evento={evento} onEdit={onEdit} />
-                                      <AgendaButton evento={evento} onDelete={onDelete} />
+                                      <AgendaButton evento={evento} onDelete={()=>onDelete(evento.id,evento.estado)} />
+                                    
                                     </td>
                                   </tr>
                                 )

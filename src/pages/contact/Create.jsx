@@ -8,7 +8,7 @@ import Card from '@/components/ui/Card'
 import Textinput from '@/components/ui/Textinput'
 import Textarea from '@/components/ui/Textarea'
 import { toast } from 'react-toastify'
-import { createContact,getContactsById } from "@/services/contactService"
+import { createContact, getContactsById,updateContact } from "@/services/contactService"
 
 const initialForm = {
     nombre: "",
@@ -38,12 +38,19 @@ export const CreateContactos = () => {
     }
 
     const onSubmit = async (items) => {
-        console.log(items);
+       
 
         try {
-            const response = await createContact(items)
-            console.log(response);
-            toast.success('Contacto creado exitosamente')
+            if (!id) {
+                await createContact(items)
+
+                toast.success('Contacto creado exitosamente')
+            } else {
+             
+                await updateContact(id, items)
+                toast.info('Contacto editado exitosamente')
+            }
+            navigate('/contactos')
         } catch (error) {
             toast.error('Hubo un error al crear el contacto')
         }
@@ -51,29 +58,26 @@ export const CreateContactos = () => {
 
     const loadEvento = async () => {
         if (id) {
-          try {
-            console.log(id);
-            const evento = await getContactsById(id)
-            // setValue('nombre_solicitante', evento.nombre_solicitante)
-            // setValue('email_solicitante', evento.email_solicitante)
-            // setValue('telefono_solicitante', evento.telefono_solicitante)
-            // setValue('fecha', evento.fecha)
-            // setValue('categoria', evento.categoria)
-            // // setValue('detalle_planificacion', evento.detalle_planificacion)
-            // setValue('descripcion', evento.descripcion)
-            // setValue('ubicacion', evento.ubicacion)
-            // setPosition(JSON.parse(evento.ubicacion))
-    
-          } catch (error) {
-            console.error('Error al cargar el evento:', error)
-          }
+            try {
+
+                const contacto = await getContactsById(id)
+
+                setValue('nombre', contacto.nombre)
+                setValue('email', contacto.email)
+                setValue('telefono', contacto.telefono)
+                setValue('apellido', contacto.apellido)
+
+
+            } catch (error) {
+                console.error('Error al cargar el evento:', error)
+            }
         }
         setIsLoading(false)
-      }
-    
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         loadEvento()
-      }, [id])
+    }, [id])
     return (<>
         {
             isLoading ? (

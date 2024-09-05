@@ -1,6 +1,6 @@
 import React, { lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { Create, ShowEvento, Eventos } from './pages/eventos'
+import { Create, ShowEvento, Eventos,NextStage } from './pages/eventos'
 import { Categorias } from './pages/Categorias'
 import { Contactos } from './pages/contact/Contactos'
 import { CreateContactos } from './pages/contact/Create'
@@ -26,7 +26,7 @@ function App () {
                  <Route path='eventos/crear' element={<Create />} />
                  <Route path='eventos/editar/:id' element={<Create />} />
                  <Route path='eventos/ver/:id' element={<ShowEvento />} />
-
+                 <Route path='eventos/editar_estado/:id/:estado' element={<NextStage />} />
                  {/* Otras paginas */}
                  <Route path='categorias' element={<Categorias />} />
                   {/* Contactos */}

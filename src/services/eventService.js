@@ -20,9 +20,14 @@ export const updateEvent = async (id, event) => {
   return response.data
 }
 
+export const nextStageEvent = async (id,event)=>{
+  const response = await agendaApi.post(`/evento/${id}/nextstage`,event)
+  return response
+}
 export const deleteEvent = async (id) => {
   await agendaApi.delete(`/evento/${id}`)
 }
+
 
 export const getEventos = fetchEvents
 export const getEventoById = fetchEventById

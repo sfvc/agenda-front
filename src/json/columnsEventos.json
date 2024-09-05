@@ -27,10 +27,7 @@
       "label": "fecha",
       "field": "fecha"
     },
-    {
-      "label": "Detalle de Planificacion",
-      "field": "detalle_planificacion"
-    },
+   
     {
       "label": "Categoría",
       "field": "categoria"

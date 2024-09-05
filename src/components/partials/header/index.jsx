@@ -59,6 +59,7 @@ const Header = ({ className = 'custom-class' }) => {
              }
         `}
       >
+      
         <div className='flex justify-between items-center h-full'>
           {/* For Vertical  */}
 
@@ -91,6 +92,7 @@ const Header = ({ className = 'custom-class' }) => {
               {/* <SearchModal /> */}
             </div>
           )}
+         Agenda
           {/* For Horizontal  */}
           {menuType === 'horizontal' && (
             <div className='flex items-center space-x-4 rtl:space-x-reverse'>
