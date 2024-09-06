@@ -42,9 +42,13 @@ export const Eventos = () => {
     navigate(`/eventos/editar/${id}`)
   }
 
-  async function onDelete(id,estado) {
-    
-    navigate(`/eventos/editar_estado/${id}/${estado}`)
+  async function onDelete(id, estado) {
+    if(estado === "PENDIENTE"){
+      navigate(`/eventos/estado_considerar/${id}`)
+    }else  if(estado === "A_CONSIDERAR"){
+      navigate(`/eventos/estado_realizar/${id}`)
+    }
+
   }
 
   async function onSearch() {
@@ -148,23 +152,23 @@ export const Eventos = () => {
                                   <tr key={evento.id}>
                                     <td className='table-td'>{evento.id}</td>
                                     <td className='table-td'>{evento.nombre_solicitante}</td>
-                                    <td className='table-td'>{evento.email_solicitante}</td>
+                                    {/* <td className='table-td'>{evento.email_solicitante}</td> */}
                                     <td className='table-td'>{evento.telefono_solicitante}</td>
-                                    <td className='table-td'>{evento.descripcion}</td>
+                                    {/* <td className='table-td'>{evento.descripcion}</td> */}
                                     <td className='table-td'>{parseUbicacion(evento.ubicacion)}</td>
                                     <td className='table-td'>{formatDate(evento.fecha)}</td>
                                     {/* <td className='table-td'>{evento.detalle_planificacion}</td> */}
                                     <td className='table-td'>{evento.categoria.nombre}</td>
                                     <td className='table-td'>
-                                      <span className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 ${evento.estado === 'A_REALIZAR' ? 'text-black bg-success-500 dark:bg-success-400' : evento.estado === 'PENDIENTE' ? 'text-black bg-warning-500 dark:bg-warning-500' : 'text-black bg-danger-500 dark:bg-danger-500'}`}>
+                                      <span className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 ${evento.estado === 'A_REALIZAR' ? 'text-black bg-success-500 dark:bg-success-400' : evento.estado === 'PENDIENTE' ? 'text-black bg-danger-500 dark:bg-danger-500' : 'text-black bg-warning-500 dark:bg-warning-500'}`}>
                                         {evento.estado}
                                       </span>
                                     </td>
                                     <td className='table-td  '>
                                       <ViewButton evento={evento} onView={showEvento} />
                                       <EditButton evento={evento} onEdit={onEdit} />
-                                      <AgendaButton evento={evento} onDelete={()=>onDelete(evento.id,evento.estado)} />
-                                    
+                                      <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
+
                                     </td>
                                   </tr>
                                 )

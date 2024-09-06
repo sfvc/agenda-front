@@ -1,9 +1,6 @@
 [{
-    "label": "Apellido",
+    "label": "Apellido y Nombre",
     "field": "apellido"
-  },{
-    "label": "Nombre",
-    "field": "nombre"
   },{
     "label": "Correo Electronico",
     "field": "email"

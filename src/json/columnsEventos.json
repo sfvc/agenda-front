@@ -7,18 +7,12 @@
       "label": "Nombre",
       "field": "nombre"
     },
-    {
-      "label": "Email",
-      "field": "email_solicitante"
-    },
+   
     {
       "label": "Teléfono",
       "field": "telefono_solicitante"
     },
-    {
-      "label": "Descripción",
-      "field": "descripcion"
-    },
+   
     {
       "label": "ubicacion",
       "field": "ubicacion"

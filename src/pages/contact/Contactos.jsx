@@ -107,8 +107,8 @@ export const Contactos = () => {
                                                         ? (contactos.items.map((contacto) => {
                                                             return (
                                                                 <tr key={contacto.id}>
-                                                                    <td className='table-td'>{contacto.apellido}</td>
-                                                                    <td className='table-td'>{contacto.nombre}</td>
+                                                                    <td className='table-td'>{contacto.apellido} {contacto.nombre}</td>
+                                                                
                                                                     <td className='table-td'>{contacto.email}</td>
                                                                     <td className='table-td'>{contacto.telefono}</td>
                                                                     <td className='table-td flex justify-start gap-2'>

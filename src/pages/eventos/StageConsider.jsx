@@ -6,24 +6,25 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { nextStageEvent } from '@/services/eventService'
 import Button from '@/components/ui/Button'
+import { toast } from 'react-toastify'
 const initialForm = {
     detalle_planificacion: ""
 }
 
 
-export const NextStage = () => {
+export const StageConsider = () => {
 
     const navigate = useNavigate()
     const [isLoading, setLoading] = useState(false)
     const [, setFormData] = useState(initialForm)
-    const { id,estado } = useParams()
+    const { id } = useParams()
     const {
         register,
         formState: { errors, isSubmitting },
         handleSubmit,
         setValue
     } = useForm()
-
+  
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData((prevState) => ({
@@ -33,12 +34,13 @@ export const NextStage = () => {
     }
 
     const onSubmit = async (items) => {
-        console.log(items);
 
         try {
-            await nextStageEvent(id,items)
+            await nextStageEvent(id, items)
+            toast.success('El evento paso al estado a Considerar')
         } catch (error) {
             console.error(error)
+            toast.error('Hubo un error al intentar pasar el evento')
         }
     }
 
@@ -50,7 +52,7 @@ export const NextStage = () => {
                         <>
                             <Card>
                                 <div className='mb-4 md:flex md:justify-between'>
-                                    <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Actualizar estado del evento</h1>
+                                    <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Pasar evento a Considerar</h1>
                                 </div>
                             </Card>
 

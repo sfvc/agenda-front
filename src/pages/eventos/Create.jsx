@@ -65,7 +65,7 @@ export const Create = () => {
 
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
-    // items.estado = 'PENDIENTE'
+    
 
     try {
       if (!id) {
@@ -74,7 +74,7 @@ export const Create = () => {
       } else {
         await updateEvento(id, items)
       }
-      console.log('Enviando datos:', items)
+     
       navigate('/eventos')
     } catch (error) {
       toast.error('Hubo un error al crear el evento')

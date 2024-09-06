@@ -10,9 +10,9 @@ const AgendaButton = ({ evento, onDelete }) => {
     switch (evento.estado) {
       case 'PENDIENTE':
         return (
-          <Tooltip content='Autorizar' placement='top' arrow animation='shift-away'>
+          <Tooltip content='A Considerar' placement='top' arrow animation='shift-away'>
             <button
-              className='bg-green-500 text-white p-2 rounded-lg hover:bg-green-700'
+              className='bg-warning-500 text-white p-2 rounded-lg hover:bg-warning-700'
               onClick={() => onDelete(evento.id)}
             >
               <svg
@@ -37,7 +37,7 @@ const AgendaButton = ({ evento, onDelete }) => {
         return (
           <Tooltip content='A realizar' placement='top' arrow animation='shift-away'>
             <button
-              className='bg-warning-500 text-white p-2 rounded-lg hover:bg-warning-700'
+              className='bg-green-500 text-white p-2 rounded-lg hover:bg-green-700'
               onClick={() => onDelete(evento.id)}
             >
               <svg
