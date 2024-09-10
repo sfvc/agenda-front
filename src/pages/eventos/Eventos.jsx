@@ -12,6 +12,7 @@ import AgendaButton from '@/components/buttons/AgendaButton'
 import { TextInput } from 'flowbite-react'
 import { formatDate } from '@/components/Format'
 import columnEventos from '@/json/columnsEventos.json'
+import { MapEvent } from './MapEvent'
 
 
 export const Eventos = () => {
@@ -129,7 +130,7 @@ export const Eventos = () => {
                   </div>
                 </div>
               </Card>
-
+              <MapEvent isActive={true} events={eventos.items}/>
               <Card noborder>
                 <div className='overflow-x-auto -mx-6'>
                   <div className='inline-block min-w-full align-middle'>
@@ -149,13 +150,14 @@ export const Eventos = () => {
                             (eventos.items.length > 0)
                               ? (eventos.items.map((evento) => {
                                 return (
+                                
                                   <tr key={evento.id}>
                                     <td className='table-td'>{evento.id}</td>
                                     <td className='table-td'>{evento.nombre_solicitante}</td>
                                     {/* <td className='table-td'>{evento.email_solicitante}</td> */}
                                     <td className='table-td'>{evento.telefono_solicitante}</td>
                                     {/* <td className='table-td'>{evento.descripcion}</td> */}
-                                    <td className='table-td'>{parseUbicacion(evento.ubicacion)}</td>
+                                    <td className='table-td max-w-96'>{parseUbicacion(evento.ubicacion)}</td>
                                     <td className='table-td'>{formatDate(evento.fecha)}</td>
                                     {/* <td className='table-td'>{evento.detalle_planificacion}</td> */}
                                     <td className='table-td'>{evento.categoria.nombre}</td>
@@ -164,7 +166,7 @@ export const Eventos = () => {
                                         {evento.estado}
                                       </span>
                                     </td>
-                                    <td className='table-td  '>
+                                    <td className='table-td  flex '>
                                       <ViewButton evento={evento} onView={showEvento} />
                                       <EditButton evento={evento} onEdit={onEdit} />
                                       <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />

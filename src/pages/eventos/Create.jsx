@@ -44,7 +44,8 @@ export const Create = () => {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-    setValue
+    setValue,
+    watch
   } = useForm()
 
   const handleChange = (e) => {
@@ -56,7 +57,7 @@ export const Create = () => {
   }
 
   const handleDateChange = (date) => {
-    setValue('fecha', date ? date[0] : '')
+    setValue('fecha', date ? date[0].toISOString() : '')
   }
 
   const handleLocationChange = (latitud, longitud, direccion) => {
@@ -65,7 +66,7 @@ export const Create = () => {
 
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
-    
+
 
     try {
       if (!id) {
@@ -73,8 +74,9 @@ export const Create = () => {
         toast.success('Evento creado exitosamente')
       } else {
         await updateEvento(id, items)
+        toast.success('Evento editado exitosamente')
       }
-     
+
       navigate('/eventos')
     } catch (error) {
       toast.error('Hubo un error al crear el evento')
@@ -89,12 +91,13 @@ export const Create = () => {
         setValue('nombre_solicitante', evento.nombre_solicitante)
         setValue('email_solicitante', evento.email_solicitante)
         setValue('telefono_solicitante', evento.telefono_solicitante)
-        setValue('fecha', evento.fecha)
-        setValue('categoria', evento.categoria)
+        setValue('fecha', new Date(evento.fecha))
+        setValue('categoria_id', evento.categoria?.id)
         // setValue('detalle_planificacion', evento.detalle_planificacion)
         setValue('descripcion', evento.descripcion)
         setValue('ubicacion', evento.ubicacion)
         setPosition(JSON.parse(evento.ubicacion))
+        console.log(evento);
 
       } catch (error) {
         console.error('Error al cargar el evento:', error)
@@ -165,7 +168,8 @@ export const Create = () => {
                     Fecha del Evento
                   </label>
                   <DatePicker
-                    placeholder='Seleccione la fecha del evento'
+                    placeholder="Seleccione la fecha del evento"
+                    value={watch('fecha') ? new Date(watch('fecha')) : null}
                     onChange={handleDateChange}
                   />
                 </div>
@@ -174,7 +178,8 @@ export const Create = () => {
                   register={register('categoria_id')}
                   title='Categoria'
                   options={categorias}
-                  errors={errors.categoria}
+                  errors={errors.categoria_id}
+                  onChange={handleChange}
                 />
 
                 {/* <div>
@@ -220,7 +225,7 @@ export const Create = () => {
             </Card>
 
             <div className='h-96 w-full'>
-              <BasicMap onLocationChange={handleLocationChange} />
+              <BasicMap onLocationChange={handleLocationChange} editPosition={position} />
             </div>
 
             <div className='flex justify-end gap-4 mt-8'>

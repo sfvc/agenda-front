@@ -6,13 +6,15 @@ import { formatDate } from '@/components/Format'
 import BasicMap from '@/components/basicMap'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import Loading from '@/components/Loading'
-
+import Modal from '@/components/ui/Modal'
+import { AddFile } from '../../components/agenda/forms/addFile'
 const initialPosition={
   latitud:-28.46867672033115,
   longitud:-65.77899050151645
 }
 
 export const ShowEvento = ({ isActive }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [position, setPosition]= useState(initialPosition)
   const [activeEvento, setActiveEvento] = useState(null)
   const navigate = useNavigate()
@@ -24,6 +26,7 @@ export const ShowEvento = ({ isActive }) => {
       setIsLoading(true)
       try {
         const evento = await fetchEventById(id)
+        console.log(evento);
         setActiveEvento(evento)
         setPosition(JSON.parse(evento.ubicacion))
       } catch (error) {
@@ -35,7 +38,9 @@ export const ShowEvento = ({ isActive }) => {
 
     getEvent()
   }, [id])
-
+  const onClose = () => {
+    setIsModalOpen(false)
+  }
   return (
     <>
       {isLoading
@@ -198,6 +203,15 @@ export const ShowEvento = ({ isActive }) => {
                         isActive={activeEvento?.estado}
                       />
                     </div>
+                    <Modal
+                        title='Agregar Documentación'
+                        label='Agregar documento'
+                        labelClass='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg w-60'
+                        show={isModalOpen}
+                        onClose={onClose}
+                        centered
+                        children={<AddFile/>}
+                      />
                   </div>
 
                   <div className='mt-4 flex justify-end gap-4'>
