@@ -5,7 +5,8 @@ import { documentEvent } from '../../../services/eventService';
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 const categorias = [
-    { id: "1", nombre: "Detalles de Planificación" }
+    { id: "Detalles de Planificación", nombre: "Detalles de Planificación" },
+    { id: "Documentos A Realizar", nombre: "Documentos A Realizar" }
 ]
 
 
@@ -40,7 +41,7 @@ export const AddFile = ({ onClose }) => {
                 ]
 
                 const res = await documentEvent(id, documentos)
-                console.log(res);
+             
                 if (res == 200) {
                     toast.success('Documento agregado exitosamente')
                     onClose()
