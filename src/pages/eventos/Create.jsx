@@ -97,7 +97,7 @@ export const Create = () => {
         setValue('descripcion', evento.descripcion)
         setValue('ubicacion', evento.ubicacion)
         setPosition(JSON.parse(evento.ubicacion))
-        console.log(evento);
+     
 
       } catch (error) {
         console.error('Error al cargar el evento:', error)

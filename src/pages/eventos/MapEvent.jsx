@@ -41,7 +41,7 @@ export const MapEvent = ({ isActive, events }) => {
                 <MapContainer
                     scrollWheelZoom={false}
                     center={position}
-                    zoom={16}
+                    zoom={14}
 
                     style={{ height: '100%', width: '100%' }}
 
