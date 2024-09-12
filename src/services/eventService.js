@@ -21,6 +21,7 @@ export const updateEvent = async (id, event) => {
 }
 
 export const nextStageEvent = async (id,event)=>{
+  console.log(id,event);
   const response = await agendaApi.post(`/evento/${id}/nextstage`,event)
   return response
 }

@@ -1,9 +1,10 @@
 import Card from '@/components/ui/Card'
 import React, { useState } from 'react'
 import Loading from '@/components/Loading'
+import Button from '@/components/ui/Button'
 // import columnContact from '@/json/columnsContact.json'
 
-import { set, useForm } from 'react-hook-form'
+
 import { useNavigate, useParams } from 'react-router-dom'
 import { nextStageEvent } from '@/services/eventService'
 import { searchContact } from '@/services/contactService'
@@ -23,6 +24,7 @@ const columnContact = [{
 }]
 export const StagePerform = () => {
 
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const navigate = useNavigate()
     const [search, setSearch] = useState('')
     const [contacts, setContact] = useState([])
@@ -69,10 +71,30 @@ export const StagePerform = () => {
         }
     }
 
-    const deleteGuest=(e)=>{
-        console.log(e);
-        const exists = invitados.findIndex((invitado) => invitado.id === e);
+    const deleteGuest = (e) => {
+        setInvitados((prevItems) => prevItems.filter(item => item.id !== e));
+        // const exists = invitados.findIndex((invitado) => invitado.id === e);
+        console.log(invitados)
     }
+
+    const obtenerIds = (data) => {
+        return data.map(item => ({
+            id: item.id,
+            email: item.email,
+          }));
+    };
+
+    const handleSubmit = async () => {
+        const ids = obtenerIds(invitados);
+        try {
+            await nextStageEvent(id, {contactos:ids})
+            toast.success('El evento paso al estado a Realizar')
+        } catch (error) {
+            console.error(error)
+            toast.error('Hubo un error al intentar pasar el evento')
+        }
+    }
+
 
     return (
 
@@ -146,11 +168,15 @@ export const StagePerform = () => {
                                                                             <td className='table-td'>{contacto.email}</td>
                                                                             <td className='table-td'>{contacto.telefono}</td>
                                                                             <td className='table-td flex justify-start gap-2'></td>
-                                                                            <td onClick={()=>{deleteGuest(contacto.id)}}>X</td>
+                                                                            <td >
+                                                                                <button onClick={() => { deleteGuest(contacto.id) }}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                                                </svg></button>
+                                                                            </td>
                                                                         </tr>
                                                                     )
                                                                 }))
-                                                                : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
+                                                                : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>Aun no tienes invitados</td></tr>)
                                                         }
                                                     </tbody>
 
@@ -188,13 +214,13 @@ export const StagePerform = () => {
                                 </button>
                             </div>
                             <div className='ltr:text-right rtl:text-left'>
-                                {/* <Button
-                                        type='submit'
-                                        text={isSubmitting ? 'Guardando' : 'Guardar'}
-                                        className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
-                                        disabled={isSubmitting}
-                                        onClick={handleSubmit(onSubmit)}
-                                    /> */}
+                                <Button
+                                    type='submit'
+                                    text={isSubmitting ? 'Guardando' : 'Guardar'}
+                                    className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
+                                    disabled={isSubmitting}
+                                    onClick={handleSubmit}
+                                />
                             </div>
                         </div>
                     </>
