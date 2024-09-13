@@ -4,13 +4,14 @@ import { uploadFile } from '@/services/fileServices';
 import { documentEvent } from '../../../services/eventService';
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import Button from '@/components/ui/Button'
 const categorias = [
     { id: "Detalles de Planificación", nombre: "Detalles de Planificación" },
     { id: "Documentos A Realizar", nombre: "Documentos A Realizar" }
 ]
 
 
-export const AddFile = ({ onClose }) => {
+export const AddFile = ({ onClose, isSubmitting }) => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     // const [documentos, setDocumentos] = useState([])
@@ -66,7 +67,7 @@ export const AddFile = ({ onClose }) => {
             </div>
             <div className="col-span-1">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">
-                    Upload file
+                    Elegir Archivo
                 </label>
                 <input
                     className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -76,12 +77,14 @@ export const AddFile = ({ onClose }) => {
                 />
             </div>
             <div className="col-span-1">
-                <button
-                    type="submit"
-                    className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                >
-                    Enviar
-                </button>
+            <div className='ltr:text-right rtl:text-left'>
+                <Button
+                  type='submit'
+                  text={isSubmitting ? 'Guardando' : 'Guardar'}
+                  className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
+                  disabled={isSubmitting}
+                />
+              </div>
             </div>
         </form>
     );

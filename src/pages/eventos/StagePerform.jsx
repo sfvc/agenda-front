@@ -74,7 +74,7 @@ export const StagePerform = () => {
     const deleteGuest = (e) => {
         setInvitados((prevItems) => prevItems.filter(item => item.id !== e));
         // const exists = invitados.findIndex((invitado) => invitado.id === e);
-        console.log(invitados)
+        // console.log(invitados)
     }
 
     const obtenerIds = (data) => {
@@ -88,6 +88,7 @@ export const StagePerform = () => {
         const ids = obtenerIds(invitados);
         try {
             await nextStageEvent(id, {contactos:ids})
+            navigate(`/eventos`)
             toast.success('El evento paso al estado a Realizar')
         } catch (error) {
             console.error(error)

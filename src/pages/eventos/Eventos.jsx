@@ -166,7 +166,7 @@ export const Eventos = () => {
                                         {evento.estado}
                                       </span>
                                     </td>
-                                    <td className='table-td  flex '>
+                                    <td className='table-td  flex gap-2'>
                                       <ViewButton evento={evento} onView={showEvento} />
                                       <EditButton evento={evento} onEdit={onEdit} />
                                       <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />

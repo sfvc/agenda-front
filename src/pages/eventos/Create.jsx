@@ -92,13 +92,13 @@ export const Create = () => {
         setValue('email_solicitante', evento.email_solicitante)
         setValue('telefono_solicitante', evento.telefono_solicitante)
         setValue('fecha', new Date(evento.fecha))
-        setValue('categoria_id', evento.categoria?.id)
+        setValue('categoria_id', evento.categoria_id)
         // setValue('detalle_planificacion', evento.detalle_planificacion)
         setValue('descripcion', evento.descripcion)
         setValue('ubicacion', evento.ubicacion)
         setPosition(JSON.parse(evento.ubicacion))
      
-
+// console.log(evento);a
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }

@@ -34,9 +34,10 @@ export const StageConsider = () => {
     }
 
     const onSubmit = async (items) => {
-            console.log(items);
+            // console.log(items);
         try {
             await nextStageEvent(id, items)
+            navigate(`/eventos`)
             toast.success('El evento paso al estado a Considerar')
         } catch (error) {
             console.error(error)

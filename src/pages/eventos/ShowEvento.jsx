@@ -8,6 +8,7 @@ import { Icon } from '@iconify/react/dist/iconify.js'
 import Loading from '@/components/Loading'
 import Modal from '@/components/ui/Modal'
 import { AddFile } from '@/components/agenda/forms/addFile'
+import { useForm } from 'react-hook-form'
 const initialPosition = {
   latitud: -28.46867672033115,
   longitud: -65.77899050151645
@@ -20,13 +21,15 @@ export const ShowEvento = ({ isActive }) => {
   const navigate = useNavigate()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
+  const {
+    formState: { isSubmitting }
+} = useForm()
 
   useEffect(() => {
     const getEvent = async () => {
       setIsLoading(true)
       try {
         const evento = await fetchEventById(id)
-        console.log(evento);
         setActiveEvento(evento)
         setPosition(JSON.parse(evento.ubicacion))
       } catch (error) {
@@ -38,6 +41,7 @@ export const ShowEvento = ({ isActive }) => {
 
     getEvent()
   }, [id])
+
   const onClose = () => {
     setIsModalOpen(false)
   }
@@ -58,7 +62,7 @@ export const ShowEvento = ({ isActive }) => {
                   show={isModalOpen}
                   onClose={onClose}
                   centered
-                  children={<AddFile  onClose={onClose} />}
+                  children={<AddFile onClose={onClose} isSubmitting={isSubmitting} />}
                 />
                 <div className='grid grid-cols-12 grid-rows-3 gap-6'>
                   <div className='md:col-span-4 col-span-12 row-span-3'>
@@ -205,7 +209,7 @@ export const ShowEvento = ({ isActive }) => {
                     </Card>
                   </div>
 
-                  <div className={`  row-span-3 ${activeEvento.contactos.length === 0  ? 'col-span-8' : 'col-span-4'}`} >
+                  <div className={`  row-span-3 ${activeEvento.contactos.length === 0 ? 'col-span-8' : 'col-span-4'}`} >
                     <BasicMap
                       editPosition={position}
                       onLocationChange={() => { }}
@@ -214,52 +218,52 @@ export const ShowEvento = ({ isActive }) => {
                   </div>
                   {
                     activeEvento.documentos.length > 0 ?
-                      (<div className='lg:col-span-4 col-span-4 row-span-1'>
-                        <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-0'>Documentos del Evento</h1>
-                        <ul className="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                      (<div className='lg:col-span-4 col-span-4 row-span-2'>
+                        <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-2'>Documentos del Evento</h1>
+                        <div className='grid grid-cols-1 gap-4'>
                           {activeEvento.documentos.map((doc) => (
-                            <li className="w-full flex px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-gray-600">
-                              <a href={doc.url} className='flex'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            <div key={doc.id || doc.url} className="flex items-center p-4 bg-white rounded-lg shadow dark:bg-gray-700">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-600 dark:text-gray-300 mr-4">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                              </svg>{doc.nombre}</a>
-                            </li>
-
+                              </svg>
+                              <a href={doc.url} className='text-base text-blue-600 dark:text-blue-300 hover:underline'>
+                                {doc.nombre}
+                              </a>
+                            </div>
                           ))}
-                        </ul>
+                        </div>
                       </div>) : (<></>)
                   }
                   <div className='lg:col-span-4 col-span-4 row-span-2'>
-                    <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-0'>Invitados</h1>
-                    <div className='overflow-x-auto '>
+                    <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-2 text-center'>Invitados</h1>
+                    <div className='overflow-x-auto'>
                       <div className='inline-block min-w-full align-middle'>
-                        <div className='overflow-hidden '>
-                          <table className='min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700'>
-                            <thead className='bg-slate-200 dark:bg-slate-700'>
+                        <div className='overflow-hidden rounded-lg shadow-lg'>
+                          <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800'>
+                            <thead className='bg-gray-200 dark:bg-gray-700'>
                               <tr>
-
-                                <th>Apellido y nombre</th>
-                                <th>Correo Electronico</th>
+                                <th className='px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300'>Apellido y nombre</th>
+                                <th className='px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300'>Correo Electronico</th>
                               </tr>
                             </thead>
-                            <tbody className='bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700'>
-                              {
-                                (activeEvento.contactos.length > 0)
-                                  ? (activeEvento.contactos.map((contacto) => {
-                                    return (
-                                      <tr key={contacto.id}>
-                                        <td className='table-td uppercase'>{contacto.apellido} {contacto.nombre}</td>
-                                        <td className='table-td '>{contacto.email}</td>
-                                      </tr>
-                                    )
-                                  }))
-                                  : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
-                              }
+                            <tbody className='bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700'>
+                              {activeEvento.contactos.length > 0 ? (
+                                activeEvento.contactos.map((contacto) => (
+                                  <tr key={contacto.id}>
+                                    <td className='px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-300 uppercase'>{contacto.apellido} {contacto.nombre}</td>
+                                    <td className='px-4 py-2 text-sm text-gray-900 dark:text-gray-300'>{contacto.email}</td>
+                                  </tr>
+                                ))
+                              ) : (
+                                <tr>
+                                  <td colSpan='2' className='px-4 py-2 text-center text-sm text-gray-500 dark:text-gray-300'>No se encontraron resultados</td>
+                                </tr>
+                              )}
                             </tbody>
-
                           </table>
-                        </div> </div></div>
-
-
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
