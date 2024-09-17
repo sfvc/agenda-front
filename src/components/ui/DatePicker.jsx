@@ -6,7 +6,7 @@ import 'flatpickr/dist/themes/material_blue.css'
 const flatpickrOptions = {
   dateFormat: 'd/m/Y',
   allowInput: true,
-  enableTime: false,
+  enableTime: true,
   locale: {
     firstDayOfWeek: 1,
     weekdays: {

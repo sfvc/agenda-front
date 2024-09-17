@@ -18,7 +18,6 @@ import { MapEvent } from './MapEvent'
 export const Eventos = () => {
   const navigate = useNavigate()
   const [search] = useState('')
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const { data: eventos, isLoading } = useQuery({
     queryKey: ['eventos', currentPage],
@@ -56,10 +55,7 @@ export const Eventos = () => {
 
   }
 
-  const onClose = () => {
-    setIsModalOpen(false)
-  }
-
+  console.log(eventos)
   function separarTresPrimerosElementos(cadena) {
     // Divide la cadena por comas y recorta espacios adicionales
     const elementos = cadena.split(',').map(elemento => elemento.trim());
@@ -160,7 +156,7 @@ export const Eventos = () => {
                                     <td className='table-td max-w-96'>{parseUbicacion(evento.ubicacion)}</td>
                                     <td className='table-td'>{formatDate(evento.fecha)}</td>
                                     {/* <td className='table-td'>{evento.detalle_planificacion}</td> */}
-                                    <td className='table-td'>{evento.categoria.nombre}</td>
+                                    <td className='table-td'>{evento.categoria}</td>
                                     <td className='table-td'>
                                       <span className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 ${evento.estado === 'A_REALIZAR' ? 'text-black bg-success-500 dark:bg-success-400' : evento.estado === 'PENDIENTE' ? 'text-black bg-danger-500 dark:bg-danger-500' : 'text-black bg-warning-500 dark:bg-warning-500'}`}>
                                         {evento.estado}

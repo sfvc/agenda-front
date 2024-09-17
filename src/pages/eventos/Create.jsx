@@ -22,6 +22,8 @@ const initialForm = {
   fecha: '',
   categoria: '',
   ubicacion: '',
+  location:'',
+  summary:''
   // estado: 'PENDIENTE'
 }
 const initialPosition = {
@@ -58,16 +60,18 @@ export const Create = () => {
 
   const handleDateChange = (date) => {
     setValue('fecha', date ? date[0].toISOString() : '')
+    console.log(date);
   }
 
   const handleLocationChange = (latitud, longitud, direccion) => {
     setValue('ubicacion', JSON.stringify({ latitud, longitud, direccion }))
+    setValue('location',direccion)
   }
 
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
 
-
+  
     try {
       if (!id) {
         await createEvento(items)
@@ -218,6 +222,31 @@ export const Create = () => {
                     placeholder='Ingrese una descripción del evento'
                     register={register}
                     errors={errors.descripcion}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor='summary' className='form-label'>
+                    Nombre del Evento
+                  </label>
+                  <Textarea
+                    name='summary'
+                   
+                    placeholder='Ingrese un nombre al evento'
+                    register={register}
+                    errors={errors.summary}
+                  />
+                </div>
+                <div>
+                  <label htmlFor='location' className='form-label'>
+                    Localizacion
+                  </label>
+                  <Textarea
+                    name='location'
+                    readonly
+                    placeholder='la localizacion se obtiene del mapa'
+                    register={register}
+                    errors={errors.location}
                   />
                 </div>
 

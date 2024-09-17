@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -21,8 +21,6 @@ const FormValidationUpdate = yup
   .required()
 
 export const CategoryForm = ({ fnAction, refetchCategories, activeCategory, onClose }) => {
-  const [isLoading] = useState(false)
-
   const {
     register,
     handleSubmit,
@@ -48,37 +46,29 @@ export const CategoryForm = ({ fnAction, refetchCategories, activeCategory, onCl
   }
 
   return (
-    <>
-      {isLoading
-        ? (
-          <Loading />
-          )
-        : (
-          <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 relative'>
-            <div className='mb-4'>
-              <div className='mb-2 block dark:text-white'>
-                <Label color='gray' htmlFor='nombre' value='Nombre de la categoria' />
-                <strong className='obligatorio'>(*)</strong>
-              </div>
-              <Textinput
-                name='nombre'
-                type='text'
-                placeholder='Nombre de la categoria'
-                register={register}
-                error={errors.nombre}
-              />
-            </div>
+    <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 relative'>
+      <div className='mb-4'>
+        <div className='mb-2 block dark:text-white'>
+          <Label color='gray' htmlFor='nombre' value='Nombre de la categoria' />
+          <strong className='obligatorio'>(*)</strong>
+        </div>
+        <Textinput
+          name='nombre'
+          type='text'
+          placeholder='Nombre de la categoria'
+          register={register}
+          error={errors.nombre}
+        />
+      </div>
 
-            <div className='ltr:text-right rtl:text-left'>
-              <Button
-                type='submit'
-                text={isSubmitting ? 'Guardando' : 'Guardar'}
-                className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
-                disabled={isSubmitting}
-              />
-            </div>
-          </form>
-          )}
-    </>
+      <div className='ltr:text-right rtl:text-left'>
+        <Button
+          type='submit'
+          text={isSubmitting ? 'Guardando' : 'Guardar'}
+          className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
+          disabled={isSubmitting}
+        />
+      </div>
+    </form>
   )
 }

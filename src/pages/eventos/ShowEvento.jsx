@@ -6,24 +6,27 @@ import { formatDate } from '@/components/Format'
 import BasicMap from '@/components/basicMap'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import Loading from '@/components/Loading'
+import { useQuery } from '@tanstack/react-query'
 import Modal from '@/components/ui/Modal'
 import { AddFile } from '@/components/agenda/forms/addFile'
-import { useForm } from 'react-hook-form'
 const initialPosition = {
   latitud: -28.46867672033115,
   longitud: -65.77899050151645
 }
 
-export const ShowEvento = ({ isActive }) => {
+export const ShowEvento = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [position, setPosition] = useState(initialPosition)
   const [activeEvento, setActiveEvento] = useState(null)
   const navigate = useNavigate()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
-  const {
-    formState: { isSubmitting }
-} = useForm()
+  const { refetch } = useQuery({
+    keepPreviousData: true
+  })
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     const getEvent = async () => {
@@ -31,7 +34,9 @@ export const ShowEvento = ({ isActive }) => {
       try {
         const evento = await fetchEventById(id)
         setActiveEvento(evento)
+       
         setPosition(JSON.parse(evento.ubicacion))
+        console.log(activeEvento)
       } catch (error) {
         console.error('Error fetching event:', error)
       } finally {
@@ -39,12 +44,10 @@ export const ShowEvento = ({ isActive }) => {
       }
     }
 
+    refetch()
     getEvent()
   }, [id])
 
-  const onClose = () => {
-    setIsModalOpen(false)
-  }
   return (
     <>
       {isLoading
@@ -55,14 +58,21 @@ export const ShowEvento = ({ isActive }) => {
           activeEvento && (
             <>
               <Card>
+                <button
+                  type='button'
+                  onClick={handleOpenModal}
+                  className='bg-blue-600 hover:bg-blue-800 text-white py-2 px-6 rounded-lg'
+                >
+                  Agregar Documento
+                </button>
                 <Modal
                   title='Agregar Documentación'
                   label='Agregar documentos'
                   labelClass='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg w-60'
-                  show={isModalOpen}
-                  onClose={onClose}
+                  isOpen={isModalOpen}
+                  onClose={handleCloseModal}
                   centered
-                  children={<AddFile onClose={onClose} isSubmitting={isSubmitting} />}
+                  children={<AddFile onClose={handleCloseModal} refetch={refetch} />}
                 />
                 <div className='grid grid-cols-12 grid-rows-3 gap-6'>
                   <div className='md:col-span-4 col-span-12 row-span-3'>
@@ -218,8 +228,8 @@ export const ShowEvento = ({ isActive }) => {
                   </div>
                   {
                     activeEvento.documentos.length > 0 ?
-                      (<div className='lg:col-span-4 col-span-4 row-span-2'>
-                        <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-2'>Documentos del Evento</h1>
+                      (<div className='lg:col-span-4 col-span-4 row-span-2 max-h-96 overflow-y-auto'>
+                        <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-2 tex-center'>Documentos del Evento</h1>
                         <div className='grid grid-cols-1 gap-4'>
                           {activeEvento.documentos.map((doc) => (
                             <div key={doc.id || doc.url} className="flex items-center p-4 bg-white rounded-lg shadow dark:bg-gray-700">
