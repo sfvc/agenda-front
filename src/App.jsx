@@ -39,46 +39,47 @@ function App () {
   return (
     <main className='App relative'>
       <Routes>
-        {status === 'non-authorized'
+        {/* {status === 'non-authorized'
           ? (
             <>
-              <Route path='/login' element={<Login />} />
-              <Route path='/*' element={<Navigate to='/login' />} />
+
             </>
             )
-          : (
-            <>
-              <Route path='/' element={<Navigate to='/eventos' />} />
-              <Route path='/*' element={<Layout />}>
-                <Route path='dashboard' element={<Dashboard />} />
-                <Route path='*' element={<Navigate to='/404' />} />
+          : ( */}
+        <>
+          <Route path='/login' element={<Login />} />
+          <Route path='/*' element={<Navigate to='/login' />} />
+          <Route path='/' element={<Navigate to='/eventos' />} />
+          <Route path='/*' element={<Layout />}>
+            <Route path='dashboard' element={<Dashboard />} />
+            <Route path='*' element={<Navigate to='/404' />} />
 
-                {/* Eventos */}
-                <Route path='eventos' element={<Eventos />} />
-                <Route path='eventos/crear' element={<Create />} />
-                <Route path='eventos/editar/:id' element={<Create />} />
-                <Route path='eventos/ver/:id' element={<ShowEvento />} />
-                <Route path='eventos/estado_considerar/:id' element={<StageConsider />} />
-                <Route path='eventos/estado_realizar/:id' element={<StagePerform />} />
-                <Route path='eventos/estado_realizado/:id' element={<StagePerform />} />
+            {/* Eventos */}
+            <Route path='eventos' element={<Eventos />} />
+            <Route path='eventos/crear' element={<Create />} />
+            <Route path='eventos/editar/:id' element={<Create />} />
+            <Route path='eventos/ver/:id' element={<ShowEvento />} />
+            <Route path='eventos/estado_considerar/:id' element={<StageConsider />} />
+            <Route path='eventos/estado_realizar/:id' element={<StagePerform />} />
+            <Route path='eventos/estado_realizado/:id' element={<StagePerform />} />
 
-                {/* Otras páginas */}
-                <Route path='categorias' element={<Categorias />} />
+            {/* Otras páginas */}
+            <Route path='categorias' element={<Categorias />} />
 
-                {/* Contactos */}
-                <Route path='contactos' element={<Contactos />} />
-                <Route path='contactos/crear' element={<CreateContactos />} />
-                <Route path='contactos/editar/:id' element={<CreateContactos />} />
+            {/* Contactos */}
+            <Route path='contactos' element={<Contactos />} />
+            <Route path='contactos/crear' element={<CreateContactos />} />
+            <Route path='contactos/editar/:id' element={<CreateContactos />} />
 
-                {/* Usuarios */}
-                <Route path='usuarios' element={<Usuarios />} />
-                <Route path='usuarios/crear' element={<CreateUser />} />
-                <Route path='usuarios/editar/:id' element={<CreateUser />} />
-              </Route>
+            {/* Usuarios */}
+            <Route path='usuarios' element={<Usuarios />} />
+            <Route path='usuarios/crear' element={<CreateUser />} />
+            <Route path='usuarios/editar/:id' element={<CreateUser />} />
+          </Route>
 
-              <Route path='/404' element={<Error />} />
-            </>
-            )}
+          <Route path='/404' element={<Error />} />
+        </>
+        {/* )} */}
       </Routes>
     </main>
   )

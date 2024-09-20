@@ -10,7 +10,7 @@ import { useMutation } from '@tanstack/react-query'
 
 const schema = yup.object({
   username: yup.string().required('El usuario es requerido'),
-  password: yup.string().required('La contraseña es requerida').min(6, 'La contraseña debe contener al menos 6 caracteres')
+  password: yup.string().required('La contraseña es requerida').min(3, 'La contraseña debe contener al menos 6 caracteres')
 }).required()
 
 function LoginForm () {
@@ -25,7 +25,7 @@ function LoginForm () {
     mutationFn: loginUser,
     onSuccess: (data) => {
       localStorage.setItem('token', data.access_token)
-      navigate('/eventos')
+      navigate('/dashboard')
     },
     onError: (err) => {
       console.error('Error en el login:', err)
