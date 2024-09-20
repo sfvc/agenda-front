@@ -4,7 +4,8 @@ import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/material_blue.css'
 
 const flatpickrOptions = {
-  dateFormat: 'd/m/Y',
+  dateFormat: 'd-m-Y H:i',
+  time_24hr: true,
   allowInput: true,
   enableTime: true,
   locale: {

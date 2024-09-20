@@ -1,33 +1,46 @@
 /* eslint-disable react/no-children-prop */
 import { useState } from 'react'
 import Card from '@/components/ui/Card'
-import Modal from '@/components/ui/Modal'
 import Loading from '@/components/Loading'
 import { TextInput } from 'flowbite-react'
 import Pagination from '@/components/ui/Pagination'
 import { useQuery } from '@tanstack/react-query'
-import { createCategory, getCategory } from '@/services/categoryService'
-import { CategoryForm } from '@/components/agenda/forms/CategoryForm'
+import { getUser } from '@/services/userService'
+import EditButton from '@/components/buttons/EditButton'
+import { useNavigate } from 'react-router-dom'
 
 const columns = [
   {
     label: 'Nombre',
     field: 'nombre'
+  },
+  {
+    label: 'Apellido',
+    field: 'apellido'
+  },
+  {
+    label: 'Usuario',
+    field: 'username'
+  },
+  {
+    label: 'Rol',
+    field: 'rol'
+  },
+  {
+    label: 'Acciones',
+    field: 'acciones'
   }
 ]
 
-export const Categorias = () => {
+export const Usuarios = () => {
+  const navigate = useNavigate()
   const [search] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const { data: categorias, isLoading, refetch } = useQuery({
-    queryKey: ['categorias', currentPage],
-    queryFn: () => getCategory(currentPage),
+  const { data: usuarios, isLoading } = useQuery({
+    queryKey: ['usuarios', currentPage],
+    queryFn: () => getUser(currentPage),
     keepPreviousData: true
   })
-
-  const handleOpenModal = () => setIsModalOpen(true)
-  const handleCloseModal = () => setIsModalOpen(false)
 
   if (isLoading) {
     return <Loading />
@@ -35,6 +48,14 @@ export const Categorias = () => {
 
   async function onSearch () {
 
+  }
+
+  async function onEdit (id) {
+    navigate(`/usuarios/editar/${id}`)
+  }
+
+  function addUser () {
+    navigate('/usuarios/crear')
   }
 
   return (
@@ -46,7 +67,7 @@ export const Categorias = () => {
             <>
               <Card>
                 <div className='mb-4 md:flex md:justify-between'>
-                  <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Listado de Categorias</h1>
+                  <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Listado de Usuarios</h1>
                   <div className='flex flex-col md:flex-row items-start md:items-center gap-4'>
                     <div className='flex gap-2 items-center'>
                       <div className='relative flex-1'>
@@ -60,26 +81,11 @@ export const Categorias = () => {
                       </div>
                       <button
                         type='button'
-                        onClick={handleOpenModal}
-                        className='bg-blue-600 hover:bg-blue-800 text-white py-2 px-6 rounded-lg'
+                        onClick={addUser}
+                        className='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg'
                       >
                         Agregar
                       </button>
-
-                      <Modal
-                        isOpen={isModalOpen}
-                        onClose={handleCloseModal}
-                        title='Agregar Categoria'
-                        labelClass='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg'
-                        centered
-                        children={
-                          <CategoryForm
-                            fnAction={createCategory}
-                            refetchCategories={refetch}
-                            onClose={handleCloseModal}
-                          />
-                        }
-                      />
                     </div>
                   </div>
                 </div>
@@ -101,10 +107,16 @@ export const Categorias = () => {
                         </thead>
                         <tbody className='bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700'>
                           {
-                            (categorias?.items && categorias.items.length > 0)
-                              ? (categorias.items.map((categoria) => (
-                                <tr key={categoria.id}>
-                                  <td className='table-td'>{categoria.nombre}</td>
+                            (usuarios?.items && usuarios.items.length > 0)
+                              ? (usuarios.items.map((usuario) => (
+                                <tr key={usuario.id}>
+                                  <td className='table-td'>{usuario.nombre}</td>
+                                  <td className='table-td'>{usuario.apellido}</td>
+                                  <td className='table-td'>{usuario.username}</td>
+                                  <td className='table-td'>{usuario.rol}</td>
+                                  <td className='table-td flex justify-start gap-2'>
+                                    <EditButton evento={usuario} onEdit={onEdit} />
+                                  </td>
                                 </tr>
                                 )))
                               : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
@@ -116,8 +128,8 @@ export const Categorias = () => {
                       <div className='flex justify-center mt-8'>
                         <Pagination
                           paginate={{
-                            current: categorias.current,
-                            totalPages: categorias.totalPages
+                            current: usuarios.current,
+                            totalPages: usuarios.totalPages
                           }}
                           onPageChange={(page) => setCurrentPage(page)}
                           text

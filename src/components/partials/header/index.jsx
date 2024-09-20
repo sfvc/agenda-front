@@ -9,6 +9,7 @@ import useSkin from '@/hooks/useSkin'
 import Logo from './Tools/Logo'
 import useRtl from '@/hooks/useRtl'
 import useMobileMenu from '@/hooks/useMobileMenu'
+import Profile from './Tools/Profile'
 
 const Header = ({ className = 'custom-class' }) => {
   const [collapsed, setMenuCollapsed] = useSidebar()
@@ -59,7 +60,7 @@ const Header = ({ className = 'custom-class' }) => {
              }
         `}
       >
-      
+
         <div className='flex justify-between items-center h-full'>
           {/* For Vertical  */}
 
@@ -92,7 +93,7 @@ const Header = ({ className = 'custom-class' }) => {
               {/* <SearchModal /> */}
             </div>
           )}
-         Agenda
+          <span className='rainbow__text hidden md:block font-extrabold'>Agenda del Intendente</span>
           {/* For Horizontal  */}
           {menuType === 'horizontal' && (
             <div className='flex items-center space-x-4 rtl:space-x-reverse'>
@@ -114,6 +115,7 @@ const Header = ({ className = 'custom-class' }) => {
             {/* <MonoChrome /> */}
             {/* {width >= breakpoints.md && <Message />} */}
             {/* {width >= breakpoints.md && <Notification />} */}
+            <Profile />
             {width <= breakpoints.md && (
               <div
                 className='cursor-pointer text-slate-900 dark:text-white text-2xl'

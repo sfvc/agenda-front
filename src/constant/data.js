@@ -26,6 +26,12 @@ export const menuNormal = [
     title: 'Contactos',
     icon: 'heroicons-outline:user-group',
     link: 'contactos'
+  },
+
+  {
+    title: 'Usuarios',
+    icon: 'heroicons-outline:users',
+    link: 'usuarios'
   }
 ]
 

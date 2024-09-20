@@ -22,8 +22,10 @@ const initialForm = {
   fecha: '',
   categoria: '',
   ubicacion: '',
-  location:'',
-  summary:''
+  location: '',
+  summary: '',
+  circuito: '',
+  barrio: ''
   // estado: 'PENDIENTE'
 }
 const initialPosition = {
@@ -60,18 +62,18 @@ export const Create = () => {
 
   const handleDateChange = (date) => {
     setValue('fecha', date ? date[0].toISOString() : '')
-    console.log(date);
   }
 
   const handleLocationChange = (latitud, longitud, direccion) => {
     setValue('ubicacion', JSON.stringify({ latitud, longitud, direccion }))
-    setValue('location',direccion)
+    setValue('location', direccion)
   }
 
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
+    items.circuito = '314'
+    items.barrio = 'La tablada'
 
-  
     try {
       if (!id) {
         await createEvento(items)
@@ -87,7 +89,6 @@ export const Create = () => {
     }
   }
 
-
   const loadEvento = async () => {
     if (id) {
       try {
@@ -100,9 +101,8 @@ export const Create = () => {
         // setValue('detalle_planificacion', evento.detalle_planificacion)
         setValue('descripcion', evento.descripcion)
         setValue('ubicacion', evento.ubicacion)
+        setValue('summary', evento.summary)
         setPosition(JSON.parse(evento.ubicacion))
-     
-// console.log(evento);a
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
@@ -119,7 +119,7 @@ export const Create = () => {
       {isLoading
         ? (
           <Loading className='mt-28 md:mt-64' />
-        )
+          )
         : (
           <div>
             <Card>
@@ -172,7 +172,7 @@ export const Create = () => {
                     Fecha del Evento
                   </label>
                   <DatePicker
-                    placeholder="Seleccione la fecha del evento"
+                    placeholder='Seleccione la fecha del evento'
                     value={watch('fecha') ? new Date(watch('fecha')) : null}
                     onChange={handleDateChange}
                   />
@@ -231,7 +231,6 @@ export const Create = () => {
                   </label>
                   <Textarea
                     name='summary'
-                   
                     placeholder='Ingrese un nombre al evento'
                     register={register}
                     errors={errors.summary}
@@ -277,7 +276,7 @@ export const Create = () => {
               </div>
             </div>
           </div>
-        )}
+          )}
     </>
   )
 }

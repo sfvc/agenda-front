@@ -20,9 +20,8 @@ export const updateEvent = async (id, event) => {
   return response.data
 }
 
-export const nextStageEvent = async (id,event)=>{
-  
-  const response = await agendaApi.post(`/evento/${id}/nextstage`,event)
+export const nextStageEvent = async (id, event) => {
+  const response = await agendaApi.post(`/evento/${id}/nextstage`, event)
   return response
 }
 
@@ -30,10 +29,9 @@ export const deleteEvent = async (id) => {
   await agendaApi.delete(`/evento/${id}`)
 }
 
-export const documentEvent=async(id,document) =>{
- 
-    const response = await agendaApi.put(`/evento/${id}/documentos`,{"documentos":document})
-    return response.status
+export const documentEvent = async (id, document) => {
+  const response = await agendaApi.put(`/evento/${id}/documentos`, { documentos: document })
+  return response.status
 }
 
 export const getEventos = fetchEvents

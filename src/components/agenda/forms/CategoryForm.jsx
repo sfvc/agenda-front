@@ -4,7 +4,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import Textinput from '@/components/ui/Textinput'
 import Button from '@/components/ui/Button'
-import Loading from '@/components/Loading'
 import { Label } from 'flowbite-react'
 import { toast } from 'react-toastify'
 

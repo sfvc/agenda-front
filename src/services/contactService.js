@@ -1,7 +1,6 @@
 import { agendaApi } from '@/api'
 
 export const createContact = async (contact) => {
-
   const response = await agendaApi.post('/contacto', contact)
   return response.data
 }
@@ -23,7 +22,6 @@ export const searchContact = async (name) => {
 
   return response.data
 }
-
 
 export const updateContact = async (id, contact) => {
   const response = await agendaApi.patch(`/contacto/${id}`, contact)
