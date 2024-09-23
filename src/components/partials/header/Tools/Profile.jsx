@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import Dropdown from '@/components/ui/Dropdown'
 import Icon from '@/components/ui/Icon'
 import { Menu } from '@headlessui/react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { fetchUserById } from '@/services/userService'
+import { useDispatch, useSelector } from 'react-redux'
+import { resetState } from '../../../../store/auth'
 
 const profileLabel = (user) => (
   <div className='flex items-center'>
@@ -37,21 +37,15 @@ const profileLabel = (user) => (
 
 const Profile = () => {
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
-  const userId = localStorage.getItem('user_id')
-  const { data: usuario, isLoading, isError } = useQuery({
-    queryKey: ['usuario', userId],
-    queryFn: () => fetchUserById(userId),
-    enabled: !!userId
-  })
-
+  const { userInfo } = useSelector(state => state.auth)
+  const dispatch = useDispatch()
   const ProfileMenu = [
     {
       label: 'Cambiar contraseña',
       icon: 'heroicons-outline:key',
       action: () => {
         navigate('/usuario')
-        queryClient.setQueryData(['usuario', usuario.id], usuario)
+        // queryClient.setQueryData(['usuario', usuario.id], usuario)
       }
     },
     {
@@ -59,18 +53,13 @@ const Profile = () => {
       icon: 'heroicons-outline:logout',
       action: () => {
         localStorage.removeItem('token')
-        localStorage.removeItem('user_id')
-        navigate('/login')
+        dispatch(resetState())
+        // navigate('/login')
       }
     }
   ]
-
-  // Mensaje de carga o error
-  if (isLoading) return <div>Cargando...</div>
-  if (isError) return <div>Error al cargar el perfil del usuario.</div>
-
   return (
-    <Dropdown label={profileLabel(usuario)} classMenuItems='w-[180px] top-[58px]'>
+    <Dropdown label={profileLabel(userInfo)} classMenuItems='w-[180px] top-[58px]'>
       {ProfileMenu.map((item, index) => (
         <Menu.Item key={index}>
           {({ active }) => (

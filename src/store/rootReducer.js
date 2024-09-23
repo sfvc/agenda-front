@@ -1,8 +1,8 @@
 import layout from './layout'
-import slice from './slice'
+import auth from './auth'
 
 const rootReducer = {
   layout,
-  slice
+  auth
 }
 export default rootReducer
