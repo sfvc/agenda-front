@@ -8,21 +8,37 @@ import Loading from '@/components/Loading'
 import EditButton from '@/components/buttons/EditButton'
 import ViewButton from '@/components/buttons/ViewButton'
 import AgendaButton from '@/components/buttons/AgendaButton'
-import { TextInput } from 'flowbite-react'
 import { formatDate } from '@/components/Format'
 import columnEventos from '@/json/columnsEventos.json'
 import { MapEvent } from './MapEvent'
+import { SelectForm } from '@/components/agenda/forms'
+import { getCategory } from '@/services/categoryService'
 
 export const Eventos = () => {
   const navigate = useNavigate()
-  const [search] = useState('')
+  const [state, setState] = useState('')
+  const [category, setCategory] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [filteredEventos, setFilteredEventos] = useState(null)
   const { data: eventos, isLoading } = useQuery({
     queryKey: ['eventos', currentPage],
     queryFn: () => getEventos(currentPage),
     keepPreviousData: true
   })
 
+  const { data: categorias } = useQuery({
+    queryKey: ['categorias'],
+    queryFn: () => getCategory(),
+    keepPreviousData: true
+  })
+
+  const estados = [
+
+    { id: 'PENDIENTE', nombre: 'Pendiente' },
+    { id: 'A_CONSIDERAR', nombre: 'A Considerar' },
+    { id: 'A_REALIZAR', nombre: 'A Realizar' },
+    { id: 'REALIZADO', nombre: 'Realizados' }
+  ]
   if (isLoading) {
     return <Loading />
   }
@@ -51,9 +67,11 @@ export const Eventos = () => {
   }
 
   async function onSearch () {
-
+    const myEventos = await getEventos(currentPage, state, category)
+    setFilteredEventos(myEventos.items) // Actualiza el estado con los eventos filtrados
   }
 
+  console.log(eventos)
   function separarTresPrimerosElementos (cadena) {
     // Divide la cadena por comas y recorta espacios adicionales
     const elementos = cadena.split(',').map(elemento => elemento.trim())
@@ -72,6 +90,8 @@ export const Eventos = () => {
       return 'Dirección no disponible'
     }
   }
+
+  const eventosAMostrar = filteredEventos || eventos?.items || []
   return (
     <>
       {
@@ -82,27 +102,21 @@ export const Eventos = () => {
               <Card>
                 <div className='mb-4 md:flex md:justify-between'>
                   <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Listado de Eventos</h1>
-                  <div className='flex flex-col md:flex-row items-start md:items-center gap-4'>
-                    <div className='relative'>
-                      <TextInput
-                        name='search'
-                        placeholder='Buscar'
-                        onChange={onSearch}
-                        value={search}
-                      />
-
-                      <div
+                  <div className='flex gap-3 items-end'>
+                    <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
+                    <SelectForm title='Categorias' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
+                    <div className='flex gap-4'>
+                      <button
                         type='button'
-                        className='absolute top-3 right-2'
+                        onClick={onSearch}
+                        className='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg'
                       >
-                        <svg xmlns='http://www.w3.org/2000/svg' className='icon icon-tabler icon-tabler-search dark:stroke-white' width='16' height='16' viewBox='0 0 24 24' strokeWidth='1.5' stroke='#000000' fill='none' strokeLinecap='round' strokeLinejoin='round'>
-                          <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-                          <path d='M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0' />
-                          <path d='M21 21l-6 -6' />
-                        </svg>
-                      </div>
-                    </div>
+                        Filtrar
+                      </button>
 
+                    </div>
+                  </div>
+                  <div className='flex flex-col md:flex-row items-start md:items-center gap-4'>
                     <div className='flex gap-4'>
                       <button
                         type='button'
@@ -115,7 +129,7 @@ export const Eventos = () => {
                   </div>
                 </div>
               </Card>
-              <MapEvent isActive events={eventos.items} />
+              <MapEvent isActive events={eventosAMostrar} />
               <Card noborder>
                 <div className='overflow-x-auto -mx-6'>
                   <div className='inline-block min-w-full align-middle'>
@@ -132,8 +146,8 @@ export const Eventos = () => {
                         </thead>
                         <tbody className='bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700'>
                           {
-                            (eventos.items.length > 0)
-                              ? (eventos.items.map((evento) => {
+                            (eventosAMostrar.length > 0)
+                              ? (eventosAMostrar.map((evento) => {
                                   return (
 
                                     <tr key={evento.id}>

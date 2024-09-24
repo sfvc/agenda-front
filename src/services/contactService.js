@@ -17,9 +17,13 @@ export const fetchContactById = async (id) => {
   return response.data
 }
 
-export const searchContact = async (name) => {
-  const response = await agendaApi.get(`/contacto?page=1&size=10&nombre=${name}`)
+export const searchContactName = async (name) => {
+  const response = await agendaApi.get(`/contacto?nombre=${name}&page=1&size=10`)
+  return response.data
+}
 
+export const searchContactFunction = async (name) => {
+  const response = await agendaApi.get(`/contacto?funcion=${name}&page=1&size=50`)
   return response.data
 }
 

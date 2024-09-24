@@ -42,7 +42,7 @@ export const useAuthStore = () => {
     if (!access_token) return dispatch(handleLogout())
 
     try {
-      const { data: { access_token, user } } = await agendaApi.get('/authentication/profile')
+      const { data: { access_token, user } } = await agendaApi.post('/authentication/profile')
       localStorage.setItem('token', access_token)
       dispatch(handleLogin({ ...user }))
     } catch (error) {

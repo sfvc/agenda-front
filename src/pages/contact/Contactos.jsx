@@ -108,6 +108,7 @@ export const Contactos = () => {
 
                                                               <td className='table-td'>{contacto.email}</td>
                                                               <td className='table-td'>{contacto.telefono}</td>
+                                                              <td className='table-td'>{contacto.funcion}</td>
                                                               <td className='table-td flex justify-start gap-2'>
                                                                 <EditButton evento={contacto} onEdit={onEdit} />
                                                               </td>
@@ -118,7 +119,6 @@ export const Contactos = () => {
                                                       : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
                                                 }
                                 </tbody>
-
                               </table>
 
                               {/* Paginado */}
