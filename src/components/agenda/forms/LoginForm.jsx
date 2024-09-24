@@ -5,8 +5,7 @@ import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import Textinput from '@/components/ui/Textinput'
 import Tooltip from '@/components/ui/Tooltip'
-import { useDispatch, useSelector } from 'react-redux'
-import { loginUser as UserLogin } from '../../../thunks/auth'
+import { useAuthStore } from '../../../thunks/useAuthStore'
 
 const schema = yup.object({
   username: yup.string().required('El usuario es requerido'),
@@ -16,15 +15,23 @@ const schema = yup.object({
 function LoginForm () {
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
-  const { loading, error: authError } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
-
-  const { formState: { errors }, handleSubmit, setValue, register } = useForm({
+  const { startLogin } = useAuthStore()
+  const {
+    formState: { errors },
+    handleSubmit,
+    setValue,
+    register
+  } = useForm({
     resolver: yupResolver(schema)
   })
 
   const onSubmit = async (data) => {
-    dispatch(UserLogin({ username: data.username, password: data.password, navigate }))
+    try {
+      await startLogin(data)
+      navigate('/')
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error)
+    }
   }
 
   const togglePasswordVisibility = () => {
@@ -96,15 +103,7 @@ function LoginForm () {
             )}
       </button>
 
-      <button className='btn bg-blue-600 hover:bg-blue-800 block w-full text-center mt-2 text-white' type='submit'>
-        {loading ? 'Iniciando...' : 'Iniciar Sesión'}
-      </button>
-
-      {authError && (
-        <div className='text-red-500 mt-2 text-center'>
-          {authError || 'Error al iniciar sesión'}
-        </div>
-      )}
+      <button className='btn bg-blue-600 hover:bg-blue-800 block w-full text-center mt-2 text-white'>Iniciar Sesión</button>
     </form>
   )
 }

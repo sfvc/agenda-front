@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -36,6 +36,8 @@ export const UserForm = ({ fnAction, refetchUser, activeUser, onClose }) => {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
     reset
   } = useForm({
@@ -59,6 +61,17 @@ export const UserForm = ({ fnAction, refetchUser, activeUser, onClose }) => {
       toast.error('Hubo un error al crear el usuario')
     }
   }
+
+  const nombre = watch('nombre')
+  const apellido = watch('apellido')
+
+  useEffect(() => {
+    if (nombre && apellido) {
+      const firstSurname = apellido.split(' ')[0].toLowerCase()
+      const username = `${nombre.charAt(0).toLowerCase()}${firstSurname}`
+      setValue('username', username)
+    }
+  }, [nombre, apellido, setValue])
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -117,11 +130,12 @@ export const UserForm = ({ fnAction, refetchUser, activeUser, onClose }) => {
             type={showPassword ? 'text' : 'password'}
             placeholder='Contraseña'
             register={register}
+            disabled={!activeUser}
             error={errors.password}
           />
           <button
             type='button'
-            className='absolute top-[45%] right-4 mb-1'
+            className='absolute top-1/2 right-4 mb-1'
             onClick={togglePasswordVisibility}
           >
             {showPassword

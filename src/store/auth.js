@@ -1,34 +1,41 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-return-assign */
 import { createSlice } from '@reduxjs/toolkit'
-import { loginUser } from '../thunks/auth'
 
 const initialState = {
-  loading: false,
-  userInfo: {}, // for user object
-  error: null,
-  success: false // for monitoring the registration process.
+  status: 'checking', // authenticated, not-authenticated
+  user: {},
+  errorMessage: ''
 }
 
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    resetState: () => initialState
-  },
-  extraReducers: {
-    [loginUser.pending]: (state) => {
-      state.loading = true
-      state.error = null
+    onChecking: (state) => {
+      state.status = 'checking'
+      state.user = {}
     },
-    [loginUser.fulfilled]: (state, { payload }) => {
-      state.loading = false
-      state.userInfo = payload.user
+    handleLogin: (state, { payload }) => {
+      state.user = payload
+      state.status = 'authenticated'
     },
-    [loginUser.rejected]: (state, { payload }) => {
-      state.loading = false
-      state.error = payload
+    handleLogout: (state) => {
+      state.status = 'not-authenticated'
+      state.user = {}
+    },
+    setErrorMessage: (state, { payload }) => {
+      state.errorMessage = payload
     }
   }
 })
 
-export const { resetState } = authSlice.actions
+export const {
+  onChecking,
+  handleLogin,
+  handleLogout,
+  setErrorMessage
+} = authSlice.actions
+
 export default authSlice.reducer
