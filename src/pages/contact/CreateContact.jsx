@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+// import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Loading from '@/components/Loading'
 import Card from '@/components/ui/Card'
 import Textinput from '@/components/ui/Textinput'
+// import Textarea from '@/components/ui/Textarea'
+import { SelectForm } from '@/components/agenda/forms'
 import { toast } from 'react-toastify'
 import { createContact, getContactsById, updateContact } from '@/services/contactService'
 
@@ -12,9 +15,17 @@ const initialForm = {
   nombre: '',
   apellido: '',
   email: '',
-  telefono: ''
+  telefono: '',
+  funcion: ''
 }
-
+const functions = [
+  { id: 'Prensa', nombre: 'Prensa' },
+  { id: 'Educacion', nombre: 'Educacion' },
+  { id: 'Politica', nombre: 'Politica' },
+  { id: 'Cultura', nombre: 'Cultura' },
+  { id: 'Secretario', nombre: 'Secretario' },
+  { id: 'Director', nombre: 'Director' }
+]
 export const CreateContactos = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [, setFormData] = useState(initialForm)
@@ -39,6 +50,7 @@ export const CreateContactos = () => {
     try {
       if (!id) {
         await createContact(items)
+
         toast.success('Contacto creado exitosamente')
       } else {
         await updateContact(id, items)
@@ -59,7 +71,6 @@ export const CreateContactos = () => {
         setValue('email', contacto.email)
         setValue('telefono', contacto.telefono)
         setValue('apellido', contacto.apellido)
-        setValue('funcion', contacto.funcion)
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
@@ -70,7 +81,6 @@ export const CreateContactos = () => {
   useEffect(() => {
     loadEvento()
   }, [id])
-
   return (
     <>
       {
@@ -138,20 +148,7 @@ export const CreateContactos = () => {
                           errors={errors.telefono}
                         />
                       </div>
-
-                      <div>
-                        <label htmlFor='funcion' className='form-label'>
-                          Funcion del Invitado
-                        </label>
-                        <Textinput
-                          name='funcion'
-                          type='text'
-                          placeholder='Ingrese la funcion'
-                          register={register}
-                          onChange={handleChange}
-                          errors={errors.funcion}
-                        />
-                      </div>
+                      <SelectForm title='Función o Grupo' options={functions} onChange={handleChange} register={register('funcion')} />
                     </form>
                   </Card>
                   <div className='flex justify-end gap-4 mt-8'>
