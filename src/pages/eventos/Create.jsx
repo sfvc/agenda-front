@@ -23,20 +23,23 @@ const initialForm = {
   categoria: '',
   ubicacion: '',
   location: '',
-  summary: ''
+  summary: '',
+  barrio: '',
+  circuito: ''
 }
 
 const circuitosElectoral = [
-  { id: 1, nombre: 'circuito N°1' },
-  { id: 2, nombre: 'circuito N°2' },
-  { id: 3, nombre: 'circuito N°3' },
-  { id: 4, nombre: 'circuito N°4' },
-  { id: 5, nombre: 'circuito N°5' },
-  { id: 6, nombre: 'circuito N°6' },
-  { id: 7, nombre: 'circuito N°7' },
-  { id: 8, nombre: 'circuito N°8' },
-  { id: 9, nombre: 'circuito N°9' }
+  { id: 1, nombre: 'Circuito N°1' },
+  { id: 2, nombre: 'Circuito N°2' },
+  { id: 3, nombre: 'Circuito N°3' },
+  { id: 4, nombre: 'Circuito N°4' },
+  { id: 5, nombre: 'Circuito N°5' },
+  { id: 6, nombre: 'Circuito N°6' },
+  { id: 7, nombre: 'Circuito N°7' },
+  { id: 8, nombre: 'Circuito N°8' },
+  { id: 9, nombre: 'Circuito N°9' }
 ]
+
 const initialPosition = {
   latitud: -28.46867672033115,
   longitud: -65.77899050151645
@@ -103,19 +106,19 @@ export const Create = () => {
     if (id) {
       try {
         const evento = await getEventoById(id)
-        console.log(evento)
         setValue('nombre_solicitante', evento.nombre_solicitante)
         setValue('email_solicitante', evento.email_solicitante)
         setValue('telefono_solicitante', evento.telefono_solicitante)
         setValue('fecha', new Date(evento.fecha))
         setValue('categoria_id', evento.categoria_id)
-        // setValue('detalle_planificacion', evento.detalle_planificacion)
         setValue('descripcion', evento.descripcion)
         setValue('ubicacion', evento.ubicacion)
         setValue('summary', evento.summary)
-        setValue('barrio', evento.barrio)
         setValue('circuito', evento.circuito)
         setPosition(JSON.parse(evento.ubicacion))
+        setTimeout(() => {
+          setValue('barrio', evento.barrio)
+        }, 100)
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
@@ -153,6 +156,17 @@ export const Create = () => {
                 </div>
 
                 <div>
+                  <label htmlFor='fecha' className='form-label'>
+                    Fecha del Evento
+                  </label>
+                  <DatePicker
+                    placeholder='Seleccione la fecha del evento'
+                    value={watch('fecha') ? new Date(watch('fecha')) : null}
+                    onChange={handleDateChange}
+                  />
+                </div>
+
+                <div>
                   <label htmlFor='email_solicitante' className='form-label'>
                     Email del Solicitante
                   </label>
@@ -177,17 +191,6 @@ export const Create = () => {
                     register={register}
                     onChange={handleChange}
                     errors={errors.telefono_solicitante}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor='fecha' className='form-label'>
-                    Fecha del Evento
-                  </label>
-                  <DatePicker
-                    placeholder='Seleccione la fecha del evento'
-                    value={watch('fecha') ? new Date(watch('fecha')) : null}
-                    onChange={handleDateChange}
                   />
                 </div>
 
@@ -251,7 +254,7 @@ export const Create = () => {
 
                 <div>
                   <label htmlFor='barrio' className='form-label'>
-                    Ubicación
+                    Barrio
                   </label>
                   <Textinput
                     name='barrio'
@@ -267,7 +270,7 @@ export const Create = () => {
                   register={register('circuito')}
                   title='Circuito Electoral'
                   options={circuitosElectoral}
-                  errors={errors.categoria_id}
+                  errors={errors.circuito}
                   onChange={handleChange}
                 />
 

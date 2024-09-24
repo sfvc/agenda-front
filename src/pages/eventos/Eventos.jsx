@@ -68,15 +68,11 @@ export const Eventos = () => {
 
   async function onSearch () {
     const myEventos = await getEventos(currentPage, state, category)
-    setFilteredEventos(myEventos.items) // Actualiza el estado con los eventos filtrados
+    setFilteredEventos(myEventos.items)
   }
 
-  console.log(eventos)
   function separarTresPrimerosElementos (cadena) {
-    // Divide la cadena por comas y recorta espacios adicionales
     const elementos = cadena.split(',').map(elemento => elemento.trim())
-
-    // Toma los primeros tres elementos
     const primerosTres = elementos.slice(0, 3)
     const resultadoEnCadena = primerosTres.join(', ')
     return resultadoEnCadena
@@ -100,32 +96,27 @@ export const Eventos = () => {
           : (
             <>
               <Card>
-                <div className='mb-4 md:flex md:justify-between'>
+                <div className='mb-4 flex flex-col md:flex-row md:justify-between'>
                   <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Listado de Eventos</h1>
-                  <div className='flex gap-3 items-end'>
+                  <div className='flex flex-col md:flex-row gap-3 items-start md:items-end'>
                     <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
                     <SelectForm title='Categorias' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
-                    <div className='flex gap-4'>
-                      <button
-                        type='button'
-                        onClick={onSearch}
-                        className='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg'
-                      >
-                        Filtrar
-                      </button>
-
-                    </div>
+                    <button
+                      type='button'
+                      onClick={onSearch}
+                      className='bg-green-600 hover:bg-green-800 text-white items-center text-center py-2 px-6 rounded-lg mt-2 md:mt-0'
+                    >
+                      Filtrar
+                    </button>
                   </div>
-                  <div className='flex flex-col md:flex-row items-start md:items-center gap-4'>
-                    <div className='flex gap-4'>
-                      <button
-                        type='button'
-                        onClick={addEvento}
-                        className='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg'
-                      >
-                        Agregar
-                      </button>
-                    </div>
+                  <div className='flex flex-col md:flex-row items-start md:items-center gap-4 mt-4 md:mt-0'>
+                    <button
+                      type='button'
+                      onClick={addEvento}
+                      className='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg'
+                    >
+                      Agregar
+                    </button>
                   </div>
                 </div>
               </Card>
@@ -153,12 +144,9 @@ export const Eventos = () => {
                                     <tr key={evento.id}>
                                       <td className='table-td'>{evento.id}</td>
                                       <td className='table-td'>{evento.nombre_solicitante}</td>
-                                      {/* <td className='table-td'>{evento.email_solicitante}</td> */}
                                       <td className='table-td'>{evento.telefono_solicitante}</td>
-                                      {/* <td className='table-td'>{evento.descripcion}</td> */}
                                       <td className='table-td max-w-96'>{parseUbicacion(evento.ubicacion)}</td>
                                       <td className='table-td'>{formatDate(evento.fecha)}</td>
-                                      {/* <td className='table-td'>{evento.detalle_planificacion}</td> */}
                                       <td className='table-td'>{evento.categoria?.nombre}</td>
                                       <td className='table-td'>
                                         <span className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 ${evento.estado === 'A_REALIZAR' ? 'text-black bg-success-500 dark:bg-success-400' : evento.estado === 'PENDIENTE' ? 'text-black bg-danger-500 dark:bg-danger-500' : 'text-black bg-warning-500 dark:bg-warning-500'}`}>
@@ -177,7 +165,6 @@ export const Eventos = () => {
                               : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
                           }
                         </tbody>
-
                       </table>
 
                       {/* Paginado */}

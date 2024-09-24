@@ -38,6 +38,10 @@ export const ShowEvento = () => {
     }
   }
 
+  const handlePolygons = () => {
+    console.log()
+  }
+
   useEffect(() => {
     getEvent()
   }, [id])
@@ -224,6 +228,7 @@ export const ShowEvento = () => {
                         editPosition={position}
                         onLocationChange={() => {}}
                         isActive={activeEvento?.estado}
+                        handlePolygons={handlePolygons}
                       />
                     </div>
 
