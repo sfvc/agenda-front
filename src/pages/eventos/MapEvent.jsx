@@ -10,10 +10,14 @@ export const MapEvent = ({ isActive, events }) => {
         -65.77899050151645
     ]
 
+
+
+
+
     const extractUbicaciones = (list) => {
         return list.map(item => {
-            const ubicacion = JSON.parse(item.ubicacion); 
-   
+            const ubicacion = JSON.parse(item.ubicacion);
+
             return {
                 latitud: ubicacion.latitud,
                 longitud: ubicacion.longitud,

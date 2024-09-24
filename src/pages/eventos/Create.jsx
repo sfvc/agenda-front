@@ -22,10 +22,31 @@ const initialForm = {
   fecha: '',
   categoria: '',
   ubicacion: '',
-  location:'',
-  summary:''
-  // estado: 'PENDIENTE'
+  location: '',
+  summary: '',
+  barrio: '',
+  circuito: 0
 }
+
+const circuitosElectoral = [
+  { id: 1, nombre: "circuito N°1" },
+  { id: 2, nombre: "circuito N°2" },
+
+  { id: 3, nombre: "circuito N°3" },
+
+  { id: 4, nombre: "circuito N°4" },
+
+  { id: 5, nombre: "circuito N°5" },
+
+  { id: 6, nombre: "circuito N°6" },
+
+  { id: 7, nombre: "circuito N°7" },
+  { id: 8, nombre: "circuito N°8" },
+
+  { id: 9, nombre: "circuito N°9" },
+
+
+]
 const initialPosition = {
   latitud: -28.46867672033115,
   longitud: -65.77899050151645
@@ -65,13 +86,11 @@ export const Create = () => {
 
   const handleLocationChange = (latitud, longitud, direccion) => {
     setValue('ubicacion', JSON.stringify({ latitud, longitud, direccion }))
-    setValue('location',direccion)
+    setValue('location', direccion)
   }
 
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
-
-  
     try {
       if (!id) {
         await createEvento(items)
@@ -87,11 +106,15 @@ export const Create = () => {
     }
   }
 
-
+  const handlePolygons = (barrio) => {
+    setValue('barrio', barrio)
+  }
   const loadEvento = async () => {
     if (id) {
+
       try {
         const evento = await getEventoById(id)
+        console.log(evento)
         setValue('nombre_solicitante', evento.nombre_solicitante)
         setValue('email_solicitante', evento.email_solicitante)
         setValue('telefono_solicitante', evento.telefono_solicitante)
@@ -101,8 +124,8 @@ export const Create = () => {
         setValue('descripcion', evento.descripcion)
         setValue('ubicacion', evento.ubicacion)
         setPosition(JSON.parse(evento.ubicacion))
-     
-// console.log(evento);a
+
+        // console.log(evento);a
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
@@ -186,19 +209,7 @@ export const Create = () => {
                   onChange={handleChange}
                 />
 
-                {/* <div>
-                  <label htmlFor='detalle_planificacion' className='form-label'>
-                    Detalle de la Planificación
-                  </label>
-                  <Textinput
-                    name='detalle_planificacion'
-                    type='text'
-                    placeholder='Ingrese el detalle de la planificación'
-                    register={register}
-                    onChange={handleChange}
-                    errors={errors.detalle_planificacion}
-                  />
-                </div> */}
+
 
                 <div className='hidden'>
                   <label htmlFor='ubicacion' className='form-label'>
@@ -231,12 +242,13 @@ export const Create = () => {
                   </label>
                   <Textarea
                     name='summary'
-                   
+
                     placeholder='Ingrese un nombre al evento'
                     register={register}
                     errors={errors.summary}
                   />
                 </div>
+
                 <div>
                   <label htmlFor='location' className='form-label'>
                     Localizacion
@@ -250,11 +262,35 @@ export const Create = () => {
                   />
                 </div>
 
+
+
+                <div >
+                  <label htmlFor='barrio' className='form-label'>
+                    Ubicación
+                  </label>
+                  <Textinput
+                    name='barrio'
+                    type='text'
+                    readonly
+                    placeholder='El barrio se carga a partir del mapa'
+                    register={register}
+                    errors={errors.barrio}
+                  />
+                </div>
+
+                <SelectForm
+                  register={register('circuito')}
+                  title='Circuito Electoral'
+                  options={circuitosElectoral}
+                  errors={errors.categoria_id}
+                  onChange={handleChange}
+                />
+
               </form>
             </Card>
 
             <div className='h-96 w-full'>
-              <BasicMap onLocationChange={handleLocationChange} editPosition={position} />
+              <BasicMap onLocationChange={handleLocationChange} handlePolygons={handlePolygons} editPosition={position} />
             </div>
 
             <div className='flex justify-end gap-4 mt-8'>

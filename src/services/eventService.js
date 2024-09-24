@@ -1,7 +1,15 @@
 import { agendaApi } from '@/api'
 
-export const fetchEvents = async (page = 1) => {
-  const response = await agendaApi.get(`/evento?page=${page}`)
+export const fetchEvents = async (page = 1,state="",category="") => {
+  let url = `/evento?`;
+  if (state) {
+    url += `estado=${state}&`;
+  }
+  if (category) {
+    url += `categoria_id=${category}&`;
+  }
+  url += `page=${page}`;
+  const response = await agendaApi.get(url)
   return response.data
 }
 

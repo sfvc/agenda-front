@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useQuery } from '@tanstack/react-query'
+// import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Loading from '@/components/Loading'
 import Card from '@/components/ui/Card'
 import Textinput from '@/components/ui/Textinput'
-import Textarea from '@/components/ui/Textarea'
+// import Textarea from '@/components/ui/Textarea'
+import {SelectForm} from '@/components/agenda/forms'
 import { toast } from 'react-toastify'
 import { createContact, getContactsById,updateContact } from "@/services/contactService"
 
@@ -14,9 +15,17 @@ const initialForm = {
     nombre: "",
     apellido: "",
     email: "",
-    telefono: ""
+    telefono: "",
+    funcion:""
 }
-
+const functions =[
+    {id:"Prensa",nombre:"Prensa"},
+    {id:"Educacion",nombre:"Educacion"},
+    {id:"Politica",nombre:"Politica"},
+    {id:"Cultura",nombre:"Cultura"},
+    {id:"Secretario",nombre:"Secretario"},
+    {id:"Director",nombre:"Director"},
+]
 export const CreateContactos = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [, setFormData] = useState(initialForm)
@@ -30,6 +39,7 @@ export const CreateContactos = () => {
     } = useForm()
 
     const handleChange = (e) => {
+      
         const { name, value } = e.target
         setFormData((prevState) => ({
             ...prevState,
@@ -39,7 +49,6 @@ export const CreateContactos = () => {
 
     const onSubmit = async (items) => {
        
-
         try {
             if (!id) {
                 await createContact(items)
@@ -143,6 +152,7 @@ export const CreateContactos = () => {
                                         errors={errors.telefono}
                                     />
                                 </div>
+                                <SelectForm title="Función o Grupo" options={functions} onChange={handleChange}   register={register("funcion")}/>
                             </form>
                         </Card>
                         <div className='flex justify-end gap-4 mt-8'>

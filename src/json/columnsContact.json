@@ -7,6 +7,9 @@
   },{
     "label": "Telefono",
     "field": "telefono"
+  },{
+    "label": "Funcion",
+    "field": "funcion"
   }, {
     "label": "Acciones",
     "field": "acciones"
