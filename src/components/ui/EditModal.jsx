@@ -1,8 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
 import Icon from '@/components/ui/Icon'
-import { useDispatch, useSelector } from 'react-redux'
-import { handleShowEdit } from '@/store/layout'
 import { ToastContainer } from 'react-toastify'
 
 const EditModal = ({
@@ -14,22 +12,17 @@ const EditModal = ({
   centered,
   scrollContent,
   themeClass = 'bg-slate-900 dark:bg-slate-800 dark:border-b dark:border-slate-700',
-  title = 'Edit Modal'
+  title = 'Edit Modal',
+  isOpen,
+  onClose
 }) => {
-  const dispatch = useDispatch()
-  const { showEdit } = useSelector(state => state.layout)
-
-  const onClose = () => {
-    dispatch(handleShowEdit())
-  }
-
-  if (typeof showEdit !== 'boolean') {
+  if (typeof isOpen !== 'boolean') {
     return null
   }
 
   return (
     <>
-      <Transition appear show={showEdit} as={Fragment}>
+      <Transition appear show={isOpen} as={Fragment}>
         <Dialog as='div' className='relative z-[99999]' onClose={onClose}>
           <Transition.Child
             as={Fragment}
@@ -54,7 +47,7 @@ const EditModal = ({
             >
               <Transition.Child
                 as={Fragment}
-                enter={noFade ? '' : 'duration-300  ease-out'}
+                enter={noFade ? '' : 'duration-300 ease-out'}
                 enterFrom={noFade ? '' : 'opacity-0 scale-95'}
                 enterTo={noFade ? '' : 'opacity-100 scale-100'}
                 leave={noFade ? '' : 'duration-200 ease-in'}
@@ -63,10 +56,10 @@ const EditModal = ({
               >
                 <Dialog.Panel
                   className={`w-full transform overflow-hidden rounded-md
-                bg-white dark:bg-slate-800 text-left align-middle shadow-xl transition-alll ${className}`}
+                bg-white dark:bg-slate-800 text-left align-middle shadow-xl transition-all ${className}`}
                 >
                   <div
-                    className={`relative overflow-hidden py-4 px-5 text-white flex justify-between  ${themeClass}`}
+                    className={`relative overflow-hidden py-4 px-5 text-white flex justify-between ${themeClass}`}
                   >
                     <h2 className='capitalize leading-6 tracking-wider font-medium text-base text-white'>
                       {title}

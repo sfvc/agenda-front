@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import Card from '@/components/ui/Card'
 import Loading from '@/components/Loading'
-import { TextInput } from 'flowbite-react'
 import Pagination from '@/components/ui/Pagination'
 import { useQuery } from '@tanstack/react-query'
 import { getUser } from '@/services/userService'
@@ -34,7 +33,6 @@ const columns = [
 
 export const Usuarios = () => {
   const navigate = useNavigate()
-  const [search] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const { data: usuarios, isLoading } = useQuery({
     queryKey: ['usuarios', currentPage],
@@ -44,10 +42,6 @@ export const Usuarios = () => {
 
   if (isLoading) {
     return <Loading />
-  }
-
-  async function onSearch () {
-
   }
 
   async function onEdit (id) {
@@ -70,15 +64,6 @@ export const Usuarios = () => {
                   <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Listado de Usuarios</h1>
                   <div className='flex flex-col md:flex-row items-start md:items-center gap-4'>
                     <div className='flex gap-2 items-center'>
-                      <div className='relative flex-1'>
-                        <TextInput
-                          name='search'
-                          placeholder='Buscar'
-                          onChange={onSearch}
-                          value={search}
-                          className='w-full'
-                        />
-                      </div>
                       <button
                         type='button'
                         onClick={addUser}

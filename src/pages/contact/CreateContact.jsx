@@ -18,6 +18,7 @@ const initialForm = {
   telefono: '',
   funcion: ''
 }
+
 const functions = [
   { id: 'Prensa', nombre: 'Prensa' },
   { id: 'Educacion', nombre: 'Educacion' },
@@ -26,6 +27,7 @@ const functions = [
   { id: 'Secretario', nombre: 'Secretario' },
   { id: 'Director', nombre: 'Director' }
 ]
+
 export const CreateContactos = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [, setFormData] = useState(initialForm)
@@ -68,9 +70,10 @@ export const CreateContactos = () => {
         const contacto = await getContactsById(id)
 
         setValue('nombre', contacto.nombre)
+        setValue('apellido', contacto.apellido)
         setValue('email', contacto.email)
         setValue('telefono', contacto.telefono)
-        setValue('apellido', contacto.apellido)
+        setValue('funcion', contacto.funcion)
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { uploadFile } from '@/services/fileServices'
-import { documentEvent } from '../../../services/eventService'
+import { documentEvent } from '@/services/eventService'
 import { toast } from 'react-toastify'
 import Button from '@/components/ui/Button'
 import { useParams } from 'react-router-dom'

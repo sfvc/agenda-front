@@ -5,7 +5,7 @@ import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import Textinput from '@/components/ui/Textinput'
 import Tooltip from '@/components/ui/Tooltip'
-import { useAuthStore } from '../../../thunks/useAuthStore'
+import { useAuthStore } from '@/thunks/useAuthStore'
 
 const schema = yup.object({
   username: yup.string().required('El usuario es requerido'),

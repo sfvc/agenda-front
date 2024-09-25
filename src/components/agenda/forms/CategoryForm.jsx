@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -6,6 +6,7 @@ import Textinput from '@/components/ui/Textinput'
 import Button from '@/components/ui/Button'
 import { Label } from 'flowbite-react'
 import { toast } from 'react-toastify'
+import { getCategoryById } from '@/services/categoryService'
 
 const FormValidationSaving = yup
   .object({
@@ -19,12 +20,13 @@ const FormValidationUpdate = yup
   })
   .required()
 
-export const CategoryForm = ({ fnAction, refetchCategories, activeCategory, onClose }) => {
+export const CategoryForm = ({ fnAction, refetchCategories, activeCategory, onClose, id }) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset
+    reset,
+    setValue
   } = useForm({
     defaultValues: {
       nombre: activeCategory?.nombre || ''
@@ -43,6 +45,22 @@ export const CategoryForm = ({ fnAction, refetchCategories, activeCategory, onCl
       toast.error('Hubo un error al crear la categoría')
     }
   }
+
+  const loadCategory = async () => {
+    if (id) {
+      try {
+        const categoria = await getCategoryById(id)
+
+        setValue('nombre', categoria.nombre)
+      } catch (error) {
+        console.error('Error al cargar el evento:', error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    loadCategory()
+  }, [id])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 relative'>

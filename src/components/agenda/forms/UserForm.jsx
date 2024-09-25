@@ -7,6 +7,8 @@ import Button from '@/components/ui/Button'
 import { Label } from 'flowbite-react'
 import { toast } from 'react-toastify'
 import { SelectForm } from '@/components/agenda/forms'
+import { getUserById } from '../../../services/userService'
+import { useParams } from 'react-router-dom'
 
 const roles = [
   { id: 'administrador', nombre: 'Administrador' },
@@ -32,12 +34,12 @@ const FormValidationUpdate = yup
   .required()
 
 export const UserForm = ({ fnAction, refetchUser, activeUser, onClose }) => {
+  const { id } = useParams()
   const [showPassword, setShowPassword] = useState(false)
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors, isSubmitting },
     reset
   } = useForm({
@@ -62,20 +64,28 @@ export const UserForm = ({ fnAction, refetchUser, activeUser, onClose }) => {
     }
   }
 
-  const nombre = watch('nombre')
-  const apellido = watch('apellido')
-
-  useEffect(() => {
-    if (nombre && apellido) {
-      const firstSurname = apellido.split(' ')[0].toLowerCase()
-      const username = `${nombre.charAt(0).toLowerCase()}${firstSurname}`
-      setValue('username', username)
-    }
-  }, [nombre, apellido, setValue])
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
+
+  const loadUser = async () => {
+    if (id) {
+      try {
+        const usurio = await getUserById(id)
+
+        setValue('nombre', usurio.nombre)
+        setValue('apellido', usurio.apellido)
+        setValue('username', usurio.username)
+        setValue('rol', usurio.rol)
+      } catch (error) {
+        console.error('Error al cargar el evento:', error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    loadUser()
+  }, [id])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 relative'>

@@ -5,7 +5,12 @@ export const fetchCategory = async (page = 1) => {
   return response.data
 }
 
-export const fetchCategoryById = async () => {
+export const fetchCategoryById = async (id) => {
+  const response = await agendaApi.get(`/categoria/${id}`)
+  return response.data
+}
+
+export const fetchCategoryBySelect = async () => {
   const response = await agendaApi.get('/categoria/select')
   return response.data
 }
@@ -15,6 +20,13 @@ export const createCategory = async (category) => {
   return response.data
 }
 
+export const updateCategory = async (id, category) => {
+  const response = await agendaApi.put(`/categoria/${id}`, category)
+  return response.data
+}
+
 export const getCategory = fetchCategory
 export const getCategoryById = fetchCategoryById
+export const getCategoryBySelect = fetchCategoryBySelect
 export const createCategoria = createCategory
+export const updateCategoria = updateCategory

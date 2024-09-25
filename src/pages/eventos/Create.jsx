@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { SelectForm } from '@/components/agenda/forms'
 import { getEventoById, createEvento, updateEvento } from '@/services/eventService'
 import { useQuery } from '@tanstack/react-query'
-import { getCategoryById } from '@/services/categoryService'
+import { getCategoryBySelect } from '@/services/categoryService'
 import Button from '@/components/ui/Button'
 import Loading from '@/components/Loading'
 import Card from '@/components/ui/Card'
@@ -53,7 +53,7 @@ export const Create = () => {
   const [, setFormData] = useState(initialForm)
   const { data: categorias } = useQuery({
     queryKey: ['categoria'],
-    queryFn: getCategoryById
+    queryFn: getCategoryBySelect
   })
 
   const {
@@ -185,7 +185,7 @@ export const Create = () => {
                     Teléfono del Solicitante
                   </label>
                   <Textinput
-                    type='text'
+                    type='number'
                     name='telefono_solicitante'
                     placeholder='Ingrese el teléfono'
                     register={register}

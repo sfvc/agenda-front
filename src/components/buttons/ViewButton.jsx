@@ -5,7 +5,7 @@ const ViewButton = ({ evento, onView }) => {
   return (
     <Tooltip content='Ver' placement='top' arrow animation='shift-away'>
       <button
-        className='bg-indigo-500 text-white p-2 rounded-lg hover:bg-blue-700'
+        className='bg-orange-500 text-white p-2 rounded-lg hover:bg-orange-700'
         onClick={() => onView(evento.id)}
       >
         <svg

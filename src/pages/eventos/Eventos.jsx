@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { getEventos } from '@/services/eventService'
+import { getEventos, nextStageEvent } from '@/services/eventService'
 import Card from '@/components/ui/Card'
 import Pagination from '@/components/ui/Pagination'
 import Loading from '@/components/Loading'
@@ -13,12 +13,15 @@ import columnEventos from '@/json/columnsEventos.json'
 import { MapEvent } from './MapEvent'
 import { SelectForm } from '@/components/agenda/forms'
 import { getCategory } from '@/services/categoryService'
+import { toast } from 'react-toastify'
 
 export const Eventos = () => {
   const navigate = useNavigate()
+  const { id } = useParams()
   const [state, setState] = useState('')
   const [category, setCategory] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [invitados] = useState([])
   const [filteredEventos, setFilteredEventos] = useState(null)
   const { data: eventos, isLoading } = useQuery({
     queryKey: ['eventos', currentPage],
@@ -33,14 +36,33 @@ export const Eventos = () => {
   })
 
   const estados = [
-
     { id: 'PENDIENTE', nombre: 'Pendiente' },
     { id: 'A_CONSIDERAR', nombre: 'A Considerar' },
     { id: 'A_REALIZAR', nombre: 'A Realizar' },
-    { id: 'REALIZADO', nombre: 'Realizados' }
+    { id: 'REALIZADO', nombre: 'Realizado' }
   ]
+
   if (isLoading) {
     return <Loading />
+  }
+
+  const obtenerIds = (data) => {
+    return data.map(item => ({
+      id: item.id,
+      email: item.email
+    }))
+  }
+
+  const handleEstado = async () => {
+    const ids = obtenerIds(invitados)
+    try {
+      await nextStageEvent(String(id), { contactos: ids })
+      navigate('/eventos')
+      toast.success('El evento pasó al estado Realizado')
+    } catch (error) {
+      console.error(error)
+      toast.error('Hubo un error al intentar pasar el evento')
+    }
   }
 
   function addEvento () {
@@ -62,7 +84,7 @@ export const Eventos = () => {
     } else if (estado === 'A_CONSIDERAR') {
       navigate(`/eventos/estado_realizar/${id}`)
     } else if (estado === 'A_REALIZAR') {
-      navigate(`/eventos/estado_realizado/${id}`)
+      handleEstado()
     }
   }
 
@@ -140,7 +162,6 @@ export const Eventos = () => {
                             (eventosAMostrar.length > 0)
                               ? (eventosAMostrar.map((evento) => {
                                   return (
-
                                     <tr key={evento.id}>
                                       <td className='table-td'>{evento.id}</td>
                                       <td className='table-td'>{evento.nombre_solicitante}</td>
@@ -157,7 +178,6 @@ export const Eventos = () => {
                                         <ViewButton evento={evento} onView={showEvento} />
                                         <EditButton evento={evento} onEdit={onEdit} />
                                         <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
-
                                       </td>
                                     </tr>
                                   )

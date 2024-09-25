@@ -3,23 +3,29 @@ import { useState } from 'react'
 import Card from '@/components/ui/Card'
 import Modal from '@/components/ui/Modal'
 import Loading from '@/components/Loading'
-import { TextInput } from 'flowbite-react'
 import Pagination from '@/components/ui/Pagination'
 import { useQuery } from '@tanstack/react-query'
-import { createCategory, getCategory } from '@/services/categoryService'
+import { createCategory, updateCategory, getCategory } from '@/services/categoryService'
 import { CategoryForm } from '@/components/agenda/forms/CategoryForm'
+import EditModal from '@/components/ui/EditModal'
+import EditButton from '@/components/buttons/EditButton'
 
 const columns = [
   {
     label: 'Nombre',
     field: 'nombre'
+  },
+  {
+    label: 'Acciones',
+    field: 'acciones'
   }
 ]
 
 export const Categorias = () => {
-  const [search] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState(null)
   const { data: categorias, isLoading, refetch } = useQuery({
     queryKey: ['categorias', currentPage],
     queryFn: () => getCategory(currentPage),
@@ -27,14 +33,19 @@ export const Categorias = () => {
   })
 
   const handleOpenModal = () => setIsModalOpen(true)
-  const handleCloseModal = () => setIsModalOpen(false)
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setIsEditModalOpen(false)
+    setSelectedCategory(null)
+  }
 
   if (isLoading) {
     return <Loading />
   }
 
-  async function onSearch () {
-
+  function onEdit (category) {
+    setSelectedCategory(category)
+    setIsEditModalOpen(true)
   }
 
   return (
@@ -49,15 +60,6 @@ export const Categorias = () => {
                   <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Listado de Categorias</h1>
                   <div className='flex flex-col md:flex-row items-start md:items-center gap-4'>
                     <div className='flex gap-2 items-center'>
-                      <div className='relative flex-1'>
-                        <TextInput
-                          name='search'
-                          placeholder='Buscar'
-                          onChange={onSearch}
-                          value={search}
-                          className='w-full'
-                        />
-                      </div>
                       <button
                         type='button'
                         onClick={handleOpenModal}
@@ -77,6 +79,22 @@ export const Categorias = () => {
                             fnAction={createCategory}
                             refetchCategories={refetch}
                             onClose={handleCloseModal}
+                          />
+                        }
+                      />
+
+                      <EditModal
+                        isOpen={isEditModalOpen}
+                        onClose={handleCloseModal}
+                        title='Editar Categoria'
+                        centered
+                        children={
+                          <CategoryForm
+                            fnAction={(category) => updateCategory(selectedCategory, category)}
+                            initialData={selectedCategory}
+                            refetchCategories={refetch}
+                            onClose={handleCloseModal}
+                            id={selectedCategory}
                           />
                         }
                       />
@@ -105,6 +123,9 @@ export const Categorias = () => {
                               ? (categorias.items.map((categoria) => (
                                 <tr key={categoria.id}>
                                   <td className='table-td'>{categoria.nombre}</td>
+                                  <td className='table-td flex justify-start gap-2'>
+                                    <EditButton evento={categoria} onEdit={onEdit} />
+                                  </td>
                                 </tr>
                                 )))
                               : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
