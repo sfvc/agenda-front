@@ -37,6 +37,10 @@ export const deleteEvent = async (id) => {
   await agendaApi.delete(`/evento/${id}`)
 }
 
+export const rejectEvent = async (id) => {
+  await agendaApi.post(`/evento/${id}/rechazar`)
+}
+
 export const documentEvent = async (id, document) => {
   const response = await agendaApi.put(`/evento/${id}/documentos`, { documentos: document })
   return response.status

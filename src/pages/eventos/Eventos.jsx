@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { getEventos, nextStageEvent } from '@/services/eventService'
+import { getEventos, nextStageEvent, rejectEvent } from '@/services/eventService'
 import { formatDate } from '@/components/Format'
 import { MapEvent } from './MapEvent'
 import { SelectForm } from '@/components/agenda/forms'
@@ -14,12 +14,14 @@ import EditButton from '@/components/buttons/EditButton'
 import ViewButton from '@/components/buttons/ViewButton'
 import AgendaButton from '@/components/buttons/AgendaButton'
 import columnEventos from '@/json/columnsEventos.json'
+import RejectButton from '@/components/buttons/RejectButton'
 
 const estados = [
   { id: 'PENDIENTE', nombre: 'Pendiente' },
   { id: 'A_CONSIDERAR', nombre: 'A Considerar' },
   { id: 'A_REALIZAR', nombre: 'A Realizar' },
-  { id: 'REALIZADO', nombre: 'Realizado' }
+  { id: 'REALIZADO', nombre: 'Realizado' },
+  { id: 'RECHAZADO', nombre: 'Rechazado' }
 ]
 
 export const Eventos = () => {
@@ -79,6 +81,17 @@ export const Eventos = () => {
         console.error(error)
         toast.error('Hubo un error al intentar pasar el evento')
       }
+    }
+  }
+
+  async function onReject (id) {
+    try {
+      await rejectEvent(id)
+      toast.success('El evento se desestimo')
+      await refetch()
+    } catch (error) {
+      console.error(error)
+      toast.error('Hubo un error al intentar desestimar')
     }
   }
 
@@ -163,14 +176,30 @@ export const Eventos = () => {
                                       <td className='table-td'>{formatDate(evento.fecha)}</td>
                                       <td className='table-td'>{evento.categoria?.nombre}</td>
                                       <td className='table-td'>
-                                        <span className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 ${evento.estado === 'A_REALIZAR' ? 'text-black bg-indigo-500 dark:bg-indigo-400' : evento.estado === 'PENDIENTE' ? 'text-black bg-danger-500 dark:bg-danger-500' : evento.estado === 'REALIZADO' ? 'text-black bg-green-500 dark:bg-green-400' : 'text-black bg-warning-500 dark:bg-warning-500'}`}>
+                                        <span
+                                          className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 
+                                            ${evento.estado === 'A_REALIZAR'
+                                            ? 'text-black bg-indigo-500 dark:bg-indigo-400'
+                                            : evento.estado === 'PENDIENTE'
+                                              ? 'text-black bg-cyan-500 dark:bg-cyan-500'
+                                              : evento.estado === 'REALIZADO'
+                                                ? 'text-black bg-green-500 dark:bg-green-400'
+                                                : evento.estado === 'RECHAZADO'
+                                                  ? 'text-black bg-red-500 dark:bg-red-400'
+                                                  : 'text-black bg-warning-500 dark:bg-warning-500'}`}
+                                        >
                                           {evento.estado}
                                         </span>
                                       </td>
-                                      <td className='table-td  flex gap-2'>
+                                      <td className='table-td flex gap-2'>
                                         <ViewButton evento={evento} onView={showEvento} />
-                                        <EditButton evento={evento} onEdit={onEdit} />
+                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
+                                          <EditButton evento={evento} onEdit={onEdit} />
+                                        )}
                                         <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
+                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
+                                          <RejectButton evento={evento} onReject={onReject} />
+                                        )}
                                       </td>
                                     </tr>
                                   )
