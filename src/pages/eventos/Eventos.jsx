@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { getEventos, nextStageEvent } from '@/services/eventService'
+import { getEventos, nextStageEvent, rejectEvent } from '@/services/eventService'
 import { formatDate } from '@/components/Format'
 import { MapEvent } from './MapEvent'
 import { SelectForm } from '@/components/agenda/forms'
@@ -14,18 +14,23 @@ import EditButton from '@/components/buttons/EditButton'
 import ViewButton from '@/components/buttons/ViewButton'
 import AgendaButton from '@/components/buttons/AgendaButton'
 import columnEventos from '@/json/columnsEventos.json'
+import RejectButton from '@/components/buttons/RejectButton'
 
 const estados = [
   { id: 'PENDIENTE', nombre: 'Pendiente' },
   { id: 'A_CONSIDERAR', nombre: 'A Considerar' },
   { id: 'A_REALIZAR', nombre: 'A Realizar' },
-  { id: 'REALIZADO', nombre: 'Realizado' }
+  { id: 'REALIZADO', nombre: 'Realizado' },
+  { id: 'RECHAZADO', nombre: 'Rechazado' }
 ]
 
 export const Eventos = () => {
   const navigate = useNavigate()
   const [state, setState] = useState('')
   const [category, setCategory] = useState('')
+  const [fechIni, setFechIni] = useState('')
+  const [fechFin, setFechFin] = useState('')
+
   const [currentPage, setCurrentPage] = useState(1)
   const [filteredEventos, setFilteredEventos] = useState([])
   const { data: eventos, isLoading, refetch } = useQuery({
@@ -82,8 +87,19 @@ export const Eventos = () => {
     }
   }
 
+  async function onReject (id) {
+    try {
+      await rejectEvent(id)
+      toast.success('El evento se desestimo')
+      await refetch()
+    } catch (error) {
+      console.error(error)
+      toast.error('Hubo un error al intentar desestimar')
+    }
+  }
+
   async function onSearch () {
-    const myEventos = await getEventos(currentPage, state, category)
+    const myEventos = await getEventos(currentPage, state, category, fechIni, fechFin)
     setFilteredEventos(myEventos.items)
   }
 
@@ -113,17 +129,7 @@ export const Eventos = () => {
               <Card>
                 <div className='mb-4 flex flex-col md:flex-row md:justify-between'>
                   <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Listado de Eventos</h1>
-                  <div className='flex flex-col md:flex-row gap-3 items-start md:items-end'>
-                    <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
-                    <SelectForm title='Categorias' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
-                    <button
-                      type='button'
-                      onClick={onSearch}
-                      className='bg-green-600 hover:bg-green-800 text-white items-center text-center py-2 px-6 rounded-lg mt-2 md:mt-0'
-                    >
-                      Filtrar
-                    </button>
-                  </div>
+
                   <div className='flex flex-col md:flex-row items-start md:items-center gap-4 mt-4 md:mt-0'>
                     <button
                       type='button'
@@ -133,6 +139,43 @@ export const Eventos = () => {
                       Agregar
                     </button>
                   </div>
+                </div>
+              </Card>
+              <Card>
+                <div className='flex flex-col md:flex-row gap-3 items-start md:items-end'>
+                  <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
+                  <SelectForm title='Categorias' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
+                  <div>
+                    <label htmlFor='fecha' className='form-label'>
+                      Fecha de Inicio
+                    </label>
+                    <input
+                      type='date'
+                      value={fechIni}
+                      className='form-control py-2'
+                      onChange={(e) => setFechIni(e.target.value)}
+                    />
+
+                  </div>
+                  <div>
+                    <label htmlFor='fecha' className='form-label'>
+                      Fecha de Inicio
+                    </label>
+                    <input
+                      type='date'
+                      value={fechFin}
+                      className='form-control py-2'
+                      onChange={(e) => setFechFin(e.target.value)}
+                    />
+
+                  </div>
+                  <button
+                    type='button'
+                    onClick={onSearch}
+                    className='bg-green-600 hover:bg-green-800 text-white items-center text-center py-2 px-6 rounded-lg mt-2 md:mt-0'
+                  >
+                    Filtrar
+                  </button>
                 </div>
               </Card>
               <MapEvent isActive events={eventosAMostrar} />
@@ -163,14 +206,30 @@ export const Eventos = () => {
                                       <td className='table-td'>{formatDate(evento.fecha)}</td>
                                       <td className='table-td'>{evento.categoria?.nombre}</td>
                                       <td className='table-td'>
-                                        <span className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 ${evento.estado === 'A_REALIZAR' ? 'text-black bg-indigo-500 dark:bg-indigo-400' : evento.estado === 'PENDIENTE' ? 'text-black bg-danger-500 dark:bg-danger-500' : evento.estado === 'REALIZADO' ? 'text-black bg-green-500 dark:bg-green-400' : 'text-black bg-warning-500 dark:bg-warning-500'}`}>
+                                        <span
+                                          className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 
+                                            ${evento.estado === 'A_REALIZAR'
+                                            ? 'text-black bg-indigo-500 dark:bg-indigo-400'
+                                            : evento.estado === 'PENDIENTE'
+                                              ? 'text-black bg-cyan-500 dark:bg-cyan-500'
+                                              : evento.estado === 'REALIZADO'
+                                                ? 'text-black bg-green-500 dark:bg-green-400'
+                                                : evento.estado === 'RECHAZADO'
+                                                  ? 'text-black bg-red-500 dark:bg-red-400'
+                                                  : 'text-black bg-warning-500 dark:bg-warning-500'}`}
+                                        >
                                           {evento.estado}
                                         </span>
                                       </td>
-                                      <td className='table-td  flex gap-2'>
+                                      <td className='table-td flex gap-2'>
                                         <ViewButton evento={evento} onView={showEvento} />
-                                        <EditButton evento={evento} onEdit={onEdit} />
+                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
+                                          <EditButton evento={evento} onEdit={onEdit} />
+                                        )}
                                         <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
+                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
+                                          <RejectButton evento={evento} onReject={onReject} />
+                                        )}
                                       </td>
                                     </tr>
                                   )

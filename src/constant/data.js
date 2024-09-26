@@ -33,6 +33,8 @@ export const menuNormal = [
     icon: 'heroicons-outline:users',
     link: 'usuarios'
   }
+
+  
 ]
 
 export const topMenu = [
