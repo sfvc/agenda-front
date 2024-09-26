@@ -15,7 +15,7 @@ const GoogleAuth = () => {
 
     <div className='bg-red-500 p-3 text-center rounded-lg'>
       <div className='text-black-900'>
-        Para utilizar algunas funcionalidades del sistema es necesario que inicies sesion en Google.
+        Para utilizar algunas funcionalidades del sistema es necesario que inicies sesión en Google.
       </div>
       <button disabled={isLoading} onClick={onClick} className='flex items-center bg-white border border-gray-300 rounded-lg px-4 py-2 shadow hover:shadow-lg transition duration-200'>
         <svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' width='100' height='100' viewBox='0 0 48 48'>
