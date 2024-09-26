@@ -26,6 +26,9 @@ export const Eventos = () => {
   const navigate = useNavigate()
   const [state, setState] = useState('')
   const [category, setCategory] = useState('')
+  const [fechIni, setFechIni] = useState('')
+  const [fechFin,setFechFin] =useState('')
+
   const [currentPage, setCurrentPage] = useState(1)
   const [filteredEventos, setFilteredEventos] = useState([])
   const { data: eventos, isLoading, refetch } = useQuery({
@@ -50,16 +53,16 @@ export const Eventos = () => {
     navigate('/eventos/crear')
   }
 
-  async function showEvento (id) {
+  async function showEvento(id) {
     await onEdit(id)
     navigate(`/eventos/ver/${id}`)
   }
 
-  async function onEdit (id) {
+  async function onEdit(id) {
     navigate(`/eventos/editar/${id}`)
   }
 
-  async function onDelete (id, estado) {
+  async function onDelete(id, estado) {
     if (estado === 'PENDIENTE') {
       navigate(`/eventos/estado_considerar/${id}`)
     } else if (estado === 'A_CONSIDERAR') {
@@ -82,12 +85,13 @@ export const Eventos = () => {
     }
   }
 
-  async function onSearch () {
-    const myEventos = await getEventos(currentPage, state, category)
+  async function onSearch() {
+    
+    const myEventos = await getEventos(currentPage, state, category,fechIni,fechFin)
     setFilteredEventos(myEventos.items)
   }
 
-  function separarTresPrimerosElementos (cadena) {
+  function separarTresPrimerosElementos(cadena) {
     const elementos = cadena.split(',').map(elemento => elemento.trim())
     const primerosTres = elementos.slice(0, 3)
     const resultadoEnCadena = primerosTres.join(', ')
@@ -113,17 +117,7 @@ export const Eventos = () => {
               <Card>
                 <div className='mb-4 flex flex-col md:flex-row md:justify-between'>
                   <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Listado de Eventos</h1>
-                  <div className='flex flex-col md:flex-row gap-3 items-start md:items-end'>
-                    <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
-                    <SelectForm title='Categorias' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
-                    <button
-                      type='button'
-                      onClick={onSearch}
-                      className='bg-green-600 hover:bg-green-800 text-white items-center text-center py-2 px-6 rounded-lg mt-2 md:mt-0'
-                    >
-                      Filtrar
-                    </button>
-                  </div>
+
                   <div className='flex flex-col md:flex-row items-start md:items-center gap-4 mt-4 md:mt-0'>
                     <button
                       type='button'
@@ -133,6 +127,43 @@ export const Eventos = () => {
                       Agregar
                     </button>
                   </div>
+                </div>
+              </Card>
+              <Card>
+                <div className='flex flex-col md:flex-row gap-3 items-start md:items-end'>
+                  <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
+                  <SelectForm title='Categorias' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
+                  <div>
+                    <label htmlFor='fecha' className='form-label'>
+                      Fecha de Inicio
+                    </label>
+                    <input
+                      type='date'
+                      value={fechIni}
+                      className='form-control py-2'
+                      onChange={(e) => setFechIni(e.target.value)}
+                    />
+                  
+                  </div>
+                  <div>
+                    <label htmlFor='fecha' className='form-label'>
+                      Fecha de Inicio
+                    </label>
+                    <input
+                      type='date'
+                      value={fechFin}
+                      className='form-control py-2'
+                      onChange={(e) => setFechFin(e.target.value)}
+                    />
+                  
+                  </div>
+                  <button
+                    type='button'
+                    onClick={onSearch}
+                    className='bg-green-600 hover:bg-green-800 text-white items-center text-center py-2 px-6 rounded-lg mt-2 md:mt-0'
+                  >
+                    Filtrar
+                  </button>
                 </div>
               </Card>
               <MapEvent isActive events={eventosAMostrar} />
@@ -197,7 +228,7 @@ export const Eventos = () => {
                 </div>
               </Card>
             </>
-            )
+          )
       }
     </>
   )

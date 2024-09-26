@@ -5,6 +5,7 @@ import { Categorias } from './pages/Categorias'
 import { Contactos } from './pages/contact/Contactos'
 import { CreateContactos } from './pages/contact/CreateContact'
 import { Usuarios } from './pages/user/Usuarios'
+import { Prensa} from './pages/prensa/Prensa'
 import { CreateUser } from './pages/user/CreateUser'
 import Layout from './layout/Layout'
 import Error from './pages/404'
@@ -135,27 +136,12 @@ function App () {
                   />
 
                   {/* Usuarios */}
-                  <Route
-                    path='usuarios' element={
-                      <ProtectedRoute>
-                        <Usuarios />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path='usuarios/crear' element={
-                      <ProtectedRoute>
-                        <CreateUser />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path='usuarios/editar/:id' element={
-                      <ProtectedRoute>
-                        <CreateUser />
-                      </ProtectedRoute>
-                    }
-                  />
+                  <Route path='usuarios' element={<Usuarios />} />
+                  <Route path='usuarios/crear' element={<CreateUser />} />
+                  <Route path='usuarios/editar/:id' element={<CreateUser />} />
+
+                  {/*Prensa */}
+                  <Route path='prensa' element={<Prensa />} />
                 </Route>
 
                 <Route path='/404' element={<Error />} />
