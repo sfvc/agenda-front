@@ -1,6 +1,7 @@
+/* eslint-disable camelcase */
 import { agendaApi } from '@/api'
 
-export const fetchEvents = async (page = 1, state = '', category = '') => {
+export const fetchEvents = async (page = 1, state = '', category = '', fecha_inicio = '', fecha_final = '') => {
   let url = '/evento?'
   if (state) {
     url += `estado=${state}&`
@@ -8,8 +9,15 @@ export const fetchEvents = async (page = 1, state = '', category = '') => {
   if (category) {
     url += `categoria_id=${category}&`
   }
+  if (fecha_inicio) {
+    url += `fecha_inicio=${fecha_inicio}&`
+  }
+  if (fecha_inicio) {
+    url += `fecha_final=${fecha_final}&`
+  }
   url += `page=${page}`
   const response = await agendaApi.get(url)
+  // console.log(response)
   return response.data
 }
 
