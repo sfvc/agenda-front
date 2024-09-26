@@ -55,35 +55,6 @@ const AgendaButton = ({ evento, onDelete }) => {
             </button>
           </Tooltip>
         )
-      case 'REALIZADO':
-        return (
-          <Tooltip content='Evento realizado' placement='top' arrow animation='shift-away'>
-            <button
-              className='bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-700'
-              onClick={() => onDelete(evento.id)}
-            >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                className='icon icon-tabler icon-tabler-checklist'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                fill='none'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              >
-                <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-                <path d='M9 6l2 2l4 -4' />
-                <path d='M9 12l2 2l4 -4' />
-                <path d='M4 6h3' />
-                <path d='M4 12h3' />
-                <path d='M4 18h16' />
-              </svg>
-            </button>
-          </Tooltip>
-        )
     }
   }
 

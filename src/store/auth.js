@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   status: 'checking', // authenticated, not-authenticated
+  googleAuth: false,
   user: {},
   errorMessage: ''
 }
@@ -16,14 +17,17 @@ export const authSlice = createSlice({
     onChecking: (state) => {
       state.status = 'checking'
       state.user = {}
+      state.googleAuth = false
     },
     handleLogin: (state, { payload }) => {
-      state.user = payload
+      state.user = payload.user
+      state.googleAuth = payload.googleAuth
       state.status = 'authenticated'
     },
     handleLogout: (state) => {
       state.status = 'not-authenticated'
       state.user = {}
+      state.googleAuth = false
     },
     setErrorMessage: (state, { payload }) => {
       state.errorMessage = payload

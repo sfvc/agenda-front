@@ -12,11 +12,11 @@ export const useAuthStore = () => {
     dispatch(onChecking())
 
     try {
-      const { data: { token, user } } = await agendaApi.post('/authentication/login', { username, password })
+      const { data: { access_token, user, googleAuth } } = await agendaApi.post('/authentication/login', { username, password })
 
       if (user) {
-        localStorage.setItem('token', token)
-        dispatch(handleLogin({ ...user }))
+        localStorage.setItem('token', access_token)
+        dispatch(handleLogin({ user, googleAuth }))
       } else {
         startLogout()
       }
@@ -38,13 +38,13 @@ export const useAuthStore = () => {
   }
 
   const checkAuthToken = async () => {
-    const token = localStorage.getItem('token')
-    if (!token) return dispatch(handleLogout())
+    const access_token = localStorage.getItem('token')
+    if (!access_token) return dispatch(handleLogout())
 
     try {
-      const { data: { token, user } } = await agendaApi.get('/authentication/profile')
-      localStorage.setItem('token', token)
-      dispatch(handleLogin({ ...user }))
+      const { data: { access_token, user, googleAuth } } = await agendaApi.get('/authentication/profile')
+      localStorage.setItem('token', access_token)
+      dispatch(handleLogin({ user, googleAuth }))
     } catch (error) {
       localStorage.clear()
       dispatch(handleLogout())

@@ -50,7 +50,7 @@ export const StageConsider = () => {
             <>
               <Card noborder>
                 <div className='mb-4 md:flex md:justify-between'>
-                  <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Pasar evento a Considerar</h1>
+                  <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Pasar evento a considerar</h1>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-1 md:grid-cols-2 gap-4'>
