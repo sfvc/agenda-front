@@ -29,6 +29,10 @@ const Sidebar = ({ user }) => {
   const [isSemiDark] = useSemiDark()
   // skin
   const [skin] = useSkin()
+
+  // google authenticacion
+
+
   return (
     <div className={isSemiDark ? 'dark' : ''}>
       <div
@@ -62,7 +66,9 @@ const Sidebar = ({ user }) => {
         >
           {/* Opciones de menu */}
           <Navmenu menus={menuNormal} />
+
         </SimpleBar>
+
       </div>
     </div>
   )
