@@ -17,7 +17,6 @@ export const fetchEvents = async (page = 1, state = '', category = '', fecha_ini
   }
   url += `page=${page}`
   const response = await agendaApi.get(url)
-  // console.log(response)
   return response.data
 }
 

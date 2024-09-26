@@ -15,6 +15,7 @@ import ViewButton from '@/components/buttons/ViewButton'
 import AgendaButton from '@/components/buttons/AgendaButton'
 import columnEventos from '@/json/columnsEventos.json'
 import RejectButton from '@/components/buttons/RejectButton'
+import { useSelector } from 'react-redux'
 
 const estados = [
   { id: 'PENDIENTE', nombre: 'Pendiente' },
@@ -30,8 +31,9 @@ export const Eventos = () => {
   const [category, setCategory] = useState('')
   const [fechIni, setFechIni] = useState('')
   const [fechFin, setFechFin] = useState('')
-
   const [currentPage, setCurrentPage] = useState(1)
+  const { user } = useSelector(state => state.auth)
+  const isGoogleAuthEnabled = user.googleAuth
   const [filteredEventos, setFilteredEventos] = useState([])
   const { data: eventos, isLoading, refetch } = useQuery({
     queryKey: ['eventos', currentPage],
@@ -134,50 +136,50 @@ export const Eventos = () => {
                     <button
                       type='button'
                       onClick={addEvento}
-                      className='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg'
+                      disabled={!isGoogleAuthEnabled}
+                      className={`bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg 
+  ${!isGoogleAuthEnabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       Agregar
                     </button>
                   </div>
                 </div>
-              </Card>
-              <Card>
-                <div className='flex flex-col md:flex-row gap-3 items-start md:items-end'>
+                <div className='flex flex-col md:flex-row gap-3 items-start md:items-end justify-center'>
                   <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
-                  <SelectForm title='Categorias' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
-                  <div>
-                    <label htmlFor='fecha' className='form-label'>
-                      Fecha de Inicio
-                    </label>
+                  <SelectForm title='Categorías' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
+
+                  <div className='flex flex-col'>
+                    <label htmlFor='fechaInicio' className='form-label'>Fecha de Inicio</label>
                     <input
                       type='date'
+                      id='fechaInicio'
                       value={fechIni}
                       className='form-control py-2'
                       onChange={(e) => setFechIni(e.target.value)}
                     />
-
                   </div>
-                  <div>
-                    <label htmlFor='fecha' className='form-label'>
-                      Fecha de Inicio
-                    </label>
+
+                  <div className='flex flex-col'>
+                    <label htmlFor='fechaFin' className='form-label'>Fecha de Fin</label>
                     <input
                       type='date'
+                      id='fechaFin'
                       value={fechFin}
                       className='form-control py-2'
                       onChange={(e) => setFechFin(e.target.value)}
                     />
-
                   </div>
+
                   <button
                     type='button'
                     onClick={onSearch}
-                    className='bg-green-600 hover:bg-green-800 text-white items-center text-center py-2 px-6 rounded-lg mt-2 md:mt-0'
+                    className='bg-green-600 hover:bg-green-800 text-white py-2 px-6 rounded-lg mt-2 md:mt-0'
                   >
                     Filtrar
                   </button>
                 </div>
               </Card>
+
               <MapEvent isActive events={eventosAMostrar} />
               <Card noborder>
                 <div className='overflow-x-auto -mx-6'>
@@ -227,7 +229,7 @@ export const Eventos = () => {
                                           <EditButton evento={evento} onEdit={onEdit} />
                                         )}
                                         <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
-                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
+                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && evento.estado !== 'A_REALIZAR' && (
                                           <RejectButton evento={evento} onReject={onReject} />
                                         )}
                                       </td>
