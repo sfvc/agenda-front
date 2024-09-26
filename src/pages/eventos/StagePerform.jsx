@@ -9,6 +9,7 @@ import { searchContactName, searchContactFunction, getContacts } from '@/service
 import { toast } from 'react-toastify'
 import { useQuery } from '@tanstack/react-query'
 import { SelectForm } from '@/components/agenda/forms'
+import { useForm } from 'react-hook-form'
 
 const columnContact = [
   {
@@ -43,7 +44,10 @@ const functions = [
 ]
 
 export const StagePerform = () => {
-  const [isSubmitting] = useState(false)
+  const {
+    formState: { isSubmitting },
+    handleSubmit
+  } = useForm()
   const navigate = useNavigate()
   const [tags, setTags] = useState('')
   const [search, setSearch] = useState('')
@@ -112,12 +116,12 @@ export const StagePerform = () => {
     }))
   }
 
-  const handleSubmit = async () => {
+  const onSubmit = async () => {
     const ids = obtenerIds(invitados)
     try {
       await nextStageEvent(id, { contactos: ids })
       navigate('/eventos')
-      toast.success('El evento paso al estado a Realizar')
+      toast.success('El evento paso al estado A REALIZAR')
     } catch (error) {
       console.error(error)
       toast.error('Hubo un error al intentar pasar el evento')
@@ -134,7 +138,7 @@ export const StagePerform = () => {
             <>
               <Card>
                 <div className='mb-4 md:flex md:justify-between'>
-                  <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Pasar evento a Realizar</h1>
+                  <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Pasar evento a realizar</h1>
                 </div>
               </Card>
               <Card>
@@ -263,7 +267,7 @@ export const StagePerform = () => {
                     text={isSubmitting ? 'Guardando' : 'Guardar'}
                     className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
                     disabled={isSubmitting}
-                    onClick={handleSubmit}
+                    onClick={handleSubmit(onSubmit)}
                   />
                 </div>
               </div>

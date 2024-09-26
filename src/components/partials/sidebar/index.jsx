@@ -6,6 +6,7 @@ import SimpleBar from 'simplebar-react'
 import useSidebar from '@/hooks/useSidebar'
 import useSemiDark from '@/hooks/useSemiDark'
 import useSkin from '@/hooks/useSkin'
+import GoogleAuth from '../../../pages/auth/GoogleAuth'
 
 const Sidebar = ({ user }) => {
   const scrollableNodeRef = useRef()
@@ -22,7 +23,7 @@ const Sidebar = ({ user }) => {
     scrollableNodeRef.current.addEventListener('scroll', handleScroll)
   }, [scrollableNodeRef])
 
-  const [collapsed, setMenuCollapsed] = useSidebar()
+  const [collapsed] = useSidebar()
   const [menuHover, setMenuHover] = useState(false)
 
   // semi dark option
@@ -30,22 +31,14 @@ const Sidebar = ({ user }) => {
   // skin
   const [skin] = useSkin()
 
-  // google authenticacion
-
-
   return (
     <div className={isSemiDark ? 'dark' : ''}>
       <div
-        className={`sidebar-wrapper bg-white  dark:bg-slate-800     ${
+        className={`sidebar-wrapper bg-white dark:bg-slate-800 ${
           collapsed ? 'w-[72px] close_sidebar' : 'w-[248px]'
-        }
-      ${menuHover ? 'sidebar-hovered' : ''}
-      ${
-        skin === 'bordered'
-          ? 'border-r border-slate-200 dark:border-slate-700'
-          : 'shadow-base'
-      }
-      `}
+        } ${menuHover ? 'sidebar-hovered' : ''} ${
+          skin === 'bordered' ? 'border-r border-slate-200 dark:border-slate-700' : 'shadow-base'
+        }`}
         onMouseEnter={() => {
           setMenuHover(true)
         }}
@@ -55,20 +48,15 @@ const Sidebar = ({ user }) => {
       >
         <SidebarLogo menuHover={menuHover} />
         <div
-          className={`h-[60px]  absolute top-[80px] nav-shadow z-[1] w-full transition-all duration-200 pointer-events-none ${
+          className={`h-[60px] absolute top-[80px] nav-shadow z-[1] w-full transition-all duration-200 pointer-events-none ${
             scroll ? ' opacity-100' : ' opacity-0'
           }`}
         />
-
-        <SimpleBar
-          className='sidebar-menu px-4 h-[calc(100%-80px)]'
-          scrollableNodeProps={{ ref: scrollableNodeRef }}
-        >
+        <SimpleBar className='sidebar-menu px-4 h-[calc(100%-80px)]' scrollableNodeProps={{ ref: scrollableNodeRef }}>
           {/* Opciones de menu */}
           <Navmenu menus={menuNormal} />
-
+          <GoogleAuth />
         </SimpleBar>
-
       </div>
     </div>
   )

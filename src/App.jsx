@@ -51,7 +51,6 @@ function App () {
                     }
                   />
                   <Route path='*' element={<Navigate to='/404' />} />
-                  <Route path='auth/sucess' element={<p> te autenticaste </p>} />
                   {/* Eventos */}
                   <Route
                     path='eventos' element={
