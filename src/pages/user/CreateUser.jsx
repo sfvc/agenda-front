@@ -27,6 +27,7 @@ export const CreateUser = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [, setFormData] = useState(initialForm)
+  const [currentPage] = useState(1)
   const navigate = useNavigate()
   const { id } = useParams()
   const {
@@ -196,7 +197,7 @@ export const CreateUser = () => {
                     <div className='ltr:text-right rtl:text-left'>
                       <button
                         className='btn-danger items-center text-center py-2 px-6 rounded-lg'
-                        onClick={() => navigate('/usuarios')}
+                        onClick={() => navigate(`/usuarios?page=${currentPage}`)}
                       >
                         Volver
                       </button>

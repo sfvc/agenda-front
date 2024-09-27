@@ -31,7 +31,6 @@ export const Eventos = () => {
   const [category, setCategory] = useState('')
   const [fechIni, setFechIni] = useState('')
   const [fechFin, setFechFin] = useState('')
-
   const [currentPage, setCurrentPage] = useState(1)
   const { googleAuth } = useSelector(state => state.auth)
   const [filteredEventos, setFilteredEventos] = useState([])
@@ -54,23 +53,23 @@ export const Eventos = () => {
   }
 
   function addEvento () {
-    navigate('/eventos/crear')
+    navigate(`/eventos/crear?page=${currentPage}`)
   }
 
   async function showEvento (id) {
     await onEdit(id)
-    navigate(`/eventos/ver/${id}`)
+    navigate(`/eventos/ver/${id}?page=${currentPage}`)
   }
 
   async function onEdit (id) {
-    navigate(`/eventos/editar/${id}`)
+    navigate(`/eventos/editar/${id}?page=${currentPage}`)
   }
 
   async function onDelete (id, estado) {
     if (estado === 'PENDIENTE') {
-      navigate(`/eventos/estado_considerar/${id}`)
+      navigate(`/eventos/estado_considerar/${id}?page=${currentPage}`)
     } else if (estado === 'A_CONSIDERAR') {
-      navigate(`/eventos/estado_realizar/${id}`)
+      navigate(`/eventos/estado_realizar/${id}?page=${currentPage}`)
     } else if (estado === 'A_REALIZAR') {
       try {
         await nextStageEvent(id)

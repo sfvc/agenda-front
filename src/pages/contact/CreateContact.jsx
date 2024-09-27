@@ -31,6 +31,7 @@ const functions = [
 export const CreateContactos = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [, setFormData] = useState(initialForm)
+  const [currentPage] = useState(1)
   const navigate = useNavigate()
   const { id } = useParams()
   const {
@@ -158,7 +159,7 @@ export const CreateContactos = () => {
                     <div className='ltr:text-right rtl:text-left'>
                       <button
                         className='btn-danger items-center text-center py-2 px-6 rounded-lg'
-                        onClick={() => navigate('/contactos')}
+                        onClick={() => navigate(`/contactos?page=${currentPage}`)}
                       >
                         Volver
                       </button>

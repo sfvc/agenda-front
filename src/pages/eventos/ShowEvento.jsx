@@ -18,6 +18,7 @@ export const ShowEvento = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [position, setPosition] = useState(initialPosition)
   const [activeEvento, setActiveEvento] = useState(null)
+  const [currentPage] = useState(1)
   const navigate = useNavigate()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
@@ -290,7 +291,7 @@ export const ShowEvento = () => {
                   </div>
 
                   <div className='mt-4 flex justify-end gap-4'>
-                    <button className='btn-danger items-center text-center py-2 px-6 rounded-lg' onClick={() => navigate('/eventos')}>
+                    <button className='btn-danger items-center text-center py-2 px-6 rounded-lg' onClick={() => navigate(`/eventos?page=${currentPage}`)}>
                       Volver
                     </button>
                     {activeEvento.estado !== 'RECHAZADO' && (

@@ -49,6 +49,7 @@ export const Create = () => {
   const [position, setPosition] = useState(initialPosition)
   const { id } = useParams()
   const navigate = useNavigate()
+  const [currentPage] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
   const [, setFormData] = useState(initialForm)
   const { data: categorias } = useQuery({
@@ -285,7 +286,7 @@ export const Create = () => {
               <div className='ltr:text-right rtl:text-left'>
                 <button
                   className='btn-danger items-center text-center py-2 px-6 rounded-lg'
-                  onClick={() => navigate('/eventos')}
+                  onClick={() => navigate(`/eventos?page=${currentPage}`)}
                 >
                   Volver
                 </button>
