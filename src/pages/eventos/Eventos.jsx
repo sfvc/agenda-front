@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getEventos, nextStageEvent, rejectEvent } from '@/services/eventService'
@@ -32,8 +32,8 @@ export const Eventos = () => {
   const [fechIni, setFechIni] = useState('')
   const [fechFin, setFechFin] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
-  const { user } = useSelector(state => state.auth)
-  const isGoogleAuthEnabled = user.googleAuth
+  const { user, googleAuth } = useSelector(state => state.auth)
+  // const isGoogleAuthEnabled = user.googleAuth
   const [filteredEventos, setFilteredEventos] = useState([])
   const { data: eventos, isLoading, refetch } = useQuery({
     queryKey: ['eventos', currentPage],
@@ -53,20 +53,20 @@ export const Eventos = () => {
     return <Loading />
   }
 
-  function addEvento () {
+  function addEvento() {
     navigate('/eventos/crear')
   }
 
-  async function showEvento (id) {
+  async function showEvento(id) {
     await onEdit(id)
     navigate(`/eventos/ver/${id}`)
   }
 
-  async function onEdit (id) {
+  async function onEdit(id) {
     navigate(`/eventos/editar/${id}`)
   }
 
-  async function onDelete (id, estado) {
+  async function onDelete(id, estado) {
     if (estado === 'PENDIENTE') {
       navigate(`/eventos/estado_considerar/${id}`)
     } else if (estado === 'A_CONSIDERAR') {
@@ -89,7 +89,7 @@ export const Eventos = () => {
     }
   }
 
-  async function onReject (id) {
+  async function onReject(id) {
     try {
       await rejectEvent(id)
       toast.success('El evento se desestimo')
@@ -100,12 +100,12 @@ export const Eventos = () => {
     }
   }
 
-  async function onSearch () {
+  async function onSearch() {
     const myEventos = await getEventos(currentPage, state, category, fechIni, fechFin)
     setFilteredEventos(myEventos.items)
   }
 
-  function separarTresPrimerosElementos (cadena) {
+  function separarTresPrimerosElementos(cadena) {
     const elementos = cadena.split(',').map(elemento => elemento.trim())
     const primerosTres = elementos.slice(0, 3)
     const resultadoEnCadena = primerosTres.join(', ')
@@ -120,6 +120,10 @@ export const Eventos = () => {
       return 'Dirección no disponible'
     }
   }
+
+
+
+
 
   return (
     <>
@@ -136,9 +140,9 @@ export const Eventos = () => {
                     <button
                       type='button'
                       onClick={addEvento}
-                      disabled={!isGoogleAuthEnabled}
+                      disabled={!googleAuth}
                       className={`bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg 
-  ${!isGoogleAuthEnabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+  ${!googleAuth ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       Agregar
                     </button>
@@ -199,17 +203,17 @@ export const Eventos = () => {
                           {
                             (eventosAMostrar.length > 0)
                               ? (eventosAMostrar.map((evento) => {
-                                  return (
-                                    <tr key={evento.id}>
-                                      <td className='table-td'>{evento.id}</td>
-                                      <td className='table-td'>{evento.nombre_solicitante}</td>
-                                      <td className='table-td'>{evento.telefono_solicitante}</td>
-                                      <td className='table-td max-w-96'>{parseUbicacion(evento.ubicacion)}</td>
-                                      <td className='table-td'>{formatDate(evento.fecha)}</td>
-                                      <td className='table-td'>{evento.categoria?.nombre}</td>
-                                      <td className='table-td'>
-                                        <span
-                                          className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 
+                                return (
+                                  <tr key={evento.id}>
+                                    <td className='table-td'>{evento.id}</td>
+                                    <td className='table-td'>{evento.nombre_solicitante}</td>
+                                    <td className='table-td'>{evento.telefono_solicitante}</td>
+                                    <td className='table-td max-w-96'>{parseUbicacion(evento.ubicacion)}</td>
+                                    <td className='table-td'>{formatDate(evento.fecha)}</td>
+                                    <td className='table-td'>{evento.categoria?.nombre}</td>
+                                    <td className='table-td'>
+                                      <span
+                                        className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 
                                             ${evento.estado === 'A_REALIZAR'
                                             ? 'text-black bg-indigo-500 dark:bg-indigo-400'
                                             : evento.estado === 'PENDIENTE'
@@ -219,23 +223,23 @@ export const Eventos = () => {
                                                 : evento.estado === 'RECHAZADO'
                                                   ? 'text-black bg-red-500 dark:bg-red-400'
                                                   : 'text-black bg-warning-500 dark:bg-warning-500'}`}
-                                        >
-                                          {evento.estado}
-                                        </span>
-                                      </td>
-                                      <td className='table-td flex gap-2'>
-                                        <ViewButton evento={evento} onView={showEvento} />
-                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
-                                          <EditButton evento={evento} onEdit={onEdit} />
-                                        )}
-                                        <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
-                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && evento.estado !== 'A_REALIZAR' && (
-                                          <RejectButton evento={evento} onReject={onReject} />
-                                        )}
-                                      </td>
-                                    </tr>
-                                  )
-                                }))
+                                      >
+                                        {evento.estado}
+                                      </span>
+                                    </td>
+                                    <td className='table-td flex gap-2'>
+                                      <ViewButton evento={evento} onView={showEvento} />
+                                      {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
+                                        <EditButton evento={evento} onEdit={onEdit} />
+                                      )}
+                                      <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
+                                      {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && evento.estado !== 'A_REALIZAR' && (
+                                        <RejectButton evento={evento} onReject={onReject} />
+                                      )}
+                                    </td>
+                                  </tr>
+                                )
+                              }))
                               : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
                           }
                         </tbody>
@@ -258,7 +262,7 @@ export const Eventos = () => {
                 </div>
               </Card>
             </>
-            )
+          )
       }
     </>
   )
