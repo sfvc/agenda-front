@@ -15,6 +15,7 @@ import ViewButton from '@/components/buttons/ViewButton'
 import AgendaButton from '@/components/buttons/AgendaButton'
 import columnEventos from '@/json/columnsEventos.json'
 import RejectButton from '@/components/buttons/RejectButton'
+import { useSelector } from 'react-redux'
 
 const estados = [
   { id: 'PENDIENTE', nombre: 'Pendiente' },
@@ -32,6 +33,7 @@ export const Eventos = () => {
   const [fechFin, setFechFin] = useState('')
 
   const [currentPage, setCurrentPage] = useState(1)
+  const { googleAuth } = useSelector(state => state.auth)
   const [filteredEventos, setFilteredEventos] = useState([])
   const { data: eventos, isLoading, refetch } = useQuery({
     queryKey: ['eventos', currentPage],
@@ -134,7 +136,9 @@ export const Eventos = () => {
                     <button
                       type='button'
                       onClick={addEvento}
-                      className='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg'
+                      disabled={!googleAuth}
+                      className={`bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg 
+  ${!googleAuth ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       Agregar
                     </button>
