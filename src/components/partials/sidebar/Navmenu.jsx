@@ -17,17 +17,15 @@ const Navmenu = ({ menus }) => {
 
   const location = useLocation()
   const locationName = location.pathname.replace('/', '')
-  const dispatch = useDispatch()
+
   useEffect(() => {
     let submenuIndex = null
     menus.map((item, i) => {
-      if (!item.child) return
+      if (!item.child) { return }
       if (item.link === locationName) {
         submenuIndex = null
       } else {
-        const ciIndex = item.child.findIndex(
-          (ci) => ci.childlink === locationName
-        )
+        const ciIndex = item.child.findIndex((ci) => ci.childlink === locationName)
         if (ciIndex !== -1) {
           submenuIndex = i
         }
@@ -44,14 +42,14 @@ const Navmenu = ({ menus }) => {
         {menus.map((item, i) => (
           <li
             key={i}
-            className={` single-sidebar-menu 
+            className={`single-sidebar-menu 
               ${item.child ? 'item-has-children' : ''}
               ${activeSubmenu === i ? 'open' : ''}
               ${locationName === item.link ? 'menu-item-active' : ''}`}
           >
-            {/* single menu with no childred */}
+            {/* Enlace sin hijos */}
             {!item.child && !item.isHeadr && (
-              <NavLink className='menu-link' to={item.link}>
+              <NavLink className='menu-link' to={item.link} target={item.target} rel={item.target === '_blank' ? 'noopener noreferrer' : undefined}>
                 <span className='menu-icon flex-grow-0'>
                   <Icon icon={item.icon} />
                 </span>
@@ -59,17 +57,17 @@ const Navmenu = ({ menus }) => {
                 {item.badge && <span className='menu-badge'>{item.badge}</span>}
               </NavLink>
             )}
-            {/* only for menulabel */}
+
+            {/* Solo para encabezados */}
             {item.isHeadr && !item.child && (
               <div className='menulabel'>{item.title}</div>
             )}
-            {/*    !!sub menu parent   */}
+
+            {/* Submenú */}
             {item.child && (
               <div
                 className={`menu-link ${
-                  activeSubmenu === i
-                    ? 'parent_active not-collapsed'
-                    : 'collapsed'
+                  activeSubmenu === i ? 'parent_active not-collapsed' : 'collapsed'
                 }`}
                 onClick={() => toggleSubmenu(i)}
               >
@@ -91,23 +89,19 @@ const Navmenu = ({ menus }) => {
               </div>
             )}
             <Collapse isOpened={activeSubmenu === i}>
-              <ul className='sub-menu '>
+              <ul className='sub-menu'>
                 {item.child?.map((subItem, j) => (
                   <li key={j} className='block pl-4 pr-1 mb-4 first:mt-4'>
                     <NavLink to={subItem.childlink}>
                       {({ isActive }) => (
                         <span
                           className={`${
-                            isActive
-                              ? ' text-black dark:text-white font-medium'
-                              : 'text-slate-600 dark:text-slate-300'
+                            isActive ? ' text-black dark:text-white font-medium' : 'text-slate-600 dark:text-slate-300'
                           } text-sm flex space-x-3 items-center transition-all duration-150`}
                         >
                           <span
                             className={`${
-                              isActive
-                                ? ' bg-slate-900 dark:bg-slate-300 ring-4 ring-opacity-[15%] ring-black-500 dark:ring-slate-300 dark:ring-opacity-20'
-                                : ''
+                              isActive ? ' bg-slate-900 dark:bg-slate-300 ring-4 ring-opacity-[15%] ring-black-500 dark:ring-slate-300 dark:ring-opacity-20' : ''
                             } h-2 w-2 rounded-full border border-slate-600 dark:border-white inline-block flex-none`}
                           />
                           <span className='flex-1'>{subItem.childtitle}</span>
