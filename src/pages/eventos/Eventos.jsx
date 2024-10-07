@@ -28,6 +28,7 @@ const estados = [
 export const Eventos = () => {
   const navigate = useNavigate()
   const [state, setState] = useState('')
+  const [buttonFilter, setButtonFilter] = useState(false)
   const [category, setCategory] = useState('')
   const [fechIni, setFechIni] = useState('')
   const [fechFin, setFechFin] = useState('')
@@ -101,8 +102,15 @@ export const Eventos = () => {
   }
 
   async function onSearch() {
+    setButtonFilter(true)
     const myEventos = await getEventos(currentPage, state, category, fechIni, fechFin)
+
+
+    if (myEventos.items.length === 0) {
+      toast.error('Sin resultados filtrados')
+    }
     setFilteredEventos(myEventos.items)
+    setButtonFilter(false)
   }
 
   function separarTresPrimerosElementos(cadena) {
@@ -120,8 +128,6 @@ export const Eventos = () => {
       return 'Dirección no disponible'
     }
   }
-
-
 
 
 
@@ -177,9 +183,10 @@ export const Eventos = () => {
                   <button
                     type='button'
                     onClick={onSearch}
-                    className='bg-green-600 hover:bg-green-800 text-white py-2 px-6 rounded-lg mt-2 md:mt-0'
+                    disabled={buttonFilter}
+                    className={`${buttonFilter ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-800'} text-white py-2 px-6 rounded-lg mt-2 md:mt-0`}
                   >
-                    Filtrar
+                    {buttonFilter ? "Cargando..." : "Filtrar"}
                   </button>
                 </div>
               </Card>

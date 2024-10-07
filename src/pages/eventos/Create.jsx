@@ -13,7 +13,7 @@ import Textarea from '@/components/ui/Textarea'
 import DatePicker from '@/components/ui/DatePicker'
 import BasicMap from '@/components/basicMap'
 import { toast } from 'react-toastify'
-
+import { LabelsSelect } from '../../components/agenda/forms/LabelsSelect'
 const initialForm = {
   nombre_solicitante: '',
   email_solicitante: '',
@@ -25,20 +25,11 @@ const initialForm = {
   location: '',
   summary: '',
   barrio: '',
-  circuito: ''
+  circuito: '',
+  etiquetas_ids:[]
 }
 
-const circuitosElectoral = [
-  { id: 1, nombre: 'Circuito N°1' },
-  { id: 2, nombre: 'Circuito N°2' },
-  { id: 3, nombre: 'Circuito N°3' },
-  { id: 4, nombre: 'Circuito N°4' },
-  { id: 5, nombre: 'Circuito N°5' },
-  { id: 6, nombre: 'Circuito N°6' },
-  { id: 7, nombre: 'Circuito N°7' },
-  { id: 8, nombre: 'Circuito N°8' },
-  { id: 9, nombre: 'Circuito N°9' }
-]
+
 
 const initialPosition = {
   latitud: -28.46867672033115,
@@ -50,6 +41,7 @@ export const Create = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
+  const [etiquetas,setEtiquetas] = useState([])
   const [, setFormData] = useState(initialForm)
   const { data: categorias } = useQuery({
     queryKey: ['categoria'],
@@ -83,6 +75,7 @@ export const Create = () => {
 
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
+
     try {
       if (!id) {
         await createEvento(items)
@@ -98,14 +91,24 @@ export const Create = () => {
     }
   }
 
-  const handlePolygons = (barrio) => {
-    setValue('barrio', barrio)
+  const handleNeight = (e) => {
+    setValue('barrio', e)
+  }
+
+  const handleCircuit = (e) => {
+    setValue('circuito', e)
+  }
+
+  const handleLabels = (e) => {
+    setValue('etiquetas_ids',e)
+   
   }
 
   const loadEvento = async () => {
     if (id) {
       try {
         const evento = await getEventoById(id)
+        setEtiquetas(evento.etiquetas)
         setValue('nombre_solicitante', evento.nombre_solicitante)
         setValue('email_solicitante', evento.email_solicitante)
         setValue('telefono_solicitante', evento.telefono_solicitante)
@@ -119,6 +122,7 @@ export const Create = () => {
         setTimeout(() => {
           setValue('barrio', evento.barrio)
         }, 100)
+        setValue('etiquetas_ids',evento.etiquetas)
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
@@ -135,7 +139,7 @@ export const Create = () => {
       {isLoading
         ? (
           <Loading className='mt-28 md:mt-64' />
-          )
+        )
         : (
           <div>
             <Card>
@@ -265,20 +269,29 @@ export const Create = () => {
                     errors={errors.barrio}
                   />
                 </div>
-
-                <SelectForm
-                  register={register('circuito')}
-                  title='Circuito Electoral'
-                  options={circuitosElectoral}
-                  errors={errors.circuito}
-                  onChange={handleChange}
-                />
+                <div>
+                  <label htmlFor='circuito' className='form-label'>
+                    Circuito
+                  </label>
+                  <Textinput
+                    name='circuito'
+                    type='text'
+                    readonly
+                    placeholder='El circuito se carga a partir del mapa'
+                    register={register}
+                    errors={errors.circuito}
+                  />
+                </div>
 
               </form>
+
             </Card>
 
+            <Card>
+              <LabelsSelect handleLabels={handleLabels} oldLabels={etiquetas} />
+            </Card>
             <div className='h-96 w-full'>
-              <BasicMap onLocationChange={handleLocationChange} handlePolygons={handlePolygons} editPosition={position} />
+              <BasicMap onLocationChange={handleLocationChange} handleNeight={handleNeight} editPosition={position} handleCircuit={handleCircuit} />
             </div>
 
             <div className='flex justify-end gap-4 mt-8'>
@@ -301,7 +314,7 @@ export const Create = () => {
               </div>
             </div>
           </div>
-          )}
+        )}
     </>
   )
 }

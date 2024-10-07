@@ -1,17 +1,19 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable eqeqeq */
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, Polygon } from 'react-leaflet'
 import React, { useState, useEffect, useRef } from 'react'
 import { features } from '@/json/barrios.json'
+import data from "@/json/circuitos_electorales.json"
 import 'leaflet/dist/leaflet.css'
 import * as turf from '@turf/turf'
 
-const BasicMap = ({ onLocationChange, isActive, editPosition, handlePolygons }) => {
+const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, handleCircuit }) => {
   const initialPosition = {
     latitud: -28.46867672033115,
     longitud: -65.77899050151645
   }
   const [geoData, setGeoData] = useState([])
+  const [geoCircuitos, setGeoCircuitos] = useState([])
   const previousPosition = useRef(initialPosition)
   const [address, setAddress] = useState('')
 
@@ -30,8 +32,13 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handlePolygons }) 
   }
 
   const invertirCoordenadas = (array) => {
-    return array.map(coordenada => [coordenada[1], coordenada[0]])
-  }
+    const coords = array.map(coordenada => [coordenada[1], coordenada[0]]);
+    // Asegúrate de que la primera y la última coordenadas sean iguales
+    if (coords.length > 0 && (coords[0][0] !== coords[coords.length - 1][0] || coords[0][1] !== coords[coords.length - 1][1])) {
+      coords.push(coords[0]);
+    }
+    return coords;
+  };
 
   const [position, setPosition] = useState(() => {
     if (editPosition) {
@@ -41,21 +48,30 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handlePolygons }) 
   })
 
   useEffect(() => {
-    features.forEach(ft => {
-      const coords = ft.geometry.coordinates[0]
-      const id = ft.properties.id
-      const zona = ft.properties.zona
-      const barrio = ft.properties.barrio
-      const coordenadasInvertidas = invertirCoordenadas(coords)
-      const poli = {
-        id,
-        zona,
-        barrio,
-        coords: coordenadasInvertidas
-      }
-      setGeoData(prevGeoData => [...prevGeoData, poli])
-    })
-  }, [])
+    const geoDataTemp = features.map(ft => {
+      const coords = invertirCoordenadas(ft.geometry.coordinates[0]);
+      return {
+        id: ft.properties.id,
+        zona: ft.properties.zona,
+        barrio: ft.properties.barrio,
+        coords,
+      };
+    });
+
+    setGeoData(geoDataTemp);
+
+    const geoCircuitosTemp = data.features.map(ft => {
+      const coords = invertirCoordenadas(ft.geometry.coordinates[0]);
+      return {
+        id: ft.properties.id,
+        circuito: ft.properties.circuitos,
+        coords,
+      };
+    });
+
+    setGeoCircuitos(geoCircuitosTemp);
+  }, []);
+
 
   useEffect(() => {
     const getAddressFromCoordinates = async (lat, lng) => {
@@ -80,38 +96,49 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handlePolygons }) 
     }
   }, [position, onLocationChange, isActive])
 
+
+
   useEffect(() => {
-    let isPointInsideAnyPolygon = false
-
-    // Recorremos cada polígono y verificamos si el punto está dentro de ellos
-    geoData.forEach((polygonCoords, index) => {
-      // Creamos el polígono de turf.js
-      const polygon = turf.polygon([[...polygonCoords.coords]])
-      const barrio = polygonCoords.barrio
-      // Usamos la función booleanPointInPolygon de turf.js
-      if (turf.booleanPointInPolygon(position, polygon)) {
-        isPointInsideAnyPolygon = true
-
-        handlePolygons(barrio)
+    let found = false;
+    for (const polygonCoords of geoCircuitos) {
+      // Asegúrate de que polygonCoords.coords tiene 4 o más posiciones
+      if (polygonCoords.coords.length >= 4) {
+        const polygon = turf.polygon([polygonCoords.coords]);
+        if (turf.booleanPointInPolygon(position, polygon)) {
+          handleCircuit( polygonCoords.circuito );
+          found = true;
+          break;
+        }
       }
-    })
-
-    if (!isPointInsideAnyPolygon) {
-      handlePolygons('')
     }
-  }, [position])
-
+    if (!found) {
+      handleCircuit('');
+    }
+  }, [position, geoCircuitos]);
+useEffect(() => {
+    let found = false;
+    for (const polygonCoords of geoData) {
+      const polygon = turf.polygon([[...polygonCoords.coords]]);
+      if (turf.booleanPointInPolygon(position, polygon)) {
+        handleNeight( polygonCoords.barrio );
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      handleNeight('');
+    }
+  }, [position]);
   return (
     <div className='h-full'>
-      {geoData !=
-      []
+      {geoCircuitos.length > 0
         ? <MapContainer
-            center={position}
-            zoom={16}
-            scrollWheelZoom
-            style={{ height: '100%', width: '100%' }}
-            onClick={handleMapClick}
-          >
+          center={position}
+          zoom={16}
+          scrollWheelZoom
+          style={{ height: '100%', width: '100%' }}
+          onClick={handleMapClick}
+        >
           <TileLayer
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -126,20 +153,12 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handlePolygons }) 
           >
             <Popup>{address}</Popup>
           </Marker>
-          {
-            // geoData.map((item, index) =>
-            //   <Polygon positions={item?.coords} key={index}
-
-            //   />
-            // )
-
-            // <Polygon positions={geoData[0]?.coords} pathOptions={polygonStyle} ref={polygonRef} />
-          }
-
         </MapContainer>
-        : ''}
+        : null}
     </div>
   )
 }
 
 export default BasicMap
+
+

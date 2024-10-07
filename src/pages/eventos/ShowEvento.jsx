@@ -29,6 +29,7 @@ export const ShowEvento = () => {
     setIsLoading(true)
     try {
       const evento = await fetchEventById(id)
+      console.log(evento.etiquetas);
       setActiveEvento(evento)
       setPosition(JSON.parse(evento.ubicacion))
     } catch (error) {
@@ -72,6 +73,7 @@ export const ShowEvento = () => {
                     />
                   }
                 />
+
                 <div className='grid grid-cols-1 md:grid-cols-12 grid-rows-4 gap-6'>
                   <div className='md:col-span-4 col-span-1 row-span-4'>
                     <Card>
@@ -242,15 +244,32 @@ export const ShowEvento = () => {
                             </div>
                           </li> */}
                       </ul>
+                      {activeEvento.etiquetas.length > 0 ?
+                        <div className='w-full flex flex-wrap items-start text-sm font-medium mt-5'>
+                          {activeEvento.etiquetas.map((etiqueta) => {
+                            return (
+                              <span className="bg-base-100 border  text-md font-medium me-2 group font-mono  p-2 rounded-lg dark:bg-purple-900 dark:text-purple-300 flex uppercase"><p className='text-blue-500  font-semibold'>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+                              </svg>
+                              </p>{etiqueta.nombre}  </span>
+                            )
+                          })}
+
+                        </div>
+                        : null}
                     </Card>
                   </div>
 
                   <div className={`row-span-4 ${activeEvento.contactos.length === 0 ? 'md:col-span-8 col-span-1' : 'md:col-span-4 col-span-1'}`}>
+
                     <BasicMap
                       editPosition={position}
                       onLocationChange={() => { }}
                       isActive={activeEvento?.estado}
                       handlePolygons={handlePolygons}
+                      handleNeight={() => console.log()}
+                      handleCircuit={() => console.log()}
                     />
                   </div>
 
@@ -305,14 +324,15 @@ export const ShowEvento = () => {
                   )}
                 </div>
 
-                <div className='mt-4 flex justify-end gap-4'>
+                <div className='mt-4 flex justify-end items-end gap-4 '>
+
                   <button className='btn-danger items-center text-center py-2 px-6 rounded-lg' onClick={() => navigate('/eventos')}>
                     Volver
                   </button>
                   <button
                     type='button'
                     onClick={handleOpenModal}
-                    className='bg-blue-600 hover:bg-blue-800 text-white py-2 px-6 rounded-lg'
+                    className='bg-blue-600 hover:bg-blue-800 text-white py-2 px-6 rounded-lg max-h-10 min-w-max'
                   >
                     Agregar Documentos
                   </button>
@@ -325,3 +345,4 @@ export const ShowEvento = () => {
     </>
   )
 }
+

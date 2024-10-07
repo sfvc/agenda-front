@@ -3,16 +3,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
 
 export const MapEvent = ({ isActive, events }) => {
-
-
     const initialPosition = [
         -28.46867672033115,
         -65.77899050151645
     ]
-
-
-
-
 
     const extractUbicaciones = (list) => {
         return list.map(item => {
