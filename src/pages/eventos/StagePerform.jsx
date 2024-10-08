@@ -120,7 +120,7 @@ export const StagePerform = () => {
     const ids = obtenerIds(invitados)
     try {
       await nextStageEvent(id, { contactos: ids })
-      navigate('/eventos')
+      navigate(`/eventos?page=${currentPage}`)
       toast.success('El evento paso al estado A REALIZAR')
     } catch (error) {
       console.error(error)
@@ -256,7 +256,7 @@ export const StagePerform = () => {
                 <div className='ltr:text-right rtl:text-left'>
                   <button
                     className='btn-danger items-center text-center py-2 px-6 rounded-lg'
-                    onClick={() => navigate('/eventos')}
+                    onClick={() => navigate(`/eventos?page=${currentPage}`)}
                   >
                     Volver
                   </button>

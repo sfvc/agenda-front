@@ -27,8 +27,8 @@ export const searchContactFunction = async (name) => {
   return response.data
 }
 
-export const updateContact = async (id, contact) => {
-  const response = await agendaApi.patch(`/contacto/${id}`, contact)
+export const updateContact = async (id, contact, page) => {
+  const response = await agendaApi.patch(`/contacto/${id}?page=${page}`, contact)
 
   return response.data
 }

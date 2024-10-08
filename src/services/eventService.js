@@ -20,13 +20,13 @@ export const fetchEvents = async (page = 1, state = '', category = '', fecha_ini
   return response.data
 }
 
-export const fetchEventById = async (id) => {
-  const response = await agendaApi.get(`/evento/${id}`)
+export const fetchEventById = async (id, page) => {
+  const response = await agendaApi.get(`/evento/${id}?page=${page}`)
   return response.data
 }
 
-export const createEvent = async (event) => {
-  const response = await agendaApi.post('/evento', event)
+export const createEvent = async (event, page) => {
+  const response = await agendaApi.post(`/evento?page=${page}`, event)
   return response.data
 }
 
@@ -36,21 +36,21 @@ export const updateEvent = async (id, event) => {
   return response.data
 }
 
-export const nextStageEvent = async (id, event) => {
-  const response = await agendaApi.post(`/evento/${id}/nextstage`, event)
+export const nextStageEvent = async (id, event, page) => {
+  const response = await agendaApi.post(`/evento/${id}/nextstage?page=${page}`, event)
   return response
 }
 
-export const deleteEvent = async (id) => {
-  await agendaApi.delete(`/evento/${id}`)
+export const deleteEvent = async (id, page) => {
+  await agendaApi.delete(`/evento/${id}?page=${page}`)
 }
 
-export const rejectEvent = async (id) => {
-  await agendaApi.post(`/evento/${id}/rechazar`)
+export const rejectEvent = async (id, page) => {
+  await agendaApi.post(`/evento/${id}/rechazar?page=${page}`)
 }
 
-export const documentEvent = async (id, document) => {
-  const response = await agendaApi.put(`/evento/${id}/documentos`, { documentos: document })
+export const documentEvent = async (id, document, page) => {
+  const response = await agendaApi.put(`/evento/${id}/documentos?page=${page}`, { documentos: document })
   return response.status
 }
 

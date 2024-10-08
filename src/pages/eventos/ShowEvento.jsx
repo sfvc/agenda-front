@@ -18,6 +18,7 @@ export const ShowEvento = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [position, setPosition] = useState(initialPosition)
   const [activeEvento, setActiveEvento] = useState(null)
+  const [currentPage] = useState(1)
   const navigate = useNavigate()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
@@ -230,16 +231,16 @@ export const ShowEvento = () => {
 
                         {/* <li className='flex space-x-3 rtl:space-x-reverse'>
                             <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
-                              <Icon icon='heroicons:information-circle' />
+                              <Icon icon='heroicons:clipboard-document-check' />
                             </div>
                             <div className='flex-1'>
                               <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                                DETALLE DE PLANIFICACION
+                                ID
                               </div>
                               <span
                                 className='text-base text-slate-600 dark:text-slate-50'
                               >
-                                {activeEvento.detalle_planificacion || '-'}
+                                N° {activeEvento.id}
                               </span>
                             </div>
                           </li> */}
@@ -249,9 +250,9 @@ export const ShowEvento = () => {
                           {activeEvento.etiquetas.map((etiqueta) => {
                             return (
                               <span className="bg-base-100 border  text-md font-medium me-2 group font-mono  p-2 rounded-lg dark:bg-purple-900 dark:text-purple-300 flex uppercase"><p className='text-blue-500  font-semibold'>
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
-                              </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+                                </svg>
                               </p>{etiqueta.nombre}  </span>
                             )
                           })}
@@ -272,27 +273,158 @@ export const ShowEvento = () => {
                       handleCircuit={() => console.log()}
                     />
                   </div>
-
-                  {activeEvento.documentos.length > 0 && (
-                    <div className='md:col-span-4 col-span-1 row-span-2 max-h-80 overflow-y-auto'>
-                      <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-2 text-center'>
-                        Documentos del Evento
-                      </h1>
-                      <div className='grid grid-cols-1 gap-4'>
-                        {activeEvento.documentos.map((doc) => (
-                          <div key={doc.id || doc.url} className='flex items-center p-4 bg-white rounded-lg shadow dark:bg-gray-700'>
-                            <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-6 h-6 text-gray-600 dark:text-gray-300 mr-4'>
-                              <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z' />
-                            </svg>
-                            <a href={doc.url} className='text-base text-blue-600 dark:text-blue-300 hover:underline'>
-                              {doc.nombre}
-                            </a>
+                  <Card>
+                    <ul>
+                      <li className='flex space-x-3 rtl:space-x-reverse'>
+                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                          <Icon icon='heroicons:envelope' />
+                        </div>
+                        <div className='flex-1'>
+                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                            EMAIL
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                          <span
+                            className='text-base text-slate-600 dark:text-slate-50'
+                          >
+                            {activeEvento.email_solicitante}
+                          </span>
+                        </div>
+                      </li>
 
+                      <li className='flex space-x-3 rtl:space-x-reverse'>
+                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                          <Icon icon='heroicons:phone-arrow-up-right' />
+                        </div>
+                        <div className='flex-1'>
+                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                            Teléfono
+                          </div>
+                          <p className='text-base text-slate-600 dark:text-slate-50'>
+                            {activeEvento.telefono_solicitante}
+                          </p>
+                        </div>
+                      </li>
+
+                      <li className='flex space-x-3 rtl:space-x-reverse'>
+                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                          <Icon icon='heroicons:newspaper' />
+                        </div>
+                        <div className='flex-1'>
+                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                            DESCRIPCION
+                          </div>
+                          <span
+                            className='text-base text-slate-600 dark:text-slate-50'
+                          >
+                            {activeEvento.descripcion || '-'}
+                          </span>
+                        </div>
+                      </li>
+
+                      <li className='flex space-x-3 rtl:space-x-reverse'>
+                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                          <Icon icon='heroicons:calendar-days' />
+                        </div>
+                        <div className='flex-1'>
+                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                            FECHA
+                          </div>
+                          <div className='text-base text-slate-600 dark:text-slate-50'>
+                            {formatDate(activeEvento.fecha)}
+                          </div>
+                        </div>
+                      </li>
+
+                      <li className='flex space-x-3 rtl:space-x-reverse'>
+                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                          <Icon icon='heroicons:arrow-top-right-on-square' />
+                        </div>
+                        <div className='flex-1'>
+                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                            ESTADO
+                          </div>
+                          <div className='text-base text-slate-600 dark:text-slate-50'>
+                            {activeEvento?.estado || '-'}
+                          </div>
+                        </div>
+                      </li>
+
+                      <li className='flex space-x-3 rtl:space-x-reverse'>
+                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                          <Icon icon='heroicons:building-storefront' />
+                        </div>
+                        <div className='flex-1'>
+                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                            CATEGORIA
+                          </div>
+                          <span
+                            className='text-base text-slate-600 dark:text-slate-50'
+                          >
+                            {activeEvento.categoria?.nombre || '-'}
+                          </span>
+                        </div>
+                      </li>
+
+                      <li className='flex space-x-3 rtl:space-x-reverse'>
+                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                          <Icon icon='heroicons:map' />
+                        </div>
+                        <div className='flex-1'>
+                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                            Barrio
+                          </div>
+                          <div className='text-base text-slate-600 dark:text-slate-50'>
+                            {activeEvento?.barrio || '-'}
+                          </div>
+                        </div>
+                      </li>
+
+                      <li className='flex space-x-3 rtl:space-x-reverse'>
+                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                          <Icon icon='heroicons:ellipsis-horizontal-circle' />
+                        </div>
+                        <div className='flex-1'>
+                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                            CIRCUITO ELECTORAL
+                          </div>
+                          <div className='text-base text-slate-600 dark:text-slate-50'>
+                            {activeEvento?.circuito || '-'}
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </Card>
+                </div>
+
+                <div className={`row-span-4 ${activeEvento.contactos.length === 0 ? 'md:col-span-8 col-span-1' : 'md:col-span-4 col-span-1'} h-[500px] md:h-auto`}>
+                  <BasicMap
+                    editPosition={position}
+                    onLocationChange={() => { }}
+                    isActive={activeEvento?.estado}
+                    handlePolygons={handlePolygons}
+                  />
+                </div>
+
+                {activeEvento.documentos.length > 0 && (
+                  <div className='md:col-span-4 col-span-1 row-span-2 max-h-80 overflow-y-auto'>
+                    <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-2 text-center'>
+                      Documentos del Evento
+                    </h1>
+                    <div className='grid grid-cols-1 gap-4'>
+                      {activeEvento.documentos.map((doc) => (
+                        <div key={doc.id || doc.url} className='flex items-center p-4 bg-white rounded-lg shadow dark:bg-gray-700'>
+                          <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='w-6 h-6 text-gray-600 dark:text-gray-300 mr-4'>
+                            <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z' />
+                          </svg>
+                          <a href={doc.url} className='text-base text-blue-600 dark:text-blue-300 hover:underline'>
+                            {doc.nombre}
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <div>
                   {activeEvento.contactos.length > 0 && (
                     <div className='md:col-span-4 col-span-1 row-span-2 max-h-80 overflow-y-auto'>
                       <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-2 text-center'>Invitados</h1>

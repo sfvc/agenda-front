@@ -13,6 +13,7 @@ const initialForm = {
 
 export const StageConsider = () => {
   const navigate = useNavigate()
+  const [currentPage] = useState(1)
   const [isLoading] = useState(false)
   const [, setFormData] = useState(initialForm)
   const { id } = useParams()
@@ -33,7 +34,7 @@ export const StageConsider = () => {
   const onSubmit = async (items) => {
     try {
       await nextStageEvent(id, items)
-      navigate('/eventos')
+      navigate(`/eventos?page=${currentPage}`)
       toast.success('El evento paso al estado A CONSIDERAR')
     } catch (error) {
       console.error(error)
@@ -74,7 +75,7 @@ export const StageConsider = () => {
                 <div className='ltr:text-right rtl:text-left'>
                   <button
                     className='btn-danger items-center text-center py-2 px-6 rounded-lg'
-                    onClick={() => navigate('/eventos')}
+                    onClick={() => navigate(`/eventos?page=${currentPage}`)}
                   >
                     Volver
                   </button>

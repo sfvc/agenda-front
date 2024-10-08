@@ -1,5 +1,5 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 
 export const MapEvent = ({ isActive, events }) => {
