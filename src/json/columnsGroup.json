@@ -1,0 +1,7 @@
+[{
+    "label": "Nombre del grupo",
+    "field": "nombre"
+  }, {
+    "label": "Acciones",
+    "field": "acciones"
+  }]

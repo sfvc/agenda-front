@@ -6,6 +6,7 @@ import Button from '@/components/ui/Button'
 import { useNavigate, useParams } from 'react-router-dom'
 import { nextStageEvent } from '@/services/eventService'
 import { searchContactName, searchContactFunction, getContacts } from '@/services/contactService'
+import {getGroup,getGroupById} from '@/services/groupService'
 import { toast } from 'react-toastify'
 import { useQuery } from '@tanstack/react-query'
 import { SelectForm } from '@/components/agenda/forms'
@@ -34,14 +35,7 @@ const columnContact = [
   }
 ]
 
-const functions = [
-  { id: 'Prensa', nombre: 'Prensa' },
-  { id: 'Educacion', nombre: 'Educacion' },
-  { id: 'Politica', nombre: 'Politica' },
-  { id: 'Cultura', nombre: 'Cultura' },
-  { id: 'Secretario', nombre: 'Secretario' },
-  { id: 'Director', nombre: 'Director' }
-]
+
 
 export const StagePerform = () => {
   const {
@@ -61,6 +55,14 @@ export const StagePerform = () => {
     queryFn: () => getContacts(currentPage),
     keepPreviousData: true
   })
+
+  const {data:grupos} =useQuery ({
+    queryKey: ['grupos', currentPage],
+    queryFn: () => getGroup(currentPage),
+    keepPreviousData: true
+  })
+
+  
   if (isLoading) {
     return <Loading />
   }
@@ -69,6 +71,7 @@ export const StagePerform = () => {
     setSearch(e.target.value)
     if (search.length > 1) {
       const res = await searchContactName(search)
+      console.log(res.items);
       setContact(res.items)
     } else {
       setContact([])
@@ -76,22 +79,44 @@ export const StagePerform = () => {
   }
 
   const addContactFunction = async () => {
-    try {
-      const { items } = await searchContactFunction(tags)
-      const nuevosContactos = items.filter((element) => {
+    
+    try{
+      const {contactos,nombre} = await getGroupById(tags)
+      console.log(nombre);
+      const nuevosContactos = contactos.filter((element) => {
         return !invitados.some((invitado) => invitado.id === element.id)
-      })
-
+      }).map((contacto) => {
+        // Retornar cada contacto agregándole el nombre
+        return { ...contacto, grupo:nombre };
+      });
+      console.log(nuevosContactos);
       if (nuevosContactos.length > 0) {
         setInvitados([...invitados, ...nuevosContactos])
       } else {
         console.log('No hay contactos nuevos para agregar.')
       }
-      setContact([])
-      setSearch('')
-    } catch (error) {
-      console.error('Error al buscar contactos:', error)
+    }catch(error){
+      console.log(error)
     }
+    // try {
+    //   const { items } = await searchContactFunction(tags)
+      // const nuevosContactos = items.filter((element) => {
+      //   return !invitados.some((invitado) => invitado.id === element.id)
+      // })
+
+      // if (nuevosContactos.length > 0) {
+      //   setInvitados([...invitados, ...nuevosContactos])
+      // } else {
+      //   console.log('No hay contactos nuevos para agregar.')
+      // }
+      
+    // } catch (error) {
+    //   console.error('Error al buscar contactos:', error)
+    // }
+    // finally{
+    //   setContact([])
+    //   setSearch('')
+    // }
   }
 
   const addContact = (e) => {
@@ -100,7 +125,9 @@ export const StagePerform = () => {
       setInvitados([...invitados, e])
       setContact([])
     } else {
-      console.log('El invitado ya existe')
+      toast.info("El contacto ya esta en la lista")
+      setContact([])
+      setSearch('')
     }
     setSearch('')
   }
@@ -152,7 +179,7 @@ export const StagePerform = () => {
                             <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z' />
                           </svg>
                         </div>
-                        <input type='search' onChange={handleChange} id='default-search' className='block w-full  ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' placeholder='Ingrese el nombre del invitado' value={search} />
+                        <input type='search' onChange={handleChange} id='default-search' className='block w-full ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' placeholder='Ingrese el nombre del invitado' value={search} />
                       </div>
                       {contacts.length > 0
                         ? <div className='w-full text-sm font-medium text-gray-900 bg-white  border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white absolute'>
@@ -163,7 +190,7 @@ export const StagePerform = () => {
                                 aria-current='true'
                                 key={contact.id}
                                 type='button'
-                                className='w-full px-4 py-2 font-medium text-center rtl:text-right dark:text-white bg-grey-700  rounded-t-lg cursor-pointer hover:bg-blue-700 focus:outline-none dark:bg-gray-800 dark:border-gray-600 grid grid-cols-3 divide-x'
+                                className='w-full px-4 py-2 hover:text-white font-medium text-center rtl:text-right dark:text-white bg-grey-700  rounded-t-lg cursor-pointer hover:bg-blue-700 focus:outline-none dark:bg-gray-800 dark:border-gray-600 grid grid-cols-3 divide-x'
                               >
                                 <div>
                                   {contact.nombre} {contact.apellido}
@@ -180,11 +207,11 @@ export const StagePerform = () => {
                         </div>
                         : ''}
                     </div>
-                    <div className='w-full md:w-1/2 md:mx-6 mb-6 flex items-end justify-around'>
-                      <SelectForm title='Grupo' options={functions} onChange={(e) => setTags(e.target.value)} />
+                    <div className='w-full md:w-1/2 md:mx-6 mb-6 flex items-end justify-center gap-3'>
+                      <SelectForm title='Grupos' options={grupos.items} onChange={(e) => setTags(e.target.value)} />
                       <Button
                         type='submit'
-                        text='Agregar'
+                        text='Agregar Grupo'
                         className='bg-blue-500 hover:bg-blue-700 text-white py-2 px-6 rounded-lg'
                         onClick={addContactFunction}
                       />
@@ -214,7 +241,7 @@ export const StagePerform = () => {
                                           <td className='table-td '>{contacto.apellido} {contacto.nombre}</td>
                                           <td className='table-td '>{contacto.email}</td>
                                           <td className='table-td '>{contacto.telefono}</td>
-                                          <td className='table-td '>{contacto.funcion}</td>
+                                          <td className='table-td '>{contacto.grupo}</td>
                                           <td className=''>
                                             <button className='bg-danger-500 text-white p-2 rounded-lg hover:bg-danger-700' onClick={() => { deleteGuest(contacto.id) }}>
                                               <svg

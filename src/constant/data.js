@@ -24,8 +24,13 @@ export const menuNormal = [
 
   {
     title: 'Contactos',
-    icon: 'heroicons-outline:user-group',
+    icon: 'heroicons-outline:chat-bubble-left-right',
     link: 'contactos'
+  },
+  {
+    title: 'Grupos',
+    icon: 'heroicons-outline:user-group',
+    link: 'grupos'
   },
 
   {

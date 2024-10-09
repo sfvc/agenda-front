@@ -40,9 +40,6 @@ export const ShowEvento = () => {
     }
   }
 
-  const handlePolygons = () => {
-    console.log()
-  }
 
   useEffect(() => {
     getEvent()
@@ -264,146 +261,18 @@ export const ShowEvento = () => {
 
                   <div className={`row-span-4 ${activeEvento.contactos.length === 0 ? 'md:col-span-8 col-span-1' : 'md:col-span-4 col-span-1'}`}>
 
-                    <BasicMap
+                  <BasicMap
                       editPosition={position}
                       onLocationChange={() => { }}
                       isActive={activeEvento?.estado}
-                      handlePolygons={handlePolygons}
+                    
                       handleNeight={() => console.log()}
                       handleCircuit={() => console.log()}
                     />
                   </div>
-                  <Card>
-                    <ul>
-                      <li className='flex space-x-3 rtl:space-x-reverse'>
-                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
-                          <Icon icon='heroicons:envelope' />
-                        </div>
-                        <div className='flex-1'>
-                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                            EMAIL
-                          </div>
-                          <span
-                            className='text-base text-slate-600 dark:text-slate-50'
-                          >
-                            {activeEvento.email_solicitante}
-                          </span>
-                        </div>
-                      </li>
-
-                      <li className='flex space-x-3 rtl:space-x-reverse'>
-                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
-                          <Icon icon='heroicons:phone-arrow-up-right' />
-                        </div>
-                        <div className='flex-1'>
-                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                            Teléfono
-                          </div>
-                          <p className='text-base text-slate-600 dark:text-slate-50'>
-                            {activeEvento.telefono_solicitante}
-                          </p>
-                        </div>
-                      </li>
-
-                      <li className='flex space-x-3 rtl:space-x-reverse'>
-                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
-                          <Icon icon='heroicons:newspaper' />
-                        </div>
-                        <div className='flex-1'>
-                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                            DESCRIPCION
-                          </div>
-                          <span
-                            className='text-base text-slate-600 dark:text-slate-50'
-                          >
-                            {activeEvento.descripcion || '-'}
-                          </span>
-                        </div>
-                      </li>
-
-                      <li className='flex space-x-3 rtl:space-x-reverse'>
-                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
-                          <Icon icon='heroicons:calendar-days' />
-                        </div>
-                        <div className='flex-1'>
-                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                            FECHA
-                          </div>
-                          <div className='text-base text-slate-600 dark:text-slate-50'>
-                            {formatDate(activeEvento.fecha)}
-                          </div>
-                        </div>
-                      </li>
-
-                      <li className='flex space-x-3 rtl:space-x-reverse'>
-                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
-                          <Icon icon='heroicons:arrow-top-right-on-square' />
-                        </div>
-                        <div className='flex-1'>
-                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                            ESTADO
-                          </div>
-                          <div className='text-base text-slate-600 dark:text-slate-50'>
-                            {activeEvento?.estado || '-'}
-                          </div>
-                        </div>
-                      </li>
-
-                      <li className='flex space-x-3 rtl:space-x-reverse'>
-                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
-                          <Icon icon='heroicons:building-storefront' />
-                        </div>
-                        <div className='flex-1'>
-                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                            CATEGORIA
-                          </div>
-                          <span
-                            className='text-base text-slate-600 dark:text-slate-50'
-                          >
-                            {activeEvento.categoria?.nombre || '-'}
-                          </span>
-                        </div>
-                      </li>
-
-                      <li className='flex space-x-3 rtl:space-x-reverse'>
-                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
-                          <Icon icon='heroicons:map' />
-                        </div>
-                        <div className='flex-1'>
-                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                            Barrio
-                          </div>
-                          <div className='text-base text-slate-600 dark:text-slate-50'>
-                            {activeEvento?.barrio || '-'}
-                          </div>
-                        </div>
-                      </li>
-
-                      <li className='flex space-x-3 rtl:space-x-reverse'>
-                        <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
-                          <Icon icon='heroicons:ellipsis-horizontal-circle' />
-                        </div>
-                        <div className='flex-1'>
-                          <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                            CIRCUITO ELECTORAL
-                          </div>
-                          <div className='text-base text-slate-600 dark:text-slate-50'>
-                            {activeEvento?.circuito || '-'}
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </Card>
+                 
                 </div>
 
-                <div className={`row-span-4 ${activeEvento.contactos.length === 0 ? 'md:col-span-8 col-span-1' : 'md:col-span-4 col-span-1'} h-[500px] md:h-auto`}>
-                  <BasicMap
-                    editPosition={position}
-                    onLocationChange={() => { }}
-                    isActive={activeEvento?.estado}
-                    handlePolygons={handlePolygons}
-                  />
-                </div>
 
                 {activeEvento.documentos.length > 0 && (
                   <div className='md:col-span-4 col-span-1 row-span-2 max-h-80 overflow-y-auto'>

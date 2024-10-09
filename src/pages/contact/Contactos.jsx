@@ -53,7 +53,7 @@ export const Contactos = () => {
   if (isLoading) {
     return <Loading />
   }
-
+ 
   return (
     <>
       {
@@ -124,20 +124,20 @@ export const Contactos = () => {
                           {
                             (contactos.items.length > 0)
                               ? (contactos.items.map((contacto) => {
-                                  return (
-                                    <tr key={contacto.id}>
-                                      <td className='table-td'>{contacto.apellido} {contacto.nombre}</td>
+                                return (
+                                  <tr key={contacto.id}>
+                                    <td className='table-td'>{contacto.apellido} {contacto.nombre}</td>
 
-                                      <td className='table-td'>{contacto.email}</td>
-                                      <td className='table-td'>{contacto.telefono}</td>
-                                      <td className='table-td'>{contacto.funcion}</td>
-                                      <td className='table-td flex justify-start gap-2'>
-                                        <EditButton evento={contacto} onEdit={onEdit} />
-                                      </td>
+                                    <td className='table-td'>{contacto.email}</td>
+                                    <td className='table-td'>{contacto.telefono}</td>
+                                    <td className='table-td'>{contacto.funcion}</td>
+                                    <td className='table-td flex justify-start gap-2'>
+                                      <EditButton evento={contacto} onEdit={onEdit} />
+                                    </td>
 
-                                    </tr>
-                                  )
-                                }))
+                                  </tr>
+                                )
+                              }))
                               : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
                           }
                         </tbody>
@@ -161,7 +161,7 @@ export const Contactos = () => {
               </Card>
             </div>
 
-            )
+          )
       }
 
     </>

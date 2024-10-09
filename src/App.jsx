@@ -6,6 +6,8 @@ import { Contactos } from './pages/contact/Contactos'
 import { CreateContactos } from './pages/contact/CreateContact'
 import { Usuarios } from './pages/user/Usuarios'
 import { Prensa } from './pages/prensa/Prensa'
+import { Groups } from './pages/groups/Groups'
+import { CreateGroup } from './pages/groups/CreateGroup'
 import { CreateUser } from './pages/user/CreateUser'
 import Layout from './layout/Layout'
 import Error from './pages/404'
@@ -142,6 +144,10 @@ function App () {
 
                   {/* Prensa */}
                   <Route path='prensa' element={<Prensa />} />
+                  {/* GRupos */}
+                  <Route path='grupos' element={<Groups />} />
+                  <Route path='grupos/crear' element={<CreateGroup />} />
+                  <Route path='grupos/editar/:id' element={<CreateGroup />} />
                 </Route>
 
                 <Route path='/404' element={<Error />} />

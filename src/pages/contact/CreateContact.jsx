@@ -15,18 +15,10 @@ const initialForm = {
   nombre: '',
   apellido: '',
   email: '',
-  telefono: '',
-  funcion: ''
+  telefono: ''
 }
 
-const functions = [
-  { id: 'Prensa', nombre: 'Prensa' },
-  { id: 'Educacion', nombre: 'Educacion' },
-  { id: 'Politica', nombre: 'Politica' },
-  { id: 'Cultura', nombre: 'Cultura' },
-  { id: 'Secretario', nombre: 'Secretario' },
-  { id: 'Director', nombre: 'Director' }
-]
+
 
 export const CreateContactos = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -69,12 +61,11 @@ export const CreateContactos = () => {
     if (id) {
       try {
         const contacto = await getContactsById(id)
-
+        console.log(contacto);
         setValue('nombre', contacto.nombre)
         setValue('apellido', contacto.apellido)
         setValue('email', contacto.email)
         setValue('telefono', contacto.telefono)
-        setValue('funcion', contacto.funcion)
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
@@ -85,98 +76,98 @@ export const CreateContactos = () => {
   useEffect(() => {
     loadEvento()
   }, [id])
+
   return (
     <>
       {
-            isLoading
-              ? (
-                <Loading className='mt-28 md:mt-64' />
-                )
-              : (
-                <>
-                  <Card>
-                    <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+        isLoading
+          ? (
+            <Loading className='mt-28 md:mt-64' />
+          )
+          : (
+            <>
+              <Card>
+                <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 
-                      <div>
-                        <label htmlFor='nombre' className='form-label'>
-                          Nombre del Contacto
-                        </label>
-                        <Textinput
-                          name='nombre'
-                          type='text'
-                          placeholder='Ingrese el nombre'
-                          register={register}
-                          onChange={handleChange}
-                          errors={errors.nombre}
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor='apellido' className='form-label'>
-                          Apellido del Contacto
-                        </label>
-                        <Textinput
-                          name='apellido'
-                          type='text'
-                          placeholder='Ingrese el apellido'
-                          register={register}
-                          onChange={handleChange}
-                          errors={errors.apellido}
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor='email' className='form-label'>
-                          Correo del Contacto
-                        </label>
-                        <Textinput
-                          name='email'
-                          type='email'
-                          placeholder='Ingrese el correo electronico'
-                          register={register}
-                          onChange={handleChange}
-                          errors={errors.email}
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor='telefono' className='form-label'>
-                          Telefono del Contacto
-                        </label>
-                        <Textinput
-                          name='telefono'
-                          type='text'
-                          placeholder='Ingrese el telefono'
-                          register={register}
-                          onChange={handleChange}
-                          errors={errors.telefono}
-                        />
-                      </div>
-                      <SelectForm title='Función o Grupo' options={functions} onChange={handleChange} register={register('funcion')} />
-                    </form>
-                  </Card>
-                  <div className='flex justify-end gap-4 mt-8'>
-                    <div className='ltr:text-right rtl:text-left'>
-                      <button
-                        className='btn-danger items-center text-center py-2 px-6 rounded-lg'
-                        onClick={() => navigate(`/contactos?page=${currentPage}`)}
-                      >
-                        Volver
-                      </button>
-                    </div>
-                    <div className='ltr:text-right rtl:text-left'>
-                      <Button
-                        type='submit'
-                        text={isSubmitting ? 'Guardando' : 'Guardar'}
-                        className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
-                        disabled={isSubmitting}
-                        onClick={handleSubmit(onSubmit)}
-                      />
-                    </div>
+                  <div>
+                    <label htmlFor='nombre' className='form-label'>
+                      Nombre del Contacto
+                    </label>
+                    <Textinput
+                      name='nombre'
+                      type='text'
+                      placeholder='Ingrese el nombre'
+                      register={register}
+                      onChange={handleChange}
+                      errors={errors.nombre}
+                    />
                   </div>
-                </>
-                )
-        }
+
+                  <div>
+                    <label htmlFor='apellido' className='form-label'>
+                      Apellido del Contacto
+                    </label>
+                    <Textinput
+                      name='apellido'
+                      type='text'
+                      placeholder='Ingrese el apellido'
+                      register={register}
+                      onChange={handleChange}
+                      errors={errors.apellido}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor='email' className='form-label'>
+                      Correo del Contacto
+                    </label>
+                    <Textinput
+                      name='email'
+                      type='email'
+                      placeholder='Ingrese el correo electronico'
+                      register={register}
+                      onChange={handleChange}
+                      errors={errors.email}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor='telefono' className='form-label'>
+                      Telefono del Contacto
+                    </label>
+                    <Textinput
+                      name='telefono'
+                      type='text'
+                      placeholder='Ingrese el telefono'
+                      register={register}
+                      onChange={handleChange}
+                      errors={errors.telefono}
+                    />
+                  </div>
+                </form>
+              </Card>
+              <div className='flex justify-end gap-4 mt-8'>
+                <div className='ltr:text-right rtl:text-left'>
+                  <button
+                    className='btn-danger items-center text-center py-2 px-6 rounded-lg'
+                    onClick={() => navigate(`/contactos?page=${currentPage}`)}
+                  >
+                    Volver
+                  </button>
+                </div>
+                <div className='ltr:text-right rtl:text-left'>
+                  <Button
+                    type='submit'
+                    text={isSubmitting ? 'Guardando' : 'Guardar'}
+                    className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
+                    disabled={isSubmitting}
+                    onClick={handleSubmit(onSubmit)}
+                  />
+                </div>
+              </div>
+            </>
+          )
+      }
 
     </>
   )
