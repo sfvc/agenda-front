@@ -129,6 +129,9 @@ export const Contactos = () => {
                                       <td className='table-td'>{contacto.apellido} {contacto.nombre}</td>
                                       <td className='table-td'>{contacto.email}</td>
                                       <td className='table-td'>{contacto.telefono}</td>
+                                      <td className='table-td'>
+                                        {contacto.grupos.map(grupo => grupo.nombre).join(', ')}
+                                      </td>
                                       <td className='table-td flex justify-start gap-2'>
                                         <EditButton evento={contacto} onEdit={onEdit} />
                                       </td>

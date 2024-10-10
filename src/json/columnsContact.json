@@ -7,6 +7,10 @@
   },{
     "label": "Telefono",
     "field": "telefono"
+  },
+  {
+    "label": "Grupos",
+    "field": "grupos"
   }, {
     "label": "Acciones",
     "field": "acciones"

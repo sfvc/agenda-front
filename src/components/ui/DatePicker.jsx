@@ -61,7 +61,6 @@ const DatePicker = ({ value, onChange, id, placeholder, disabled }) => {
       placeholder={placeholder}
       onChange={(dates) => {
         onChange(dates)
-        flatpickrRef.flatpickr.close()
       }}
       disabled={disabled}
       onFocus={() => flatpickrRef.flatpickr.open()}

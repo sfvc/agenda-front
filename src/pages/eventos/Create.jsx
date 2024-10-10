@@ -200,13 +200,18 @@ export const Create = () => {
                   />
                 </div>
 
-                <SelectForm
-                  register={register('categoria_id')}
-                  title='Categoria'
-                  options={categorias}
-                  errors={errors.categoria_id}
-                  onChange={handleChange}
-                />
+                <div>
+                  <label htmlFor='categoria' className='form-label'>
+                    Categoria
+                    <strong className='obligatorio'>(*)</strong>
+                  </label>
+                  <SelectForm
+                    register={register('categoria_id')}
+                    options={categorias}
+                    errors={errors.categoria_id}
+                    onChange={handleChange}
+                  />
+                </div>
 
                 <div className='hidden'>
                   <label htmlFor='ubicacion' className='form-label'>

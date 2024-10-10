@@ -68,7 +68,7 @@ export const StagePerform = () => {
     setSearch(e.target.value)
     if (search.length > 1) {
       const res = await searchContactName(search)
-      setContact(res.items)
+      setContact(res?.items)
     } else {
       setContact([])
     }
@@ -77,10 +77,10 @@ export const StagePerform = () => {
   const addContactFunction = async () => {
     try {
       const { contactos, nombre } = await getGroupById(tags)
+      console.log(contactos)
       const nuevosContactos = contactos.filter((element) => {
         return !invitados.some((invitado) => invitado.id === element.id)
       }).map((contacto) => {
-        // Retornar cada contacto agregándole el nombre
         return { ...contacto, grupo: nombre }
       })
       if (nuevosContactos.length > 0) {
@@ -182,7 +182,7 @@ export const StagePerform = () => {
                         : ''}
                     </div>
                     <div className='w-full md:w-1/2 md:mx-6 mb-6 flex items-end justify-center gap-3'>
-                      <SelectForm title='Grupos' options={grupos.items} onChange={(e) => setTags(e.target.value)} />
+                      <SelectForm title='Grupos' options={grupos?.items} onChange={(e) => setTags(e.target.value)} />
                       <Button
                         type='submit'
                         text='Agregar Grupo'
@@ -215,8 +215,10 @@ export const StagePerform = () => {
                                         <td className='table-td'>{contacto.apellido} {contacto.nombre}</td>
                                         <td className='table-td'>{contacto.email}</td>
                                         <td className='table-td'>{contacto.telefono}</td>
-                                        <td className='table-td'>{Array.isArray(contacto.grupo) && contacto.grupo.length > 1 ? 'Varios' : contacto.grupo || '-'}</td>
-                                        <td className=''>
+                                        <td className='table-td'>
+                                          {contacto.grupo || 'Sin Grupo'}
+                                        </td>
+                                        <td className='table-td'>
                                           <button className='bg-danger-500 text-white p-2 rounded-lg hover:bg-danger-700' onClick={() => { deleteGuest(contacto.id) }}>
                                             <svg
                                               xmlns='http://www.w3.org/2000/svg'

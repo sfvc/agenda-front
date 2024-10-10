@@ -16,7 +16,7 @@ export const fetchGroupById = async (id, page) => {
 // }
 
 export const createGroup = async (Group, page) => {
-  const response = await agendaApi.post(`/grupo`, Group)
+  const response = await agendaApi.post('/grupo', Group)
   return response.data
 }
 
@@ -28,4 +28,3 @@ export const updateGroup = async (id, Group, page) => {
 export const getGroup = fetchGroup
 export const getGroupById = fetchGroupById
 // export const getCategoryBySelect = fetchCategoryBySelect
-

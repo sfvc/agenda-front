@@ -1,7 +1,6 @@
 import React from 'react'
 import { ToastContainer } from 'react-toastify'
 import Illustration from '@/assets/images/auth/portada-agenda.png'
-import LogoAgenda from '@/assets/images/logo/logo_CATACAPI_claro.png'
 import LoginForm from '@/components/agenda/forms/LoginForm'
 
 const Login = () => {

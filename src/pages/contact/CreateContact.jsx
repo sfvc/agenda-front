@@ -131,7 +131,7 @@ export const CreateContactos = () => {
                     </label>
                     <Textinput
                       name='telefono'
-                      type='text'
+                      type='number'
                       placeholder='Ingrese el telefono'
                       register={register}
                       onChange={handleChange}
