@@ -31,7 +31,6 @@ export const createEvent = async (event, page) => {
 }
 
 export const updateEvent = async (id, event) => {
-  
   const response = await agendaApi.put(`/evento/${id}`, event)
   return response.data
 }

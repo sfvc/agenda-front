@@ -100,10 +100,9 @@ export const Eventos = () => {
     }
   }
 
-  async function onSearch() {
+  async function onSearch () {
     setButtonFilter(true)
     const myEventos = await getEventos(currentPage, state, category, fechIni, fechFin)
-
 
     if (myEventos.items.length === 0) {
       toast.error('Sin resultados filtrados')
@@ -127,8 +126,6 @@ export const Eventos = () => {
       return 'Dirección no disponible'
     }
   }
-
-
 
   return (
     <>
@@ -185,7 +182,7 @@ export const Eventos = () => {
                     disabled={buttonFilter}
                     className={`${buttonFilter ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-800'} text-white py-2 px-6 rounded-lg mt-2 md:mt-0`}
                   >
-                    {buttonFilter ? "Cargando..." : "Filtrar"}
+                    {buttonFilter ? 'Cargando...' : 'Filtrar'}
                   </button>
                 </div>
               </Card>

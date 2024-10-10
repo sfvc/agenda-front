@@ -26,10 +26,8 @@ const initialForm = {
   summary: '',
   barrio: '',
   circuito: '',
-  etiquetas_ids:[]
+  etiquetas_ids: []
 }
-
-
 
 const initialPosition = {
   latitud: -28.46867672033115,
@@ -42,7 +40,7 @@ export const Create = () => {
   const navigate = useNavigate()
   const [currentPage] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
-  const [etiquetas,setEtiquetas] = useState([])
+  const [etiquetas, setEtiquetas] = useState([])
   const [, setFormData] = useState(initialForm)
   const { data: categorias } = useQuery({
     queryKey: ['categoria'],
@@ -101,8 +99,7 @@ export const Create = () => {
   }
 
   const handleLabels = (e) => {
-    setValue('etiquetas_ids',e)
-   
+    setValue('etiquetas_ids', e)
   }
 
   const loadEvento = async () => {
@@ -123,7 +120,7 @@ export const Create = () => {
         setTimeout(() => {
           setValue('barrio', evento.barrio)
         }, 100)
-        setValue('etiquetas_ids',evento.etiquetas)
+        setValue('etiquetas_ids', evento.etiquetas)
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
@@ -140,7 +137,7 @@ export const Create = () => {
       {isLoading
         ? (
           <Loading className='mt-28 md:mt-64' />
-        )
+          )
         : (
           <div>
             <Card>
@@ -149,6 +146,7 @@ export const Create = () => {
                 <div>
                   <label htmlFor='nombre_solicitante' className='form-label'>
                     Nombre del Solicitante
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textinput
                     name='nombre_solicitante'
@@ -163,6 +161,7 @@ export const Create = () => {
                 <div>
                   <label htmlFor='fecha' className='form-label'>
                     Fecha del Evento
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <DatePicker
                     placeholder='Seleccione la fecha del evento'
@@ -174,6 +173,7 @@ export const Create = () => {
                 <div>
                   <label htmlFor='email_solicitante' className='form-label'>
                     Email del Solicitante
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textinput
                     name='email_solicitante'
@@ -188,6 +188,7 @@ export const Create = () => {
                 <div>
                   <label htmlFor='telefono_solicitante' className='form-label'>
                     Teléfono del Solicitante
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textinput
                     type='number'
@@ -210,6 +211,7 @@ export const Create = () => {
                 <div className='hidden'>
                   <label htmlFor='ubicacion' className='form-label'>
                     Ubicación
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textinput
                     name='ubicacion'
@@ -223,6 +225,7 @@ export const Create = () => {
                 <div>
                   <label htmlFor='descripcion' className='form-label'>
                     Descripción
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textarea
                     name='descripcion'
@@ -235,6 +238,7 @@ export const Create = () => {
                 <div>
                   <label htmlFor='summary' className='form-label'>
                     Nombre del Evento
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textarea
                     name='summary'
@@ -247,6 +251,7 @@ export const Create = () => {
                 <div>
                   <label htmlFor='location' className='form-label'>
                     Localizacion
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textarea
                     name='location'
@@ -260,6 +265,7 @@ export const Create = () => {
                 <div>
                   <label htmlFor='barrio' className='form-label'>
                     Barrio
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textinput
                     name='barrio'
@@ -273,6 +279,7 @@ export const Create = () => {
                 <div>
                   <label htmlFor='circuito' className='form-label'>
                     Circuito
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textinput
                     name='circuito'
@@ -315,7 +322,7 @@ export const Create = () => {
               </div>
             </div>
           </div>
-        )}
+          )}
     </>
   )
 }

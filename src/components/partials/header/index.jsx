@@ -93,7 +93,7 @@ const Header = ({ className = 'custom-class' }) => {
               {/* <SearchModal /> */}
             </div>
           )}
-          <span className='rainbow__text hidden md:block font-extrabold'>Agenda del Intendente</span>
+          <span className='text-blue-600 dark:text-blue-400 hidden md:block font-extrabold'>Agenda del Intendente</span>
           {/* For Horizontal  */}
           {menuType === 'horizontal' && (
             <div className='flex items-center space-x-4 rtl:space-x-reverse'>

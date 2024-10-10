@@ -5,8 +5,8 @@ import Loading from '@/components/Loading'
 import Button from '@/components/ui/Button'
 import { useNavigate, useParams } from 'react-router-dom'
 import { nextStageEvent } from '@/services/eventService'
-import { searchContactName, searchContactFunction, getContacts } from '@/services/contactService'
-import {getGroup,getGroupById} from '@/services/groupService'
+import { searchContactName, getContacts } from '@/services/contactService'
+import { getGroup, getGroupById } from '@/services/groupService'
 import { toast } from 'react-toastify'
 import { useQuery } from '@tanstack/react-query'
 import { SelectForm } from '@/components/agenda/forms'
@@ -35,8 +35,6 @@ const columnContact = [
   }
 ]
 
-
-
 export const StagePerform = () => {
   const {
     formState: { isSubmitting },
@@ -56,13 +54,12 @@ export const StagePerform = () => {
     keepPreviousData: true
   })
 
-  const {data:grupos} =useQuery ({
+  const { data: grupos } = useQuery({
     queryKey: ['grupos', currentPage],
     queryFn: () => getGroup(currentPage),
     keepPreviousData: true
   })
 
-  
   if (isLoading) {
     return <Loading />
   }
@@ -71,7 +68,6 @@ export const StagePerform = () => {
     setSearch(e.target.value)
     if (search.length > 1) {
       const res = await searchContactName(search)
-      console.log(res.items);
       setContact(res.items)
     } else {
       setContact([])
@@ -79,44 +75,22 @@ export const StagePerform = () => {
   }
 
   const addContactFunction = async () => {
-    
-    try{
-      const {contactos,nombre} = await getGroupById(tags)
-      console.log(nombre);
+    try {
+      const { contactos, nombre } = await getGroupById(tags)
       const nuevosContactos = contactos.filter((element) => {
         return !invitados.some((invitado) => invitado.id === element.id)
       }).map((contacto) => {
         // Retornar cada contacto agregándole el nombre
-        return { ...contacto, grupo:nombre };
-      });
-      console.log(nuevosContactos);
+        return { ...contacto, grupo: nombre }
+      })
       if (nuevosContactos.length > 0) {
         setInvitados([...invitados, ...nuevosContactos])
       } else {
         console.log('No hay contactos nuevos para agregar.')
       }
-    }catch(error){
+    } catch (error) {
       console.log(error)
     }
-    // try {
-    //   const { items } = await searchContactFunction(tags)
-      // const nuevosContactos = items.filter((element) => {
-      //   return !invitados.some((invitado) => invitado.id === element.id)
-      // })
-
-      // if (nuevosContactos.length > 0) {
-      //   setInvitados([...invitados, ...nuevosContactos])
-      // } else {
-      //   console.log('No hay contactos nuevos para agregar.')
-      // }
-      
-    // } catch (error) {
-    //   console.error('Error al buscar contactos:', error)
-    // }
-    // finally{
-    //   setContact([])
-    //   setSearch('')
-    // }
   }
 
   const addContact = (e) => {
@@ -125,7 +99,7 @@ export const StagePerform = () => {
       setInvitados([...invitados, e])
       setContact([])
     } else {
-      toast.info("El contacto ya esta en la lista")
+      toast.warning('El contacto ya esta en la lista')
       setContact([])
       setSearch('')
     }
@@ -190,7 +164,7 @@ export const StagePerform = () => {
                                 aria-current='true'
                                 key={contact.id}
                                 type='button'
-                                className='w-full px-4 py-2 hover:text-white font-medium text-center rtl:text-right dark:text-white bg-grey-700  rounded-t-lg cursor-pointer hover:bg-blue-700 focus:outline-none dark:bg-gray-800 dark:border-gray-600 grid grid-cols-3 divide-x'
+                                className='w-full px-4 py-2 hover:text-white font-medium text-center rtl:text-right dark:text-white bg-grey-700  rounded-lg cursor-pointer hover:bg-blue-700 focus:outline-none dark:bg-gray-800 dark:border-gray-600 grid grid-cols-3 divide-x'
                               >
                                 <div>
                                   {contact.nombre} {contact.apellido}
@@ -199,7 +173,7 @@ export const StagePerform = () => {
                                   {contact.email}
                                 </div>
                                 <div>
-                                  {contact.funcion}
+                                  {contact.telefono}
                                 </div>
                               </button>
                             )
@@ -234,43 +208,44 @@ export const StagePerform = () => {
                             </thead>
                             <tbody className='bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700'>
                               {
-                                (invitados.length > 0)
-                                  ? (invitados.map((contacto) => {
-                                      return (
-                                        <tr key={contacto.id}>
-                                          <td className='table-td '>{contacto.apellido} {contacto.nombre}</td>
-                                          <td className='table-td '>{contacto.email}</td>
-                                          <td className='table-td '>{contacto.telefono}</td>
-                                          <td className='table-td '>{contacto.grupo}</td>
-                                          <td className=''>
-                                            <button className='bg-danger-500 text-white p-2 rounded-lg hover:bg-danger-700' onClick={() => { deleteGuest(contacto.id) }}>
-                                              <svg
-                                                xmlns='http://www.w3.org/2000/svg'
-                                                className='icon icon-tabler icon-tabler-trash'
-                                                width='24'
-                                                height='24'
-                                                viewBox='0 0 24 24'
-                                                strokeWidth='1.5'
-                                                stroke='currentColor'
-                                                fill='none'
-                                                strokeLinecap='round'
-                                                strokeLinejoin='round'
-                                              >
-                                                <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-                                                <path d='M4 7l16 0' />
-                                                <path d='M10 11l0 6' />
-                                                <path d='M14 11l0 6' />
-                                                <path d='M5 7l1 12.5a1 1 0 0 0 1 0.5h10a1 1 0 0 0 1 -0.5l1 -12.5' />
-                                                <path d='M9 7l0 -3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1l0 3' />
-                                              </svg>
-                                            </button>
-                                          </td>
-                                        </tr>
-                                      )
-                                    }))
-                                  : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>Aun no tienes invitados</td></tr>)
+                                invitados.length > 0
+                                  ? invitados.map((contacto) => {
+                                    return (
+                                      <tr key={contacto.id}>
+                                        <td className='table-td'>{contacto.apellido} {contacto.nombre}</td>
+                                        <td className='table-td'>{contacto.email}</td>
+                                        <td className='table-td'>{contacto.telefono}</td>
+                                        <td className='table-td'>{Array.isArray(contacto.grupo) && contacto.grupo.length > 1 ? 'Varios' : contacto.grupo || '-'}</td>
+                                        <td className=''>
+                                          <button className='bg-danger-500 text-white p-2 rounded-lg hover:bg-danger-700' onClick={() => { deleteGuest(contacto.id) }}>
+                                            <svg
+                                              xmlns='http://www.w3.org/2000/svg'
+                                              className='icon icon-tabler icon-tabler-trash'
+                                              width='24'
+                                              height='24'
+                                              viewBox='0 0 24 24'
+                                              strokeWidth='1.5'
+                                              stroke='currentColor'
+                                              fill='none'
+                                              strokeLinecap='round'
+                                              strokeLinejoin='round'
+                                            >
+                                              <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+                                              <path d='M4 7l16 0' />
+                                              <path d='M10 11l0 6' />
+                                              <path d='M14 11l0 6' />
+                                              <path d='M5 7l1 12.5a1 1 0 0 0 1 0.5h10a1 1 0 0 0 1 -0.5l1 -12.5' />
+                                              <path d='M9 7l0 -3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1l0 3' />
+                                            </svg>
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    )
+                                  })
+                                  : <tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>Aun no tienes invitados</td></tr>
                               }
                             </tbody>
+
                           </table>
                         </div>
                       </div>

@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-// import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Loading from '@/components/Loading'
 import Card from '@/components/ui/Card'
 import Textinput from '@/components/ui/Textinput'
-// import Textarea from '@/components/ui/Textarea'
-import { SelectForm } from '@/components/agenda/forms'
 import { toast } from 'react-toastify'
 import { createContact, getContactsById, updateContact } from '@/services/contactService'
 
@@ -17,8 +14,6 @@ const initialForm = {
   email: '',
   telefono: ''
 }
-
-
 
 export const CreateContactos = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -61,7 +56,6 @@ export const CreateContactos = () => {
     if (id) {
       try {
         const contacto = await getContactsById(id)
-        console.log(contacto);
         setValue('nombre', contacto.nombre)
         setValue('apellido', contacto.apellido)
         setValue('email', contacto.email)
@@ -83,7 +77,7 @@ export const CreateContactos = () => {
         isLoading
           ? (
             <Loading className='mt-28 md:mt-64' />
-          )
+            )
           : (
             <>
               <Card>
@@ -166,7 +160,7 @@ export const CreateContactos = () => {
                 </div>
               </div>
             </>
-          )
+            )
       }
 
     </>
