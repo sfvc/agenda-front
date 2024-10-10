@@ -31,20 +31,14 @@ export const ContactSelect = ({ handleContact, oldContacts }) => {
   const addContact = (e) => {
     const exists = contacts.some((contact) => contact.id === e.id)
     if (!exists) {
-      setContacts([...contacts, { id: e.id, nombre: `${e.apellido} ${e.nombre}` }])
+      setContacts([...contacts, { id: e.id, nombre: e.nombre }])
       setFind([])
     } else {
-      toast.error('La etiqueta ya está seleccionada para el evento')
+      toast.error('La etiqueta ya esta selecionada para el evento')
       setFind([])
     }
     setSearch('')
   }
-
-  useEffect(() => {
-    // Enviar solo id y nombre
-    const simplifiedContacts = contacts.map(contact => ({ id: contact.id, nombre: contact.nombre }))
-    handleContact(simplifiedContacts)
-  }, [contacts, handleContact])
 
   const deletContact = (e) => {
     setContacts((prevItems) => prevItems.filter(item => item.id !== e))
@@ -59,6 +53,7 @@ export const ContactSelect = ({ handleContact, oldContacts }) => {
       setContacts(oldContacts)
     }
   }, [oldContacts])
+
   return (
     <>
 

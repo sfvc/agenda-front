@@ -223,21 +223,6 @@ export const ShowEvento = () => {
                             </div>
                           </li>
 
-                          {/* <li className='flex space-x-3 rtl:space-x-reverse'>
-                            <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
-                              <Icon icon='heroicons:clipboard-document-check' />
-                            </div>
-                            <div className='flex-1'>
-                              <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                                ID
-                              </div>
-                              <span
-                                className='text-base text-slate-600 dark:text-slate-50'
-                              >
-                                N° {activeEvento.id}
-                              </span>
-                            </div>
-                          </li> */}
                         </ul>
                         {activeEvento.etiquetas.length > 0
                           ? <div className='w-full flex flex-wrap items-start text-sm font-medium mt-5'>
@@ -247,10 +232,11 @@ export const ShowEvento = () => {
                                   <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='size-5'>
                                     <path strokeLinecap='round' strokeLinejoin='round' d='M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25' />
                                   </svg>
-                                </p>{etiqueta.nombre}
+                                                                                                                                                                                      </p>{etiqueta.nombre}
                                 </span>
                               )
                             })}
+
                           </div>
                           : null}
                       </Card>
@@ -266,9 +252,8 @@ export const ShowEvento = () => {
                         handleCircuit={() => console.log()}
                       />
                     </div>
-
                     {activeEvento.documentos.length > 0 && (
-                      <div className='md:col-span-4 col-span-1 row-span-2 max-h-80 overflow-y-auto'>
+                      <div className='col-span-4  row-span-4 max-h-80 overflow-y-auto'>
                         <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-2 text-center'>
                           Documentos del Evento
                         </h1>

@@ -39,26 +39,35 @@ export const CreateGroup = () => {
       if (!id) {
         await createGroup(items)
 
-        toast.success('Contacto creado exitosamente')
+        toast.success('Grupo creado exitosamente')
       } else {
         await updateGroup(id, items)
-        toast.info('Contacto editado exitosamente')
+        toast.info('Grupo editado exitosamente')
       }
       navigate('/grupos')
     } catch (error) {
       toast.error('Hubo un error al crear el contacto')
     }
   }
+
+  const filtrarContactos = (contactos) => {
+    return contactos.map(({ id, nombre }) => ({
+      id,
+      nombre
+    }))
+  }
+
   const loadGroup = async () => {
     if (id) {
       try {
         const group = await getGroupById(id)
 
+        const contactosFiltrados = filtrarContactos(group?.contactos)
         setValue('nombre', group.nombre)
-        setValue('contactos', group.contactos)
-        setContacts(group?.contactos)
+        setValue('contactos', contactosFiltrados)
+        setContacts(contactosFiltrados)
       } catch (error) {
-        console.error('Error al cargar el evento:', error)
+        console.error('Error al cargar el grupo:', error)
       }
     }
     setIsLoading(false)
@@ -99,6 +108,7 @@ export const CreateGroup = () => {
                                   ? (
                                     <>
                                       <div className='mt-5'>
+                                        <p>Agregar contactos</p>
                                         <ContactSelect handleContact={handleContact} oldContacts={contacts} />
                                       </div>
                                     </>

@@ -26,8 +26,8 @@ const columnContact = [
     field: 'telefono'
   },
   {
-    label: 'Funcion',
-    field: 'funcion'
+    label: 'Grupo',
+    field: 'grupo'
   },
   {
     label: 'Borrar',
