@@ -232,11 +232,11 @@ export const Eventos = () => {
                                       </td>
                                       <td className='table-td flex gap-2'>
                                         <ViewButton evento={evento} onView={showEvento} />
-                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
+                                        {evento.estado !== 'RECHAZADO' && (
                                           <EditButton evento={evento} onEdit={onEdit} />
                                         )}
                                         <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
-                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && evento.estado !== 'A_REALIZAR' && (
+                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
                                           <RejectButton evento={evento} onReject={onReject} />
                                         )}
                                       </td>
