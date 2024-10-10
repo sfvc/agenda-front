@@ -9,11 +9,7 @@ export const ContactSelect = ({ handleContact, oldContacts }) => {
     const [contacts, setContacts] = useState(oldContacts.length === 0 ? [] : oldContacts);
     const [find, setFind] = useState([])
 
-
-
-  
     const searchContact = async () => {
-      
         try {
             const response = await searchContactName(search);
             if (response.length === 0) {
@@ -23,14 +19,13 @@ export const ContactSelect = ({ handleContact, oldContacts }) => {
             }
         } catch (error) {
             console.error(error);
-        } 
-
+        }
     }
 
     const addContact = (e) => {
         const exists = contacts.some((contact) => contact.id === e.id)
         if (!exists) {
-            setContacts([...contacts, { id: e.id, nombre: e.apellido + " " + e.nombre }])
+            setContacts([...contacts, { id: e.id, nombre: e.nombre }])
             setFind([])
         } else {
             toast.error('La etiqueta ya esta selecionada para el evento')
@@ -52,6 +47,7 @@ export const ContactSelect = ({ handleContact, oldContacts }) => {
             setContacts(oldContacts);
         }
     }, [oldContacts]);
+    
     return (
         <>
 

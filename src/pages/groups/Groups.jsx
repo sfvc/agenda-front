@@ -30,7 +30,6 @@ export const Groups = () => {
     if (isLoading) {
         return <Loading />
     }
-    console.log(grupos);
     return (
         <>
             {
