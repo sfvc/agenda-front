@@ -6,7 +6,7 @@ import Textinput from '@/components/ui/Textinput'
 import Button from '@/components/ui/Button'
 import { Label } from 'flowbite-react'
 import { toast } from 'react-toastify'
-// import { getCategoryById } from '@/services/categoryService'
+// import { getEtiquetaById } from '@/services/labelsService'
 
 const FormValidationSaving = yup
   .object({
@@ -36,21 +36,21 @@ export const LabelsForm = ({ fnAction, refetchLabel, activeLabel, onClose, id })
   const onSubmit = async (data) => {
     try {
       await fnAction(data)
-      toast.success('Categoría creada exitosamente')
+      toast.success('Etiqueta creada exitosamente')
       refetchLabel()
       reset()
       onClose()
     } catch (error) {
-      toast.error('Hubo un error al crear la categoría')
+      toast.error('Hubo un error al crear la etiqueta')
     }
   }
 
   const loadCategory = async () => {
     if (id) {
       try {
-        // const categoria = await getCategoryById(id)
+        // const etiqueta = await getEtiquetaById(id)
 
-        // setValue('nombre', categoria.nombre)
+        // setValue('nombre', etiqueta.nombre)
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
@@ -65,13 +65,13 @@ export const LabelsForm = ({ fnAction, refetchLabel, activeLabel, onClose, id })
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 relative'>
       <div className='mb-4'>
         <div className='mb-2 block dark:text-white'>
-          <Label color='gray' htmlFor='nombre' value='Nombre de la categoria' />
+          <Label color='gray' htmlFor='nombre' value='Nombre de la etiqueta' />
           <strong className='obligatorio'>(*)</strong>
         </div>
         <Textinput
           name='nombre'
           type='text'
-          placeholder='Nombre de la categoria'
+          placeholder='Nombre de la etiqueta'
           register={register}
           error={errors.nombre}
         />
