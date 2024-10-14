@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { Collapse } from 'react-collapse'
 import Icon from '@/components/ui/Icon'
-import { useDispatch } from 'react-redux'
 
 const Navmenu = ({ menus }) => {
   const [activeSubmenu, setActiveSubmenu] = useState(null)
@@ -60,7 +59,9 @@ const Navmenu = ({ menus }) => {
 
             {/* Solo para encabezados */}
             {item.isHeadr && !item.child && (
-              <div className='menulabel'>{item.title}</div>
+              <div className='menulabel text-sm uppercase font-bold text-gray-500 mb-2 mt-4 border-b border-gray-300 dark:text-gray-300'>
+                {item.title}
+              </div>
             )}
 
             {/* Submenú */}

@@ -15,6 +15,7 @@ import Login from './pages/auth/Login'
 import Loading from '@/components/Loading'
 import { useAuthStore } from './thunks/useAuthStore'
 import ProtectedRoute from './components/ProtectedRoute'
+import { Etiquetas } from './pages/Etiquetas'
 const Dashboard = lazy(() => import('./pages/dashboard'))
 
 function App () {
@@ -144,10 +145,14 @@ function App () {
 
                   {/* Prensa */}
                   <Route path='prensa' element={<Prensa />} />
-                  {/* GRupos */}
+
+                  {/* Grupos */}
                   <Route path='grupos' element={<Groups />} />
                   <Route path='grupos/crear' element={<CreateGroup />} />
                   <Route path='grupos/editar/:id' element={<CreateGroup />} />
+
+                  {/* Etiquetas */}
+                  <Route path='etiquetas' element={<Etiquetas />} />
                 </Route>
 
                 <Route path='/404' element={<Error />} />
