@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { agendaApi } from '@/api'
 
-export const fetchEvents = async (page = 1, state = '', category = '', fecha_inicio = '', fecha_final = '') => {
+export const fetchEvents = async (page = 1, state = '', category = '', fecha_inicio = '', fecha_final = '', etiqueta = '', barrio = '', circuito = '') => {
   let url = '/evento?'
   if (state) {
     url += `estado=${state}&`
@@ -14,6 +14,15 @@ export const fetchEvents = async (page = 1, state = '', category = '', fecha_ini
   }
   if (fecha_inicio) {
     url += `fecha_final=${fecha_final}&`
+  }
+  if (etiqueta) {
+    url += `etiqueta=${etiqueta}&`
+  }
+  if (barrio) {
+    url += `barrio=${barrio}&`
+  }
+  if (circuito) {
+    url += `circuito=${circuito}&`
   }
   url += `page=${page}`
   const response = await agendaApi.get(url)

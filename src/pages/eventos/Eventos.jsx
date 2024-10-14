@@ -16,6 +16,7 @@ import AgendaButton from '@/components/buttons/AgendaButton'
 import columnEventos from '@/json/columnsEventos.json'
 import RejectButton from '@/components/buttons/RejectButton'
 import { useSelector } from 'react-redux'
+import { fetchLabels } from '../../services/labelsService'
 
 const estados = [
   { id: 'PENDIENTE', nombre: 'Pendiente' },
@@ -32,6 +33,7 @@ export const Eventos = () => {
   const [category, setCategory] = useState('')
   const [fechIni, setFechIni] = useState('')
   const [fechFin, setFechFin] = useState('')
+  const [label, setLabel] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const { googleAuth } = useSelector(state => state.auth)
   const [filteredEventos, setFilteredEventos] = useState([])
@@ -44,6 +46,12 @@ export const Eventos = () => {
   const { data: categorias } = useQuery({
     queryKey: ['categorias'],
     queryFn: () => getCategory(),
+    keepPreviousData: true
+  })
+
+  const { data: labels } = useQuery({
+    queryKey: ['labels'],
+    queryFn: () => fetchLabels(),
     keepPreviousData: true
   })
 
@@ -102,10 +110,11 @@ export const Eventos = () => {
 
   async function onSearch () {
     setButtonFilter(true)
-    const myEventos = await getEventos(currentPage, state, category, fechIni, fechFin)
-
+    const myEventos = await getEventos(currentPage, state, category, fechIni, fechFin, label)
     if (myEventos.items.length === 0) {
-      toast.error('Sin resultados filtrados')
+      toast.error('No se encontraron coincidencias')
+    } else {
+      toast.success('Filtrado correctamente')
     }
     setFilteredEventos(myEventos.items)
     setButtonFilter(false)
@@ -153,6 +162,7 @@ export const Eventos = () => {
                 <div className='flex flex-col md:flex-row gap-3 items-start md:items-end justify-center'>
                   <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
                   <SelectForm title='Categorías' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
+                  <SelectForm title='Etiquetas' options={labels?.items} onChange={(e) => setLabel(e.target.value)} />
 
                   <div className='flex flex-col'>
                     <label htmlFor='fechaInicio' className='form-label'>Fecha de Inicio</label>
@@ -182,7 +192,7 @@ export const Eventos = () => {
                     disabled={buttonFilter}
                     className={`${buttonFilter ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-800'} text-white py-2 px-6 rounded-lg mt-2 md:mt-0`}
                   >
-                    {buttonFilter ? 'Cargando...' : 'Filtrar'}
+                    {buttonFilter ? 'Filtrar' : 'Filtrar'}
                   </button>
                 </div>
               </Card>
