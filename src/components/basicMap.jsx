@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable eqeqeq */
-import { MapContainer, TileLayer, Marker, Popup, useMap  } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import React, { useState, useEffect, useRef } from 'react'
 import { features } from '@/json/barrios.json'
-import data from "@/json/circuitos_electorales.json"
+import data from '@/json/circuitos_electorales.json'
 import 'leaflet/dist/leaflet.css'
 import * as turf from '@turf/turf'
 
@@ -12,7 +12,6 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
     latitud: -28.46867672033115,
     longitud: -65.77899050151645
   }
-  const map = useMap();
   const [geoData, setGeoData] = useState([])
   const [geoCircuitos, setGeoCircuitos] = useState([])
   const previousPosition = useRef(initialPosition)
@@ -33,13 +32,13 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
   }
 
   const invertirCoordenadas = (array) => {
-    const coords = array.map(coordenada => [coordenada[1], coordenada[0]]);
+    const coords = array.map(coordenada => [coordenada[1], coordenada[0]])
     // Asegúrate de que la primera y la última coordenadas sean iguales
     if (coords.length > 0 && (coords[0][0] !== coords[coords.length - 1][0] || coords[0][1] !== coords[coords.length - 1][1])) {
-      coords.push(coords[0]);
+      coords.push(coords[0])
     }
-    return coords;
-  };
+    return coords
+  }
 
   const [position, setPosition] = useState(() => {
     if (editPosition) {
@@ -50,46 +49,28 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
 
   useEffect(() => {
     const geoDataTemp = features.map(ft => {
-      const coords = invertirCoordenadas(ft.geometry.coordinates[0]);
+      const coords = invertirCoordenadas(ft.geometry.coordinates[0])
       return {
         id: ft.properties.id,
         zona: ft.properties.zona,
         barrio: ft.properties.barrio,
-        coords,
-      };
-    });
+        coords
+      }
+    })
 
-    setGeoData(geoDataTemp);
+    setGeoData(geoDataTemp)
 
     const geoCircuitosTemp = data.features.map(ft => {
-      const coords = invertirCoordenadas(ft.geometry.coordinates[0]);
+      const coords = invertirCoordenadas(ft.geometry.coordinates[0])
       return {
         id: ft.properties.id,
         circuito: ft.properties.circuitos,
-        coords,
-      };
-    });
+        coords
+      }
+    })
 
-    setGeoCircuitos(geoCircuitosTemp);
-  }, []);
-
-  // useEffect(() => {
-  //   if (url) {
-  //     // Cargar y procesar el archivo KML
-  //     fetch(url)
-  //       .then((response) => response.text())
-  //       .then((kmlText) => {
-  //         const parser = new DOMParser();
-  //         const kml = parser.parseFromString(kmlText, 'text/xml');
-  //         const kmlLayer = new L.KML(kml);
-  //         map.addLayer(kmlLayer);
-  //         map.fitBounds(kmlLayer.getBounds());
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error cargando KML:', error);
-  //       });
-  //   }
-  // }, [url, map]);
+    setGeoCircuitos(geoCircuitosTemp)
+  }, [])
 
   useEffect(() => {
     const getAddressFromCoordinates = async (lat, lng) => {
@@ -114,49 +95,47 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
     }
   }, [position, onLocationChange, isActive])
 
-
-
   useEffect(() => {
-    let found = false;
+    let found = false
     for (const polygonCoords of geoCircuitos) {
       // Asegúrate de que polygonCoords.coords tiene 4 o más posiciones
       if (polygonCoords.coords.length >= 4) {
-        const polygon = turf.polygon([polygonCoords.coords]);
+        const polygon = turf.polygon([polygonCoords.coords])
         if (turf.booleanPointInPolygon(position, polygon)) {
-          handleCircuit( polygonCoords.circuito );
-          found = true;
-          break;
+          handleCircuit(polygonCoords.circuito)
+          found = true
+          break
         }
       }
     }
     if (!found) {
-      handleCircuit('');
+      handleCircuit('')
     }
-  }, [position, geoCircuitos]);
-useEffect(() => {
-    let found = false;
+  }, [position, geoCircuitos])
+  useEffect(() => {
+    let found = false
     for (const polygonCoords of geoData) {
-      const polygon = turf.polygon([[...polygonCoords.coords]]);
+      const polygon = turf.polygon([[...polygonCoords.coords]])
       if (turf.booleanPointInPolygon(position, polygon)) {
-        handleNeight( polygonCoords.barrio );
-        found = true;
-        break;
+        handleNeight(polygonCoords.barrio)
+        found = true
+        break
       }
     }
     if (!found) {
-      handleNeight('');
+      handleNeight('')
     }
-  }, [position]);
+  }, [position])
   return (
     <div className='h-full'>
       {geoCircuitos.length > 0
         ? <MapContainer
-          center={position}
-          zoom={16}
-          scrollWheelZoom
-          style={{ height: '100%', width: '100%' }}
-          onClick={handleMapClick}
-        >
+            center={position}
+            zoom={16}
+            scrollWheelZoom
+            style={{ height: '100%', width: '100%' }}
+            onClick={handleMapClick}
+          >
           <TileLayer
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -178,5 +157,3 @@ useEffect(() => {
 }
 
 export default BasicMap
-
-

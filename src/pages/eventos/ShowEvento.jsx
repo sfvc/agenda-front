@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-indent */
 import React, { useState, useEffect } from 'react'
 import { Card } from 'flowbite-react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -70,7 +71,7 @@ export const ShowEvento = () => {
                   />
 
                   <div className='grid grid-cols-1 md:grid-cols-12 grid-rows-4 gap-6'>
-                    <div className='md:col-span-4 col-span-1 row-span-4'>
+                    <div className='col-span-4 row-span-4'>
                       <Card>
                         <ul className='list space-y-8'>
                           <li className='flex space-x-3 rtl:space-x-reverse'>
@@ -253,27 +254,27 @@ export const ShowEvento = () => {
                               </div>
                             </li>
                           )}
-
                         </ul>
                         {activeEvento.etiquetas.length > 0
                           ? <div className='w-full flex flex-wrap items-start text-sm font-medium mt-5'>
                             {activeEvento.etiquetas.map((etiqueta) => {
                               return (
-                                <span className='bg-base-100 border  text-md font-medium me-2 group font-mono  p-2 rounded-lg dark:bg-purple-900 dark:text-purple-300 flex uppercase'><p className='text-blue-500  font-semibold'>
-                                  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='size-5'>
-                                    <path strokeLinecap='round' strokeLinejoin='round' d='M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25' />
-                                  </svg>
-                                </p>{etiqueta.nombre}
+                                <span key={etiqueta.id} className='bg-base-100 border text-md font-medium me-2 group font-mono p-2 rounded-lg dark:bg-purple-900 dark:text-purple-300 flex uppercase m-1'>
+                                  <p className='text-blue-500 font-semibold'>
+                                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='size-5'>
+                                      <path strokeLinecap='round' strokeLinejoin='round' d='M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25' />
+                                    </svg>
+                                  </p>
+                                  {etiqueta.nombre}
                                 </span>
                               )
                             })}
-                          </div>
+                            </div>
                           : null}
                       </Card>
                     </div>
 
-                    <div className={`row-span-4 ${activeEvento.contactos.length === 0 ? 'md:col-span-8 col-span-1' : 'md:col-span-4 col-span-1'}`}>
-
+                    <div className={`row-span-12 md:row-span-4 ${activeEvento.contactos.length === 0 ? 'col-span-8' : 'col-span-4'}`}>
                       <BasicMap
                         editPosition={position}
                         onLocationChange={() => { }}
@@ -282,6 +283,7 @@ export const ShowEvento = () => {
                         handleCircuit={() => null}
                       />
                     </div>
+
                     {activeEvento.documentos.length > 0 && (
                       <div className='col-span-4  row-span-4 max-h-80 overflow-y-auto'>
                         <h1 className='text-xl font-semibold dark:text-white mb-4 md:mb-2 text-center'>

@@ -80,7 +80,7 @@ export const Create = () => {
         toast.success('Evento creado exitosamente')
       } else {
         await updateEvento(id, items)
-        toast.success('Evento editado exitosamente')
+        toast.info('Evento editado exitosamente')
       }
 
       navigate('/eventos')
