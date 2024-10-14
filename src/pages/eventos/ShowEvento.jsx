@@ -107,6 +107,21 @@ export const ShowEvento = () => {
 
                           <li className='flex space-x-3 rtl:space-x-reverse'>
                             <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                              <Icon icon='heroicons:user' />
+                            </div>
+                            <div className='flex-1'>
+                              <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                                Localización
+                              </div>
+                              <span
+                                className='capitalize text-base text-slate-600 dark:text-slate-50'
+                              >
+                                {activeEvento.location}
+                              </span>
+                            </div>
+                          </li>
+                          <li className='flex space-x-3 rtl:space-x-reverse'>
+                            <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
                               <Icon icon='heroicons:envelope' />
                             </div>
                             <div className='flex-1'>

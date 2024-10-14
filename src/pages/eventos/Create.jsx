@@ -69,12 +69,11 @@ export const Create = () => {
 
   const handleLocationChange = (latitud, longitud, direccion) => {
     setValue('ubicacion', JSON.stringify({ latitud, longitud, direccion }))
-    setValue('location', direccion)
   }
 
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
-
+    items.subbario ="eqwe"
     try {
       if (!id) {
         await createEvento(items)
@@ -146,7 +145,6 @@ export const Create = () => {
                 <div>
                   <label htmlFor='nombre_solicitante' className='form-label'>
                     Nombre del Solicitante
-                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textinput
                     name='nombre_solicitante'
@@ -188,7 +186,6 @@ export const Create = () => {
                 <div>
                   <label htmlFor='telefono_solicitante' className='form-label'>
                     Teléfono del Solicitante
-                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textinput
                     type='number'
@@ -196,7 +193,6 @@ export const Create = () => {
                     placeholder='Ingrese el teléfono'
                     register={register}
                     onChange={handleChange}
-                    errors={errors.telefono_solicitante}
                   />
                 </div>
 
@@ -255,12 +251,11 @@ export const Create = () => {
 
                 <div>
                   <label htmlFor='location' className='form-label'>
-                    Localizacion
+                    Localización
                     <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textarea
                     name='location'
-                    readonly
                     placeholder='la localizacion se obtiene del mapa'
                     register={register}
                     errors={errors.location}

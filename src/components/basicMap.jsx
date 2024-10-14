@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable eqeqeq */
-import { MapContainer, TileLayer, Marker, Popup, Polygon } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMap  } from 'react-leaflet'
 import React, { useState, useEffect, useRef } from 'react'
 import { features } from '@/json/barrios.json'
 import data from "@/json/circuitos_electorales.json"
@@ -12,6 +12,7 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
     latitud: -28.46867672033115,
     longitud: -65.77899050151645
   }
+  const map = useMap();
   const [geoData, setGeoData] = useState([])
   const [geoCircuitos, setGeoCircuitos] = useState([])
   const previousPosition = useRef(initialPosition)
@@ -72,6 +73,23 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
     setGeoCircuitos(geoCircuitosTemp);
   }, []);
 
+  // useEffect(() => {
+  //   if (url) {
+  //     // Cargar y procesar el archivo KML
+  //     fetch(url)
+  //       .then((response) => response.text())
+  //       .then((kmlText) => {
+  //         const parser = new DOMParser();
+  //         const kml = parser.parseFromString(kmlText, 'text/xml');
+  //         const kmlLayer = new L.KML(kml);
+  //         map.addLayer(kmlLayer);
+  //         map.fitBounds(kmlLayer.getBounds());
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error cargando KML:', error);
+  //       });
+  //   }
+  // }, [url, map]);
 
   useEffect(() => {
     const getAddressFromCoordinates = async (lat, lng) => {

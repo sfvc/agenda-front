@@ -1,24 +1,27 @@
 /* eslint-disable camelcase */
 import { agendaApi } from '@/api'
 
-export const fetchEvents = async (page = 1, state = '', category = '', fecha_inicio = '', fecha_final = '') => {
-  let url = '/evento?'
-  if (state) {
-    url += `estado=${state}&`
-  }
-  if (category) {
-    url += `categoria_id=${category}&`
-  }
-  if (fecha_inicio) {
-    url += `fecha_inicio=${fecha_inicio}&`
-  }
-  if (fecha_inicio) {
-    url += `fecha_final=${fecha_final}&`
-  }
-  url += `page=${page}`
-  const response = await agendaApi.get(url)
-  return response.data
-}
+export const fetchEvents = async (page = 1,circuito='', state = '', category = '', fecha_inicio = '', fecha_final = '') => {
+  const params = new URLSearchParams();
+
+  // Solo agregar parámetros si tienen valor
+  if (circuito) params.append('circuito', circuito);
+  if (state) params.append('estado', state);
+  if (category) params.append('categoria_id', category);
+  if (fecha_inicio) params.append('fecha_inicio', fecha_inicio);
+  if (fecha_final) params.append('fecha_final', fecha_final);
+  
+  // Siempre agregar la paginación
+  params.append('page', page);
+
+  // Construir la URL con los parámetros
+  const url = `/evento?${params.toString()}`;
+  
+  // Realizar la petición
+  const response = await agendaApi.get(url);
+  
+  return response.data;
+};
 
 export const fetchEventById = async (id, page) => {
   const response = await agendaApi.get(`/evento/${id}?page=${page}`)
@@ -26,7 +29,7 @@ export const fetchEventById = async (id, page) => {
 }
 
 export const createEvent = async (event, page) => {
-  const response = await agendaApi.post(`/evento?page=${page}`, event)
+  const response = await agendaApi.post(`/evento`, event)
   return response.data
 }
 
