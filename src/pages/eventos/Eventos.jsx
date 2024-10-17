@@ -48,7 +48,7 @@ const barrios = [
   { id: 'VALLE CHICO', nombre: 'VALLE CHICO' },
   { id: 'VILLA CUBAS', nombre: 'VILLA CUBAS' },
   { id: 'VILLA PARQUE CHACABUCO', nombre: 'VILLA PARQUE CHACABUCO' },
-  { id: 'ZONA INDUSTRIAL (PANTANILLO)', nombre: 'ZONA INDUSTRIAL (PANTANILLO)' },
+  { id: 'ZONA INDUSTRIAL (PANTANILLO)', nombre: 'ZONA INDUSTRIAL (PANTANILLO)' }
 ]
 
 const circuitos = [
@@ -60,7 +60,7 @@ const circuitos = [
   { id: '6', nombre: 'Circuito N° 6' },
   { id: '7', nombre: 'Circuito N° 7' },
   { id: '8', nombre: 'Circuito N° 8' },
-  { id: '9', nombre: 'Circuito N° 9' },
+  { id: '9', nombre: 'Circuito N° 9' }
 
 ]
 
@@ -100,20 +100,20 @@ export const Eventos = () => {
     return <Loading />
   }
 
-  function addEvento() {
+  function addEvento () {
     navigate(`/eventos/crear?page=${currentPage}`)
   }
 
-  async function showEvento(id) {
+  async function showEvento (id) {
     await onEdit(id)
     navigate(`/eventos/ver/${id}?page=${currentPage}`)
   }
 
-  async function onEdit(id) {
+  async function onEdit (id) {
     navigate(`/eventos/editar/${id}?page=${currentPage}`)
   }
 
-  async function onDelete(id, estado) {
+  async function onDelete (id, estado) {
     if (estado === 'PENDIENTE') {
       navigate(`/eventos/estado_considerar/${id}?page=${currentPage}`)
     } else if (estado === 'A_CONSIDERAR') {
@@ -136,7 +136,7 @@ export const Eventos = () => {
     }
   }
 
-  async function onReject(id) {
+  async function onReject (id) {
     try {
       await rejectEvent(id)
       toast.success('El evento se desestimo')
@@ -147,9 +147,9 @@ export const Eventos = () => {
     }
   }
 
-  async function onSearch() {
+  async function onSearch () {
     setButtonFilter(true)
-    const myEventos = await getEventos(currentPage, circuito, state, category, fechIni, fechFin,barrio)
+    const myEventos = await getEventos(currentPage, circuito, state, category, fechIni, fechFin, barrio)
 
     if (myEventos.items.length === 0) {
       toast.error('No se encontraron coincidencias')
@@ -160,12 +160,13 @@ export const Eventos = () => {
     setButtonFilter(false)
   }
 
-  function separarTresPrimerosElementos(cadena) {
+  function separarTresPrimerosElementos (cadena) {
     const elementos = cadena.split(',').map(elemento => elemento.trim())
     const primerosTres = elementos.slice(0, 3)
     const resultadoEnCadena = primerosTres.join(', ')
     return resultadoEnCadena
   }
+
   const parseUbicacion = (ubicacion) => {
     try {
       const parsed = JSON.parse(ubicacion)
@@ -202,7 +203,6 @@ export const Eventos = () => {
                 <div className='flex flex-col md:flex-row gap-3 items-start md:items-end justify-center'>
                   <SelectForm title='Barrio' options={barrios} onChange={(e) => setBarrio(e.target.value)} />
                   <SelectForm title='Circuito' options={circuitos} onChange={(e) => setCircuito(e.target.value)} />
-
 
                   <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
                   <SelectForm title='Ejes' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
@@ -259,17 +259,17 @@ export const Eventos = () => {
                           {
                             (eventosAMostrar.length > 0)
                               ? (eventosAMostrar.map((evento) => {
-                                return (
-                                  <tr key={evento.id}>
-                                    <td className='table-td'>{evento.id}</td>
-                                    <td className='table-td'>{evento.nombre_solicitante}</td>
-                                    <td className='table-td'>{evento.telefono_solicitante}</td>
-                                    <td className='table-td max-w-96'>{parseUbicacion(evento.ubicacion)}</td>
-                                    <td className='table-td'>{formatDate(evento.fecha)}</td>
-                                    <td className='table-td'>{evento.categoria?.nombre}</td>
-                                    <td className='table-td'>
-                                      <span
-                                        className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 
+                                  return (
+                                    <tr key={evento.id}>
+                                      <td className='table-td'>{evento.id}</td>
+                                      <td className='table-td'>{evento.nombre_solicitante || '-'}</td>
+                                      <td className='table-td'>{evento.telefono_solicitante || '-'}</td>
+                                      <td className='table-td max-w-96'>{parseUbicacion(evento.ubicacion) || '-'}</td>
+                                      <td className='table-td'>{formatDate(evento.fecha) || '-'}</td>
+                                      <td className='table-td'>{evento.categoria?.nombre || '-'}</td>
+                                      <td className='table-td'>
+                                        <span
+                                          className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 
                                             ${evento.estado === 'A_REALIZAR'
                                             ? 'text-black bg-indigo-500 dark:bg-indigo-400'
                                             : evento.estado === 'PENDIENTE'
@@ -279,23 +279,23 @@ export const Eventos = () => {
                                                 : evento.estado === 'RECHAZADO'
                                                   ? 'text-black bg-red-500 dark:bg-red-400'
                                                   : 'text-black bg-warning-500 dark:bg-warning-500'}`}
-                                      >
-                                        {evento.estado}
-                                      </span>
-                                    </td>
-                                    <td className='table-td flex gap-2'>
-                                      <ViewButton evento={evento} onView={showEvento} />
-                                      {evento.estado !== 'RECHAZADO' && (
-                                        <EditButton evento={evento} onEdit={onEdit} />
-                                      )}
-                                      <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
-                                      {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
-                                        <RejectButton evento={evento} onReject={onReject} />
-                                      )}
-                                    </td>
-                                  </tr>
-                                )
-                              }))
+                                        >
+                                          {evento.estado}
+                                        </span>
+                                      </td>
+                                      <td className='table-td flex gap-2'>
+                                        <ViewButton evento={evento} onView={showEvento} />
+                                        {evento.estado !== 'RECHAZADO' && (
+                                          <EditButton evento={evento} onEdit={onEdit} />
+                                        )}
+                                        <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
+                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
+                                          <RejectButton evento={evento} onReject={onReject} />
+                                        )}
+                                      </td>
+                                    </tr>
+                                  )
+                                }))
                               : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
                           }
                         </tbody>
@@ -318,7 +318,7 @@ export const Eventos = () => {
                 </div>
               </Card>
             </>
-          )
+            )
       }
     </>
   )

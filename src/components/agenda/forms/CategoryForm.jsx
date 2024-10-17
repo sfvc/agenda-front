@@ -66,13 +66,13 @@ export const CategoryForm = ({ fnAction, refetchCategories, activeCategory, onCl
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 relative'>
       <div className='mb-4'>
         <div className='mb-2 block dark:text-white'>
-          <Label color='gray' htmlFor='nombre' value='Nombre de la categoria' />
+          <Label color='gray' htmlFor='nombre' value='Nombre del eje' />
           <strong className='obligatorio'>(*)</strong>
         </div>
         <Textinput
           name='nombre'
           type='text'
-          placeholder='Nombre de la categoria'
+          placeholder='Nombre del eje'
           register={register}
           error={errors.nombre}
         />

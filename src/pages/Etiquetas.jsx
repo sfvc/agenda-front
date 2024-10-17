@@ -98,7 +98,7 @@ export const Etiquetas = () => {
                                   <td className='table-td'>{etiqueta.id}</td>
                                   <td className='table-td'>{etiqueta.nombre}</td>
                                 </tr>
-                              )))
+                                )))
                               : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
                           }
                         </tbody>
@@ -121,7 +121,7 @@ export const Etiquetas = () => {
                 </div>
               </Card>
             </>
-          )
+            )
       }
     </>
   )

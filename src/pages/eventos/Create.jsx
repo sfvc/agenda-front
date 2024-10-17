@@ -1,3 +1,4 @@
+/* eslint-disable use-isnan */
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -14,20 +15,21 @@ import DatePicker from '@/components/ui/DatePicker'
 import BasicMap from '@/components/basicMap'
 import { toast } from 'react-toastify'
 import { LabelsSelect } from '../../components/agenda/forms/LabelsSelect'
+
 const initialForm = {
-  nombre_solicitante: '',
-  email_solicitante: '',
-  telefono_solicitante: '',
-  descripcion: '',
-  fecha: '',
-  categoria: '',
-  ubicacion: '',
-  location: '',
-  summary: '',
-  barrio: '',
-  circuito: '',
+  nombre_solicitante: null,
+  email_solicitante: null,
+  telefono_solicitante: null,
+  descripcion: null,
+  fecha: null,
+  categoria: null,
+  ubicacion: null,
+  location: null,
+  summary: null,
+  barrio: null,
+  circuito: null,
   etiquetas_ids: [],
-  subbarrio:''
+  subbarrio: null
 }
 
 const initialPosition = {
@@ -58,6 +60,7 @@ export const Create = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target
+
     setFormData((prevState) => ({
       ...prevState,
       [name]: value
@@ -71,17 +74,27 @@ export const Create = () => {
   const handleLocationChange = (latitud, longitud, direccion) => {
     setValue('ubicacion', JSON.stringify({ latitud, longitud, direccion }))
   }
-
+  const sanitizeObject = (items) => {
+    return Object.fromEntries(
+      Object.entries(items).map(([key, value]) => {
+        // Si el valor es vacío o NaN, lo convertimos en null
+        if (value === '' || value === NaN || (Array.isArray(value) && value.length === 0)) {
+          return [key, null]
+        }
+        return [key, value]
+      })
+    )
+  }
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
-   
+    const newObject = sanitizeObject(items)
+
     try {
       if (!id) {
-        await createEvento(items)
+        await createEvento(newObject)
         toast.success('Evento creado exitosamente')
       } else {
-      
-        await updateEvento(id, items)
+        await updateEvento(id, newObject)
         toast.info('Evento editado exitosamente')
       }
 
@@ -96,7 +109,6 @@ export const Create = () => {
   }
 
   const handleCircuit = (e) => {
-   
     setValue('circuito', e)
   }
   const handleSub = (e) => {
@@ -157,7 +169,7 @@ export const Create = () => {
                   <Textinput
                     name='nombre_solicitante'
                     type='text'
-                    placeholder='Ingrese el nombre'
+                    placeholder='Ingrese el nombre del solicitante'
                     register={register}
                     onChange={handleChange}
                     errors={errors.nombre_solicitante}
@@ -179,7 +191,6 @@ export const Create = () => {
                 <div>
                   <label htmlFor='email_solicitante' className='form-label'>
                     Email del Solicitante
-                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textinput
                     name='email_solicitante'
@@ -234,7 +245,6 @@ export const Create = () => {
                 <div>
                   <label htmlFor='descripcion' className='form-label'>
                     Descripción
-                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textarea
                     name='descripcion'
@@ -300,14 +310,14 @@ export const Create = () => {
                 </div>
                 <div>
                   <label htmlFor='subbarrio' className='form-label'>
-                  subBarrio
+                    Sub-Barrio
                     <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textinput
                     name='subbarrio'
                     type='text'
                     readonly
-                    placeholder='El subBarrio se carga a partir del mapa'
+                    placeholder='El sub-barrio se carga a partir del mapa'
                     register={register}
                     errors={errors.subbarrio}
                   />

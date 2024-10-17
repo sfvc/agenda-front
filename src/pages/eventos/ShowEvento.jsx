@@ -39,6 +39,23 @@ export const ShowEvento = () => {
     }
   }
 
+  function separarTresPrimerosElementos (cadena) {
+    const elementos = cadena.split(',').map(elemento => elemento.trim())
+    const primerosTres = elementos.slice(0, 3)
+    const resultadoEnCadena = primerosTres.join(', ')
+    return resultadoEnCadena
+  }
+
+  const parseUbicacion = (ubicacion) => {
+    try {
+      const parsed = JSON.parse(ubicacion)
+      const resultado = separarTresPrimerosElementos(parsed.direccion)
+      return resultado || 'Dirección no disponible'
+    } catch {
+      return 'Dirección no disponible'
+    }
+  }
+
   useEffect(() => {
     getEvent()
   }, [id])
@@ -117,7 +134,7 @@ export const ShowEvento = () => {
                               <span
                                 className='capitalize text-base text-slate-600 dark:text-slate-50'
                               >
-                                {activeEvento.location}
+                                {activeEvento.location || parseUbicacion(activeEvento.ubicacion)}
                               </span>
                             </div>
                           </li>
@@ -201,7 +218,7 @@ export const ShowEvento = () => {
                             </div>
                             <div className='flex-1'>
                               <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                                CATEGORIA
+                                EJE
                               </div>
                               <span
                                 className='text-base text-slate-600 dark:text-slate-50'
@@ -224,14 +241,14 @@ export const ShowEvento = () => {
                               </div>
                             </div>
                           </li>
-                 
+
                           <li className='flex space-x-3 rtl:space-x-reverse'>
                             <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
                               <Icon icon='heroicons:map-pin' />
                             </div>
                             <div className='flex-1'>
                               <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
-                                SUB BARRIO
+                                SUB-BARRIO
                               </div>
                               <div className='text-base text-slate-600 dark:text-slate-50'>
                                 {activeEvento?.subbarrio || '-'}

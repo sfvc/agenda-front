@@ -3,8 +3,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import React, { useState, useEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
-import { initializeGeoData, checkPositionInCircuito, checkPositionInNeigh, checkPositionInSubNeigh } from "@/services/maps.js"
-
+import { initializeGeoData, checkPositionInCircuito, checkPositionInNeigh, checkPositionInSubNeigh } from '@/services/maps.js'
 
 const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, handleCircuit, handleSub }) => {
   const initialPosition = {
@@ -28,7 +27,6 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
     if (!isActive) {
       const { lat, lng } = event.latlng
       setPosition([lat, lng])
-
     }
   }
   useEffect(() => {
@@ -37,34 +35,26 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
     setGeoCircuitos(circuitos)
     setGeoSubBarrios(sub)
   }, [])
-  
-    useEffect(() => {
 
-      const circuito = checkPositionInCircuito(position, geoCircuitos)
-      const barrio = checkPositionInNeigh(position, geoData)
-      const subBarrio = checkPositionInSubNeigh(position, geoSubBarrios)
-      handleCircuit(circuito)
-      handleNeight(barrio)
-      if(subBarrio === null){
-        handleSub(barrio)
-      }else{
-        handleSub(subBarrio)
-      }
-     
+  useEffect(() => {
+    const circuito = checkPositionInCircuito(position, geoCircuitos)
+    const barrio = checkPositionInNeigh(position, geoData)
+    const subBarrio = checkPositionInSubNeigh(position, geoSubBarrios)
+    handleCircuit(circuito)
+    handleNeight(barrio)
+    if (subBarrio === null) {
+      handleSub(barrio)
+    } else {
+      handleSub(subBarrio)
+    }
+  }, [position])
 
-
-    }, [position])
-  
   const handleMarkerDragEnd = (event) => {
     if (!isActive) {
       const { lat, lng } = event.target.getLatLng()
       setPosition([lat, lng])
     }
   }
-
-
-
-
 
   useEffect(() => {
     const getAddressFromCoordinates = async (lat, lng) => {
@@ -87,16 +77,12 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
     }
   }, [position, onLocationChange, isActive])
 
-
-
- 
-
   return (
     <div className='h-full'>
       <MapContainer
         center={position}
         zoom={15}
-        scrollWheelZoom={false}
+        scrollWheelZoom
         style={{ height: '100%', width: '100%' }}
         onClick={handleMapClick}
       >
