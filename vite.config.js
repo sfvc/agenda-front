@@ -26,4 +26,5 @@ export default defineConfig({
     react(),
     //reactRefresh(),
   ],
+  assetsInclude: ['**/*.kml'] 
 });

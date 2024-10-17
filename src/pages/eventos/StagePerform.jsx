@@ -77,7 +77,6 @@ export const StagePerform = () => {
   const addContactFunction = async () => {
     try {
       const { contactos, nombre } = await getGroupById(tags)
-      console.log(contactos)
       const nuevosContactos = contactos.filter((element) => {
         return !invitados.some((invitado) => invitado.id === element.id)
       }).map((contacto) => {

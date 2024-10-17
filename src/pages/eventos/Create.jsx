@@ -26,7 +26,8 @@ const initialForm = {
   summary: '',
   barrio: '',
   circuito: '',
-  etiquetas_ids: []
+  etiquetas_ids: [],
+  subbarrio:''
 }
 
 const initialPosition = {
@@ -73,12 +74,13 @@ export const Create = () => {
 
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
-    items.subbario ="eqwe"
+   
     try {
       if (!id) {
         await createEvento(items)
         toast.success('Evento creado exitosamente')
       } else {
+      
         await updateEvento(id, items)
         toast.info('Evento editado exitosamente')
       }
@@ -94,7 +96,11 @@ export const Create = () => {
   }
 
   const handleCircuit = (e) => {
+   
     setValue('circuito', e)
+  }
+  const handleSub = (e) => {
+    setValue('subbarrio', e)
   }
 
   const handleLabels = (e) => {
@@ -113,11 +119,13 @@ export const Create = () => {
         setValue('categoria_id', evento.categoria_id)
         setValue('descripcion', evento.descripcion)
         setValue('ubicacion', evento.ubicacion)
+        setValue('location', evento.location)
         setValue('summary', evento.summary)
         setValue('circuito', evento.circuito)
         setPosition(JSON.parse(evento.ubicacion))
         setTimeout(() => {
           setValue('barrio', evento.barrio)
+          setValue('subbarrio', evento.subbarrio)
         }, 100)
         setValue('etiquetas_ids', evento.etiquetas)
       } catch (error) {
@@ -198,7 +206,7 @@ export const Create = () => {
 
                 <div>
                   <label htmlFor='categoria' className='form-label'>
-                    Categoria
+                    Eje
                     <strong className='obligatorio'>(*)</strong>
                   </label>
                   <SelectForm
@@ -256,7 +264,7 @@ export const Create = () => {
                   </label>
                   <Textarea
                     name='location'
-                    placeholder='la localizacion se obtiene del mapa'
+                    placeholder='Escriba la ubicación'
                     register={register}
                     errors={errors.location}
                   />
@@ -290,6 +298,20 @@ export const Create = () => {
                     errors={errors.circuito}
                   />
                 </div>
+                <div>
+                  <label htmlFor='subbarrio' className='form-label'>
+                  subBarrio
+                    <strong className='obligatorio'>(*)</strong>
+                  </label>
+                  <Textinput
+                    name='subbarrio'
+                    type='text'
+                    readonly
+                    placeholder='El subBarrio se carga a partir del mapa'
+                    register={register}
+                    errors={errors.subbarrio}
+                  />
+                </div>
 
               </form>
 
@@ -299,7 +321,7 @@ export const Create = () => {
               <LabelsSelect handleLabels={handleLabels} oldLabels={etiquetas} />
             </Card>
             <div className='h-96 w-full'>
-              <BasicMap onLocationChange={handleLocationChange} handleNeight={handleNeight} editPosition={position} handleCircuit={handleCircuit} />
+              <BasicMap onLocationChange={handleLocationChange} handleNeight={handleNeight} editPosition={position} handleCircuit={handleCircuit} handleSub={handleSub} />
             </div>
 
             <div className='flex justify-end gap-4 mt-8'>

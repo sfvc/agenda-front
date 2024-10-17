@@ -25,6 +25,31 @@ const estados = [
   { id: 'RECHAZADO', nombre: 'Rechazado' }
 ]
 
+const barrios = [
+  { id: '9 DE JULIO', nombre: '9 DE JULIO' },
+  { id: 'ACHACHAY', nombre: 'ACHACHAY' },
+  { id: 'AVELLANEDA Y TULA', nombre: 'AVELLANEDA Y TULA' },
+  { id: 'BANDA DE VARELA', nombre: 'BANDA DE VARELA' },
+  { id: 'CENTRO', nombre: 'CENTRO' },
+  { id: 'CHOYA', nombre: 'CHOYA' },
+  { id: 'JORGE BERMUDEZ', nombre: 'JORGE BERMUDEZ' },
+  { id: 'J. M. DE ROSAS', nombre: 'J. M. DE ROSAS' },
+  { id: 'LA CHACARITA', nombre: 'LA CHACARITA' },
+  { id: 'LA ESTANCITA', nombre: 'LA ESTANCITA' },
+  { id: 'LA TABLADA', nombre: 'LA TABLADA' },
+  { id: 'LOS EJIDOS', nombre: 'LOS EJIDOS' },
+  { id: 'LUIS FRANCO', nombre: 'LUIS FRANCO' },
+  { id: 'MANUEL DE SALAZAR', nombre: 'MANUEL DE SALAZAR' },
+  { id: 'NORTE', nombre: 'NORTE' },
+  { id: 'PORTAL DEL NORTE', nombre: 'PORTAL DEL NORTE' },
+  { id: 'ROMIS RAIDEN', nombre: 'ROMIS RAIDEN' },
+  { id: 'SUD', nombre: 'SUD' },
+  { id: 'VALLE CHICO', nombre: 'VALLE CHICO' },
+  { id: 'VILLA CUBAS', nombre: 'VILLA CUBAS' },
+  { id: 'VILLA PARQUE CHACABUCO', nombre: 'VILLA PARQUE CHACABUCO' },
+  { id: 'ZONA INDUSTRIAL (PANTANILLO)', nombre: 'ZONA INDUSTRIAL (PANTANILLO)' },
+]
+
 const circuitos = [
   { id: '1', nombre: 'Circuito N° 1' },
   { id: '2', nombre: 'Circuito N° 2' },
@@ -46,6 +71,7 @@ export const Eventos = () => {
   const [fechIni, setFechIni] = useState('')
   const [fechFin, setFechFin] = useState('')
   const [circuito, setCircuito] = useState('')
+  const [barrio, setBarrio] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const { googleAuth } = useSelector(state => state.auth)
   const [filteredEventos, setFilteredEventos] = useState([])
@@ -116,7 +142,7 @@ export const Eventos = () => {
 
   async function onSearch() {
     setButtonFilter(true)
-    const myEventos = await getEventos(currentPage,circuito, state, category, fechIni, fechFin)
+    const myEventos = await getEventos(currentPage, circuito, state, category, fechIni, fechFin,barrio)
 
     if (myEventos.items.length === 0) {
       toast.error('Sin resultados filtrados')
@@ -165,11 +191,12 @@ export const Eventos = () => {
                   </div>
                 </div>
                 <div className='flex flex-col md:flex-row gap-3 items-start md:items-end justify-center'>
-                <SelectForm title='Circuito' options={circuitos} onChange={(e) => setCircuito(e.target.value)} />
-                      
+                  <SelectForm title='Barrio' options={barrios} onChange={(e) => setBarrio(e.target.value)} />
+                  <SelectForm title='Circuito' options={circuitos} onChange={(e) => setCircuito(e.target.value)} />
+
 
                   <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
-                  <SelectForm title='Categorías' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
+                  <SelectForm title='Ejes' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
 
                   <div className='flex flex-col'>
                     <label htmlFor='fechaInicio' className='form-label'>Fecha de Inicio</label>

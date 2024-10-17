@@ -10,6 +10,10 @@ import { LabelsForm } from '../components/agenda/forms/LabelsForm'
 
 const columns = [
   {
+    label: 'ID',
+    field: 'id'
+  },
+  {
     label: 'Nombre',
     field: 'nombre'
   }
@@ -91,9 +95,10 @@ export const Etiquetas = () => {
                             (etiquetas?.items && etiquetas.items.length > 0)
                               ? (etiquetas.items.map((etiqueta) => (
                                 <tr key={etiqueta.id}>
+                                  <td className='table-td'>{etiqueta.id}</td>
                                   <td className='table-td'>{etiqueta.nombre}</td>
                                 </tr>
-                                )))
+                              )))
                               : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
                           }
                         </tbody>
@@ -116,7 +121,7 @@ export const Etiquetas = () => {
                 </div>
               </Card>
             </>
-            )
+          )
       }
     </>
   )

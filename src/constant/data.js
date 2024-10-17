@@ -31,7 +31,7 @@ export const menuNormal = [
     link: 'usuarios'
   },
   {
-    title: 'Categorias',
+    title: 'Ejes',
     icon: 'heroicons-outline:building-storefront',
     link: 'categorias'
   },
