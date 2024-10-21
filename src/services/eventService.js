@@ -31,7 +31,6 @@ export const fetchEventById = async (id, page) => {
 }
 
 export const createEvent = async (event, page) => {
-  console.log(event)
   const response = await agendaApi.post('/evento', event)
   return response.data
 }

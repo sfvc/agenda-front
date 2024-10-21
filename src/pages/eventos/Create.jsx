@@ -1,3 +1,4 @@
+/* eslint-disable use-isnan */
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -76,7 +77,7 @@ export const Create = () => {
   const sanitizeObject = (items) => {
     return Object.fromEntries(
       Object.entries(items).map(([key, value]) => {
-        if (value === '' || isNaN(value) || (Array.isArray(value) && value.length === 0)) {
+        if (value === '' || value === NaN || (Array.isArray(value) && value.length === 0)) {
           return [key, null]
         }
         return [key, value]

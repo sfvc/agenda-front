@@ -215,7 +215,7 @@ export const StagePerform = () => {
                                         <td className='table-td'>{contacto.email}</td>
                                         <td className='table-td'>{contacto.telefono}</td>
                                         <td className='table-td'>
-                                          {contacto.grupo || 'Sin Grupo'}
+                                          {contacto.grupo || 'Agregado Particular'}
                                         </td>
                                         <td className='table-td'>
                                           <button className='bg-danger-500 text-white p-2 rounded-lg hover:bg-danger-700' onClick={() => { deleteGuest(contacto.id) }}>
