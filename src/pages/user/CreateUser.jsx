@@ -13,7 +13,6 @@ import { Label } from 'flowbite-react'
 const initialForm = {
   nombre: '',
   apellido: '',
-  username: '',
   rol: ''
 }
 
@@ -60,7 +59,7 @@ export const CreateUser = () => {
       }
       navigate('/usuarios')
     } catch (error) {
-      toast.error('Hubo un error al crear el usuario')
+      toast.error('Completa todos los campos')
     }
   }
 
@@ -68,7 +67,6 @@ export const CreateUser = () => {
     if (id) {
       try {
         const usuario = await getUserById(id)
-
         setValue('nombre', usuario.nombre)
         setValue('apellido', usuario.apellido)
         setValue('username', usuario.username)

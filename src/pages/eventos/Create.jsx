@@ -1,4 +1,3 @@
-/* eslint-disable use-isnan */
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -6,6 +5,8 @@ import { SelectForm } from '@/components/agenda/forms'
 import { getEventoById, createEvento, updateEvento } from '@/services/eventService'
 import { useQuery } from '@tanstack/react-query'
 import { getCategoryBySelect } from '@/services/categoryService'
+import { LabelsSelect } from '@/components/agenda/forms/LabelsSelect'
+import { toast } from 'react-toastify'
 import Button from '@/components/ui/Button'
 import Loading from '@/components/Loading'
 import Card from '@/components/ui/Card'
@@ -13,8 +14,6 @@ import Textinput from '@/components/ui/Textinput'
 import Textarea from '@/components/ui/Textarea'
 import DatePicker from '@/components/ui/DatePicker'
 import BasicMap from '@/components/basicMap'
-import { toast } from 'react-toastify'
-import { LabelsSelect } from '../../components/agenda/forms/LabelsSelect'
 
 const initialForm = {
   nombre_solicitante: null,
@@ -60,7 +59,6 @@ export const Create = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-
     setFormData((prevState) => ({
       ...prevState,
       [name]: value
@@ -74,17 +72,18 @@ export const Create = () => {
   const handleLocationChange = (latitud, longitud, direccion) => {
     setValue('ubicacion', JSON.stringify({ latitud, longitud, direccion }))
   }
+
   const sanitizeObject = (items) => {
     return Object.fromEntries(
       Object.entries(items).map(([key, value]) => {
-        // Si el valor es vacío o NaN, lo convertimos en null
-        if (value === '' || value === NaN || (Array.isArray(value) && value.length === 0)) {
+        if (value === '' || isNaN(value) || (Array.isArray(value) && value.length === 0)) {
           return [key, null]
         }
         return [key, value]
       })
     )
   }
+
   const onSubmit = async (items) => {
     items.categoria_id = parseInt(items.categoria_id)
     const newObject = sanitizeObject(items)
@@ -111,6 +110,7 @@ export const Create = () => {
   const handleCircuit = (e) => {
     setValue('circuito', e)
   }
+
   const handleSub = (e) => {
     setValue('subbarrio', e)
   }
@@ -294,6 +294,7 @@ export const Create = () => {
                     errors={errors.barrio}
                   />
                 </div>
+
                 <div>
                   <label htmlFor='circuito' className='form-label'>
                     Circuito

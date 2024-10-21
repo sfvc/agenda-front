@@ -7,6 +7,8 @@ import { MapEvent } from './MapEvent'
 import { SelectForm } from '@/components/agenda/forms'
 import { getCategory } from '@/services/categoryService'
 import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
+import { fetchLabels } from '@/services/labelsService'
 import Card from '@/components/ui/Card'
 import Pagination from '@/components/ui/Pagination'
 import Loading from '@/components/Loading'
@@ -15,8 +17,6 @@ import ViewButton from '@/components/buttons/ViewButton'
 import AgendaButton from '@/components/buttons/AgendaButton'
 import columnEventos from '@/json/columnsEventos.json'
 import RejectButton from '@/components/buttons/RejectButton'
-import { useSelector } from 'react-redux'
-import { fetchLabels } from '../../services/labelsService'
 
 const estados = [
   { id: 'PENDIENTE', nombre: 'Pendiente' },
@@ -61,7 +61,6 @@ const circuitos = [
   { id: '7', nombre: 'Circuito N° 7' },
   { id: '8', nombre: 'Circuito N° 8' },
   { id: '9', nombre: 'Circuito N° 9' }
-
 ]
 
 export const Eventos = () => {
@@ -73,6 +72,7 @@ export const Eventos = () => {
   const [fechFin, setFechFin] = useState('')
   const [circuito, setCircuito] = useState('')
   const [barrio, setBarrio] = useState('')
+  const [etiquetas, setEtiquetas] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const { googleAuth } = useSelector(state => state.auth)
   const [filteredEventos, setFilteredEventos] = useState([])
@@ -149,7 +149,7 @@ export const Eventos = () => {
 
   async function onSearch () {
     setButtonFilter(true)
-    const myEventos = await getEventos(currentPage, circuito, state, category, fechIni, fechFin, barrio)
+    const myEventos = await getEventos(currentPage, circuito, state, category, fechIni, fechFin, barrio, etiquetas)
 
     if (myEventos.items.length === 0) {
       toast.error('No se encontraron coincidencias')
@@ -203,6 +203,7 @@ export const Eventos = () => {
                 <div className='flex flex-col md:flex-row gap-3 items-start md:items-end justify-center'>
                   <SelectForm title='Barrio' options={barrios} onChange={(e) => setBarrio(e.target.value)} />
                   <SelectForm title='Circuito' options={circuitos} onChange={(e) => setCircuito(e.target.value)} />
+                  <SelectForm title='Etiqueta' options={labels?.items} onChange={(e) => setEtiquetas(e.target.value)} />
 
                   <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} />
                   <SelectForm title='Ejes' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} />
@@ -241,6 +242,7 @@ export const Eventos = () => {
               </Card>
 
               <MapEvent isActive events={eventosAMostrar} />
+
               <Card noborder>
                 <div className='overflow-x-auto -mx-6'>
                   <div className='inline-block min-w-full align-middle'>

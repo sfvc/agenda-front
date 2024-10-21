@@ -86,6 +86,7 @@ export const CreateContactos = () => {
                   <div>
                     <label htmlFor='nombre' className='form-label'>
                       Nombre del Contacto
+                      <strong className='obligatorio'>(*)</strong>
                     </label>
                     <Textinput
                       name='nombre'
@@ -100,6 +101,7 @@ export const CreateContactos = () => {
                   <div>
                     <label htmlFor='apellido' className='form-label'>
                       Apellido del Contacto
+                      <strong className='obligatorio'>(*)</strong>
                     </label>
                     <Textinput
                       name='apellido'
@@ -114,6 +116,7 @@ export const CreateContactos = () => {
                   <div>
                     <label htmlFor='email' className='form-label'>
                       Correo del Contacto
+                      <strong className='obligatorio'>(*)</strong>
                     </label>
                     <Textinput
                       name='email'
@@ -128,6 +131,7 @@ export const CreateContactos = () => {
                   <div>
                     <label htmlFor='telefono' className='form-label'>
                       Telefono del Contacto
+                      <strong className='obligatorio'>(*)</strong>
                     </label>
                     <Textinput
                       name='telefono'

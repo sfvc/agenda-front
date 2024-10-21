@@ -8,11 +8,27 @@ import Textinput from '@/components/ui/Textinput'
 import { toast } from 'react-toastify'
 import { createGroup, getGroupById, updateGroup } from '@/services/groupService'
 import { ContactSelect } from '../../components/agenda/forms/ContactSelect'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+
 const initialForm = {
   nombre: '',
   contactos: []
 }
-export const CreateGroup = () => {
+
+const FormValidationSaving = yup
+  .object({
+    nombre: yup.string().required('El nombre es requerido')
+  })
+  .required()
+
+const FormValidationUpdate = yup
+  .object({
+    nombre: yup.string().required('El nombre es requerido')
+  })
+  .required()
+
+export const CreateGroup = ({ activeGroup }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [, setFormData] = useState(initialForm)
   const [contacts, setContacts] = useState([])
@@ -21,10 +37,12 @@ export const CreateGroup = () => {
 
   const {
     register,
-    formState: { errors, isSubmitting },
     handleSubmit,
+    formState: { errors, isSubmitting },
     setValue
-  } = useForm()
+  } = useForm({
+    resolver: yupResolver(activeGroup ? FormValidationUpdate : FormValidationSaving)
+  })
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -38,7 +56,6 @@ export const CreateGroup = () => {
     try {
       if (!id) {
         await createGroup(items)
-
         toast.success('Grupo creado exitosamente')
       } else {
         await updateGroup(id, items)
@@ -83,60 +100,60 @@ export const CreateGroup = () => {
   return (
     <>
       {
-                isLoading
-                  ? (<Loading className='mt-28 md:mt-64' />)
-                  : (
-                    < >
-                      <Card>
-                        <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                          <div>
-                            <label htmlFor='nombre' className='form-label'>
-                              Nombre del Grupo
-                            </label>
-                            <Textinput
-                              name='nombre'
-                              type='text'
-                              placeholder='Ingrese el nombre'
-                              register={register}
-                              onChange={handleChange}
-                              errors={errors.nombre}
-                            />
-                          </div>
-                        </form>
-                        {
-                                id !== undefined
-                                  ? (
-                                    <>
-                                      <div className='mt-5'>
-                                        <p>Agregar contactos</p>
-                                        <ContactSelect handleContact={handleContact} oldContacts={contacts} />
-                                      </div>
-                                    </>
-                                    )
-                                  : null
-                            }
-                      </Card>
-                      <div className='flex justify-end gap-4 mt-8'>
-                        <div className='ltr:text-right rtl:text-left'>
-                          <button
-                            className='btn-danger items-center text-center py-2 px-6 rounded-lg'
-                            onClick={() => navigate('/grupos')}
-                          >
-                            Volver
-                          </button>
+        isLoading
+          ? (<Loading className='mt-28 md:mt-64' />)
+          : (
+            < >
+              <Card>
+                <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <div>
+                    <label htmlFor='nombre' className='form-label'>
+                      Nombre del Grupo
+                      <strong className='obligatorio'>(*)</strong>
+                    </label>
+                    <Textinput
+                      name='nombre'
+                      type='text'
+                      placeholder='Ingrese el nombre'
+                      register={register}
+                      onChange={handleChange}
+                      errors={errors.nombre}
+                    />
+                  </div>
+                </form>
+                {
+                  id !== undefined
+                    ? (
+                      <>
+                        <div className='mt-5'>
+                          <ContactSelect handleContact={handleContact} oldContacts={contacts} />
                         </div>
-                        <div className='ltr:text-right rtl:text-left'>
-                          <Button
-                            type='submit'
-                            text={isSubmitting ? 'Guardando' : 'Guardar'}
-                            className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
-                            disabled={isSubmitting}
-                            onClick={handleSubmit(onSubmit)}
-                          />
-                        </div>
-                      </div>
-                    </>)
-            }
+                      </>
+                      )
+                    : null
+                }
+              </Card>
+              <div className='flex justify-end gap-4 mt-8'>
+                <div className='ltr:text-right rtl:text-left'>
+                  <button
+                    className='btn-danger items-center text-center py-2 px-6 rounded-lg'
+                    onClick={() => navigate('/grupos')}
+                  >
+                    Volver
+                  </button>
+                </div>
+                <div className='ltr:text-right rtl:text-left'>
+                  <Button
+                    type='submit'
+                    text={isSubmitting ? 'Guardando' : 'Guardar'}
+                    className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
+                    disabled={isSubmitting}
+                    onClick={handleSubmit(onSubmit)}
+                  />
+                </div>
+              </div>
+            </>)
+      }
     </>
   )
 }

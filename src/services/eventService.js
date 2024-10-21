@@ -1,12 +1,13 @@
 /* eslint-disable camelcase */
 import { agendaApi } from '@/api'
 
-export const fetchEvents = async (page = 1, circuito = '', state = '', category = '', fecha_inicio = '', fecha_final = '', barrio = '') => {
+export const fetchEvents = async (page = 1, circuito = '', state = '', category = '', fecha_inicio = '', fecha_final = '', barrio = '', etiquetas_ids = '') => {
   const params = new URLSearchParams()
 
   // Solo agregar parámetros si tienen valor
   if (circuito) params.append('circuito', circuito)
   if (barrio) params.append('barrio', barrio)
+  if (etiquetas_ids) params.append('etiquetas_ids', etiquetas_ids)
   if (state) params.append('estado', state)
   if (category) params.append('categoria_id', category)
   if (fecha_inicio) params.append('fecha_inicio', fecha_inicio)

@@ -2,20 +2,20 @@ import { useState } from 'react'
 import { uploadFile } from '@/services/fileServices'
 import { documentEvent } from '@/services/eventService'
 import { toast } from 'react-toastify'
-import Button from '@/components/ui/Button'
 import { useParams } from 'react-router-dom'
-import { SelectForm } from '@/components/agenda/forms'
-
-const categorias = [
-  { id: 'Detalles de Planificación', nombre: 'Detalles de Planificación' },
-  { id: 'Documentos A Realizar', nombre: 'Documentos A Realizar' }
-]
+import { useForm } from 'react-hook-form'
+import Button from '@/components/ui/Button'
+import Textinput from '@/components/ui/Textinput'
 
 export const AddFile = ({ onClose, refetch }) => {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { id } = useParams()
+
+  const {
+    register
+  } = useForm()
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value)
@@ -54,23 +54,30 @@ export const AddFile = ({ onClose, refetch }) => {
         setIsSubmitting(false)
       }
     } else {
-      console.log('Por favor selecciona una categoría y un archivo.')
+      toast.error('Por favor escribí un nombre y subí un archivo.')
     }
   }
 
   return (
     <form className='grid grid-cols-1 md:grid-cols-1 gap-4 grid-rows-2' onSubmit={handleSubmit}>
-      <div className='col-span-1'>
-        <SelectForm
-          title='Categoria'
-          options={categorias}
-          value={selectedCategory}
+      <div>
+        <label htmlFor='Categoria' className='form-label'>
+          Nombre del Documento
+          <strong className='obligatorio'>(*)</strong>
+        </label>
+        <Textinput
+          name='Categoria'
+          type='text'
+          placeholder='Nombre del Documento'
           onChange={handleCategoryChange}
+          register={register}
         />
       </div>
+
       <div className='col-span-1'>
         <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white' htmlFor='file_input'>
           Elegir Archivo
+          <strong className='obligatorio'>(*)</strong>
         </label>
         <input
           className='block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'
@@ -79,6 +86,7 @@ export const AddFile = ({ onClose, refetch }) => {
           onChange={handleFileChange}
         />
       </div>
+
       <div className='col-span-1'>
         <div className='ltr:text-right rtl:text-left'>
           <Button

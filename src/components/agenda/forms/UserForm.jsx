@@ -11,9 +11,9 @@ import { getUserById } from '../../../services/userService'
 import { useParams } from 'react-router-dom'
 
 const roles = [
-  { id: 'administrador', nombre: 'Administrador' },
-  { id: 'visualizador', nombre: 'Visualizador' },
-  { id: 'solicitante', nombre: 'Solicitante' }
+  { id: 'Administrador', nombre: 'Administrador' },
+  { id: 'Solicitante', nombre: 'Solicitante' },
+  { id: 'Visualizador', nombre: 'Visualizador' }
 ]
 
 const FormValidationSaving = yup
@@ -29,7 +29,7 @@ const FormValidationUpdate = yup
   .object({
     nombre: yup.string().required('El nombre es requerido'),
     apellido: yup.string().required('El apellido es requerido'),
-    password: yup.string().required('La contraseña es requerido')
+    username: yup.string().required('El usuario es requerido')
   })
   .required()
 
