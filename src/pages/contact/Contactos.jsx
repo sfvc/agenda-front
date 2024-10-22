@@ -135,7 +135,6 @@ export const Contactos = () => {
                                       <td className='table-td flex justify-start gap-2'>
                                         <EditButton evento={contacto} onEdit={onEdit} />
                                       </td>
-
                                     </tr>
                                   )
                                 }))

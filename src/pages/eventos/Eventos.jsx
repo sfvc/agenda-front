@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getEventos, nextStageEvent, rejectEvent } from '@/services/eventService'
@@ -96,6 +96,14 @@ export const Eventos = () => {
 
   const eventosAMostrar = filteredEventos.length > 0 ? filteredEventos : (eventos?.items || [])
 
+  useEffect(() => {
+    if (state || category || fechIni || fechFin || circuito || barrio || etiquetas) {
+      setButtonFilter(false)
+    } else {
+      setButtonFilter(true)
+    }
+  }, [state, category, fechIni, fechFin, circuito, barrio, etiquetas])
+
   if (isLoading) {
     return <Loading />
   }
@@ -148,7 +156,7 @@ export const Eventos = () => {
   }
 
   async function onSearch () {
-    setButtonFilter(true)
+    if (buttonFilter) return
     const myEventos = await getEventos(currentPage, circuito, state, category, fechIni, fechFin, barrio, etiquetas)
 
     if (myEventos.items.length === 0) {
@@ -157,7 +165,6 @@ export const Eventos = () => {
       toast.success('Filtrado correctamente')
     }
     setFilteredEventos(myEventos.items)
-    setButtonFilter(false)
   }
 
   function separarTresPrimerosElementos (cadena) {

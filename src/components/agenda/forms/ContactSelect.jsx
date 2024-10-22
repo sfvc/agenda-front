@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { searchContactName } from '@/services/contactService'
 import { toast } from 'react-toastify'
 import Loading from '@/components/Loading'
-import Textinput from '@/components/ui/Textinput'
 import { useForm } from 'react-hook-form'
+import { TextInput } from 'flowbite-react'
 
 export const ContactSelect = ({ handleContact, oldContacts }) => {
   const [isLoading] = useState(false)
@@ -65,7 +65,7 @@ export const ContactSelect = ({ handleContact, oldContacts }) => {
               <label htmlFor='contactos' className='form-label'>
                 Agregar Contactos
               </label>
-              <Textinput
+              <TextInput
                 name='contactos'
                 type='text'
                 register={register}
@@ -82,7 +82,6 @@ export const ContactSelect = ({ handleContact, oldContacts }) => {
             >
               Buscar
             </button>
-
           </div>
 
           {find.length > 0

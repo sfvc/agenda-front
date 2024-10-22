@@ -1,17 +1,22 @@
-[{
+[
+  {
     "label": "Apellido y Nombre",
     "field": "apellido"
-  },{
+  },
+  {
     "label": "Correo Electronico",
     "field": "email"
-  },{
+  },
+  {
     "label": "Telefono",
     "field": "telefono"
   },
   {
     "label": "Grupos",
     "field": "grupos"
-  }, {
+  }, 
+  {
     "label": "Acciones",
     "field": "acciones"
-  }]
+  }
+]
