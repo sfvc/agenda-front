@@ -44,3 +44,4 @@ README.txt
 
 # typescript
 *.tsbuildinfo
+yarn.lock
