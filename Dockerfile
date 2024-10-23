@@ -1,6 +1,12 @@
 # Etapa 1: Construcción
 FROM node:20-alpine AS build
 
+# Nuevas variables de entorno
+ARG PORT=80
+ARG VITE_API_URL
+ENV PORT=$PORT
+ENV VITE_API_URL=$VITE_API_URL
+
 # Establecer el directorio de trabajo
 WORKDIR /app
 
@@ -23,17 +29,11 @@ FROM nginx:1.19-alpine
 # Establecer el directorio de trabajo
 WORKDIR /usr/share/nginx/html
 
-# Nuevas variables de entorno
-ARG PORT=80
-ARG VITE_API_URL
-ENV PORT=$PORT
-ENV VITE_API_URL=$VITE_API_URL
-
 # Exponer el puerto configurado
 EXPOSE ${PORT}
 
 # Copiar la carpeta 'dist' al directorio de Nginx
-COPY ./dist /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copiar un archivo de configuración de Nginx personalizado si es necesario
 COPY nginx.conf /etc/nginx/nginx.conf
