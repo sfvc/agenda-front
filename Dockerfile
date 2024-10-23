@@ -1,5 +1,5 @@
 # Etapa 1: Construcción
-FROM node:20-alpine AS build
+FROM node:18-alpine AS build
 
 # Nuevas variables de entorno
 ARG PORT=80
@@ -14,7 +14,6 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalar las dependencias
-RUN npm install -g npm@latest
 RUN npm install
 
 # Copiar el resto del código fuente
