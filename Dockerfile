@@ -1,5 +1,5 @@
 # Etapa 1: Construcción
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 # Establecer el directorio de trabajo
 WORKDIR /app
@@ -8,6 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalar las dependencias
+RUN npm install -g npm@latest
 RUN npm install
 
 # Copiar el resto del código fuente

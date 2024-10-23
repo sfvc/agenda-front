@@ -19,13 +19,13 @@ jobs:
            timeout: 1200s
            script: |           
               cd ${{ secrets.WORK_DIR }} 
-              echo "aqui esta la variableeeee ${{env.VITE_API_URL}}"
+              echo "aqui esta la variableeeee ${{vars.VITE_API_URL}}"
               git fetch 
               git checkout ${{ secrets.MAIN_BRANCH }} 
               git pull 
               docker stop agenda-front || true
               docker rm agenda-front || true
               docker rmi  municipalidad/agenda-front:latest || true
-              docker build --no-cache --pull --build-arg VITE_API_URL=${{env.VITE_API_URL}} -t municipalidad/agenda-front:latest .    
+              docker build --no-cache --pull --build-arg VITE_API_URL=${{vars.VITE_API_URL}} -t municipalidad/agenda-front:latest .    
               docker run --restart=always -d -p 0.0.0.0:7013:80 --name agenda-front municipalidad/agenda-front:latest
               exit
