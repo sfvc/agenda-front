@@ -8,7 +8,7 @@ import BasicMap from '@/components/basicMap'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import Loading from '@/components/Loading'
 import Modal from '@/components/ui/Modal'
-import { AddFile } from '@/components/agenda/forms/addFile'
+import { AddFile } from '../../components/agenda/forms/AddFile'
 
 const initialPosition = {
   latitud: -28.46867672033115,
