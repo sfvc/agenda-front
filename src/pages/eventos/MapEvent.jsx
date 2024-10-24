@@ -2,9 +2,9 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import React, { useState } from 'react'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import marker1 from '../../../node_modules/leaflet/dist/images/marker-icon.png'
-import marker2 from '../../../node_modules/leaflet/dist/images/marker-icon-2x.png'
-import marker3 from '../../../node_modules/leaflet/dist/images/marker-shadow.png'
+import marker1 from '../node_modules/leaflet/dist/images/marker-icon.png'
+import marker2 from '../node_modules/leaflet/dist/images/marker-icon-2x.png'
+import marker3 from '../node_modules/leaflet/dist/images/marker-shadow.png'
 
 const markerIcon = new L.Icon({
   iconUrl: marker1,
