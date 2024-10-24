@@ -127,8 +127,6 @@ export const FilterEvents = ({ onSearch }) => {
     setEtiquetas(listLabels)
   }, [listLabels])
 
-  console.log(labels)
-
   return (
     <>
       <div className=' flex justify-end'>

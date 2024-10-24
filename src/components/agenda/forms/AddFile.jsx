@@ -49,7 +49,7 @@ export const AddFile = ({ onClose, refetch }) => {
           }
         }
       } catch (error) {
-        console.log('fallo al subir el archivo')
+        toast.error('fallo al subir el archivo')
       } finally {
         setIsSubmitting(false)
       }

@@ -24,7 +24,6 @@ export const LabelsSelect = ({ handleLabels, oldLabels }) => {
       setIsEmpty(true)
       setButtonFilter(false)
     } catch (error) {
-      console.log(error)
       toast.error('Hubo un error al crear la etiqueta')
       setButtonFilter(false)
     }
