@@ -134,7 +134,7 @@ export const FilterEvents = ({ onSearch }) => {
       <div className=' flex justify-end'>
         <button
           type='button'
-          className='bg-blue-600 hover:bg-blue-800 text-white py-2 px-6 rounded-lg my-2 md:mt-0'
+          className='bg-indigo-600 hover:bg-indigo-800 text-white py-2 px-6 rounded-lg my-2 md:mt-0'
           onClick={() => setFiltrar(!filtrar)}
         >
           Generar filtros
@@ -147,16 +147,12 @@ export const FilterEvents = ({ onSearch }) => {
         {filtrar && (
           <>
 
-            <div className='grid grid-rows-2 grid-cols-4 items-center content-center gap-3 '>
-              <div >
+            <div className='grid grid-rows-2 grid-cols-3 items-center content-center gap-3 '>
+              <div>
                 <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} value={state} />
               </div>
 
-              <div >
-                <SelectForm title='Ejes' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} value={category} />
-              </div>
-
-              <div >
+              <div>
                 <div className='flex flex-col'>
                   <label htmlFor='fechaInicio' className='form-label'>Fecha de Inicio</label>
                   <input
@@ -169,7 +165,7 @@ export const FilterEvents = ({ onSearch }) => {
                 </div>
               </div>
 
-              <div >
+              <div>
                 <div className='flex flex-col'>
                   <label htmlFor='fechaFin' className='form-label'>Fecha de Fin</label>
                   <input
@@ -182,20 +178,23 @@ export const FilterEvents = ({ onSearch }) => {
                 </div>
               </div>
 
-              <div >
+              <div>
+                <SelectForm title='Ejes' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} value={category} />
+              </div>
+
+              <div>
                 <SelectForm title='Barrio' options={barrios} onChange={(e) => setBarrio(e.target.value)} value={barrio} />
               </div>
 
-              <div >
+              <div>
                 <SelectForm title='Circuito' options={circuitos} onChange={(e) => setCircuito(e.target.value)} value={circuito} />
               </div>
-
 
             </div>
             <div className=' flex flex-wrap gap-2 my-4'>
               {
                 labels?.map((item) => (
-                  <button className={`p-2 border rounded-md dark:text-black ${listLabels.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:text-black'}`} key={item.id} onClick={() => { addLabels(item.id) }}>
+                  <button className={`p-2 border rounded-md dark:text-black ${listLabels.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:bg-gray-300 dark:text-black'}`} key={item.id} onClick={() => { addLabels(item.id) }}>
                     @{item.nombre.toUpperCase()}
                   </button>
                 ))
@@ -211,7 +210,7 @@ export const FilterEvents = ({ onSearch }) => {
               >
                 {buttonFilter ? 'Seleccione un filtro' : 'Aplicar Filtros'}
               </button>
-           
+
               <button
                 type='button'
                 className='bg-red-600 hover:bg-red-800 text-white py-2 px-6 rounded-lg mt-2 md:mt-0'
@@ -219,7 +218,8 @@ export const FilterEvents = ({ onSearch }) => {
               >
                 Limpiar filtros
               </button>
-            </div></>
+            </div>
+          </>
         )}
       </div>
     </>
