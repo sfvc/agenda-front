@@ -102,9 +102,7 @@ export const Eventos = () => {
     const myEventos = await getEventos(currentPage, e.circuito, e.state, e.category, e.fechIni, e.fechFin, e.barrio, e.etiquetas)
     if (myEventos.items.length === 0) {
       toast.error('No se encontraron coincidencias')
-    } else {
-      toast.success('Filtrado correctamente')
-    }
+    } 
     setFilteredEventos(myEventos.items)
   }
 

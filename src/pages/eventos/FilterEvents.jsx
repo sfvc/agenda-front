@@ -59,7 +59,9 @@ export const FilterEvents = ({ onSearch }) => {
     const [etiquetas, setEtiquetas] = useState('')
     const [state, setState] = useState('')
     const [buttonFilter, setButtonFilter] = useState(false)
-    const [listLabels,setListLabels] = useState([])
+    const [listLabels, setListLabels] = useState([])
+
+    const [filtrar, setFiltrar] = useState(false)
     const { data: categorias } = useQuery({
         queryKey: ['categorias'],
         queryFn: () => getCategory(),
@@ -92,9 +94,9 @@ export const FilterEvents = ({ onSearch }) => {
         setBarrio('')
         setEtiquetas('')
         setState('')
-
+        setListLabels([])
     }
- 
+
     useEffect(() => {
         // Solo ejecuta los filtros cuando todos los estados han sido reseteados
         if (category === '' && fechIni === '' && fechFin === '' && circuito === '' && barrio === '' && etiquetas === '' && state === '') {
@@ -111,69 +113,118 @@ export const FilterEvents = ({ onSearch }) => {
     }, [state, category, fechIni, fechFin, circuito, barrio, etiquetas])
 
 
-    const addLabels =(item)=>{
-        console.log(item);
+   
+
+    const addLabels = (e) => {
+        
+        const exists = listLabels.some((etiqueta) => etiqueta === e);
+        
+        if (exists) {
+            // Si ya existe, lo eliminamos filtrando los demás
+            setListLabels(listLabels.filter((etiqueta) => etiqueta !== e));
+        } else {
+            // Si no existe, lo agregamos a la lista
+            setListLabels([...listLabels, e]);
+        }
+        
+        
     }
+
+    useEffect(() => {
+        setEtiquetas(listLabels)
+    },[listLabels])
+
     return (
         <>
-            <div className="grid grid-rows-4 grid-cols-4 items-center content-center gap-3">
-                <div className="">  <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} value={state} /></div>
-                <div className=" "> <SelectForm title='Ejes' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} value={category} /></div>
-                <div className=" "> <div className='flex flex-col'>
-                    <label htmlFor='fechaInicio' className='form-label'>Fecha de Inicio</label>
-                    <input
-                        type='date'
-                        id='fechaInicio'
-                        value={fechIni}
-                        className='form-control py-2'
-                        onChange={(e) => setFechIni(e.target.value)}
-                    />
-                </div></div>
-                <div className=" ">
-                    <div className='flex flex-col'>
-                        <label htmlFor='fechaFin' className='form-label'>Fecha de Fin</label>
-                        <input
-                            type='date'
-                            id='fechaFin'
-                            value={fechFin}
-                            className='form-control py-2'
-                            onChange={(e) => setFechFin(e.target.value)}
-                        />
+           <div className=" flex justify-end">
+           <button
+                type='button'
+                className={`bg-blue-600 hover:bg-blue-800 text-white py-2 px-6 rounded-lg my-2 md:mt-0`}
+                onClick={() => setFiltrar(!filtrar)}
+            >
+                Generar filtros
+            </button>
+           </div>
+
+            <div
+                className={`transition-all duration-700 ease-in-out transform ${filtrar ? 'opacity-100 scale-100' : 'opacity-0 scale-0 hidden'} origin-top`}
+            >
+                {filtrar && (
+                    <div className="grid grid-rows-4 grid-cols-4 items-center content-center gap-3">
+                        <div>
+                            <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} value={state} />
+                        </div>
+
+                        <div>
+                            <SelectForm title='Ejes' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} value={category} />
+                        </div>
+
+                        <div>
+                            <div className='flex flex-col'>
+                                <label htmlFor='fechaInicio' className='form-label'>Fecha de Inicio</label>
+                                <input
+                                    type='date'
+                                    id='fechaInicio'
+                                    value={fechIni}
+                                    className='form-control py-2'
+                                    onChange={(e) => setFechIni(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className='flex flex-col'>
+                                <label htmlFor='fechaFin' className='form-label'>Fecha de Fin</label>
+                                <input
+                                    type='date'
+                                    id='fechaFin'
+                                    value={fechFin}
+                                    className='form-control py-2'
+                                    onChange={(e) => setFechFin(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <SelectForm title='Barrio' options={barrios} onChange={(e) => setBarrio(e.target.value)} value={barrio} />
+                        </div>
+
+                        <div>
+                            <SelectForm title='Circuito' options={circuitos} onChange={(e) => setCircuito(e.target.value)} value={circuito} />
+                        </div>
+
+                        <div className='col-span-4 flex flex-wrap gap-2'>
+                            {
+                                labels?.items.map((item) => (
+                                    <button className={`p-2 border rounded-md ${listLabels.includes(item.id) ? 'bg-green-500 text-white' : 'bg-white'}`} key={item.id} onClick={() => { addLabels(item.id) }}>
+                                        @{item.nombre.toUpperCase()}
+                                    </button>
+                                ))
+                            }
+                        </div>
+
+                        <div className="flex justify-end col-span-2 gap-3">
+                            <button
+                                type='button'
+                                onClick={handleFilters}
+                                disabled={buttonFilter}
+                                className={`${buttonFilter ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-800'} text-white py-2 px-6 rounded-lg mt-2 md:mt-0`}
+                            >
+                                {buttonFilter ? 'Seleccione un filtro' : 'Aplicar Filtros'}
+                            </button>
+                        </div>
+
+                        <div className="flex justify-start col-span-2 gap-3">
+                            <button
+                                type='button'
+                                className={`bg-red-600 hover:bg-red-800 text-white py-2 px-6 rounded-lg mt-2 md:mt-0`}
+                                onClick={cleanFilters}
+                            >
+                                Limpiar filtros
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div className=" "> <SelectForm title='Barrio' options={barrios} onChange={(e) => setBarrio(e.target.value)} value={barrio} /></div>
-                <div className="  ">  <SelectForm title='Circuito' options={circuitos} onChange={(e) => setCircuito(e.target.value)} value={circuito} /></div>
-                {/* <div className="  "> <SelectForm title='Etiqueta' options={labels?.items} onChange={(e) => setEtiquetas(e.target.value)} value={etiquetas} /></div> */}
-                <div className='col-span-4  flex flex-wrap gap-2'>
-                    {
-
-                        labels?.items.map((item) => {
-                            return (
-                                <button className="bg-white p-2 border rounded-md" key={item.id} onClick={()=>{addLabels(item.id)} }>
-                                    @{item.nombre.toUpperCase()}
-                                </button>
-                            )
-                        })
-                    }
-                </div>
-                <div className=" flex justify-end  col-span-2 gap-3">
-                    <button
-                        type='button'
-                        onClick={handleFilters}
-                        disabled={buttonFilter}
-                        className={`${buttonFilter ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-800'} text-white py-2 px-6 rounded-lg mt-2 md:mt-0`}
-                    >
-                        {buttonFilter ? 'Seleccione un filtro' : 'Aplicar Filtros'}
-                    </button>
-
-                </div>
-                <div className=" flex justify-start  col-span-2 gap-3">
-                    <button type='button'
-                        className={`bg-red-600 hover:bg-red-800' text-white py-2 px-6 rounded-lg mt-2 md:mt-0`}
-                        onClick={cleanFilters}>
-                        Limpiar filtros
-                    </button>
-                </div>
+                )}
             </div>
         </>
     )
