@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getEventos, nextStageEvent, rejectEvent } from '@/services/eventService'
 import { formatDate } from '@/components/Format'
-import { MapEvent } from './MapEvent'
+import MapEvent from './MapEvent'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import Card from '@/components/ui/Card'
@@ -15,7 +15,6 @@ import AgendaButton from '@/components/buttons/AgendaButton'
 import columnEventos from '@/json/columnsEventos.json'
 import RejectButton from '@/components/buttons/RejectButton'
 import { FilterEvents } from './FilterEvents'
-
 
 export const Eventos = () => {
   const navigate = useNavigate()
@@ -33,20 +32,20 @@ export const Eventos = () => {
     return <Loading />
   }
   const eventosAMostrar = filteredEventos.length > 0 ? filteredEventos : (eventos?.items || [])
-  function addEvento() {
+  function addEvento () {
     navigate(`/eventos/crear?page=${currentPage}`)
   }
 
-  async function showEvento(id) {
+  async function showEvento (id) {
     await onEdit(id)
     navigate(`/eventos/ver/${id}?page=${currentPage}`)
   }
 
-  async function onEdit(id) {
+  async function onEdit (id) {
     navigate(`/eventos/editar/${id}?page=${currentPage}`)
   }
 
-  async function onDelete(id, estado) {
+  async function onDelete (id, estado) {
     if (estado === 'PENDIENTE') {
       navigate(`/eventos/estado_considerar/${id}?page=${currentPage}`)
     } else if (estado === 'A_CONSIDERAR') {
@@ -69,7 +68,7 @@ export const Eventos = () => {
     }
   }
 
-  async function onReject(id) {
+  async function onReject (id) {
     try {
       await rejectEvent(id)
       toast.success('El evento se desestimo')
@@ -80,9 +79,7 @@ export const Eventos = () => {
     }
   }
 
-
-
-  function separarTresPrimerosElementos(cadena) {
+  function separarTresPrimerosElementos (cadena) {
     const elementos = cadena.split(',').map(elemento => elemento.trim())
     const primerosTres = elementos.slice(0, 3)
     const resultadoEnCadena = primerosTres.join(', ')
@@ -98,7 +95,7 @@ export const Eventos = () => {
       return 'Dirección no disponible'
     }
   }
-  async function onSearch(e) {
+  async function onSearch (e) {
     const myEventos = await getEventos(currentPage, e.circuito, e.state, e.category, e.fechIni, e.fechFin, e.barrio, e.etiquetas)
     if (myEventos.items.length === 0) {
       toast.error('No se encontraron coincidencias')
@@ -108,8 +105,6 @@ export const Eventos = () => {
     setFilteredEventos(myEventos.items)
   }
 
-
- 
   return (
     <>
       {
@@ -133,8 +128,8 @@ export const Eventos = () => {
                     </button>
                   </div>
                 </div>
-                </Card>
-                <Card>
+              </Card>
+              <Card>
                 <FilterEvents onSearch={onSearch} />
               </Card>
 
@@ -158,17 +153,17 @@ export const Eventos = () => {
                           {
                             (eventosAMostrar.length > 0)
                               ? (eventosAMostrar.map((evento) => {
-                                return (
-                                  <tr key={evento.id}>
-                                    <td className='table-td'>{evento.id}</td>
-                                    <td className='table-td'>{evento.nombre_solicitante || '-'}</td>
-                                    <td className='table-td'>{evento.telefono_solicitante || '-'}</td>
-                                    <td className='table-td max-w-96'>{parseUbicacion(evento.ubicacion) || '-'}</td>
-                                    <td className='table-td'>{formatDate(evento.fecha) || '-'}</td>
-                                    <td className='table-td'>{evento.categoria?.nombre || '-'}</td>
-                                    <td className='table-td'>
-                                      <span
-                                        className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 
+                                  return (
+                                    <tr key={evento.id}>
+                                      <td className='table-td'>{evento.id}</td>
+                                      <td className='table-td'>{evento.nombre_solicitante || '-'}</td>
+                                      <td className='table-td'>{evento.telefono_solicitante || '-'}</td>
+                                      <td className='table-td max-w-96'>{parseUbicacion(evento.ubicacion) || '-'}</td>
+                                      <td className='table-td'>{formatDate(evento.fecha) || '-'}</td>
+                                      <td className='table-td'>{evento.categoria?.nombre || '-'}</td>
+                                      <td className='table-td'>
+                                        <span
+                                          className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 
                                             ${evento.estado === 'A_REALIZAR'
                                             ? 'text-black bg-indigo-500 dark:bg-indigo-400'
                                             : evento.estado === 'PENDIENTE'
@@ -178,23 +173,23 @@ export const Eventos = () => {
                                                 : evento.estado === 'RECHAZADO'
                                                   ? 'text-black bg-red-500 dark:bg-red-400'
                                                   : 'text-black bg-warning-500 dark:bg-warning-500'}`}
-                                      >
-                                        {evento.estado}
-                                      </span>
-                                    </td>
-                                    <td className='table-td flex gap-2'>
-                                      <ViewButton evento={evento} onView={showEvento} />
-                                      {evento.estado !== 'RECHAZADO' && (
-                                        <EditButton evento={evento} onEdit={onEdit} />
-                                      )}
-                                      <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
-                                      {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
-                                        <RejectButton evento={evento} onReject={onReject} />
-                                      )}
-                                    </td>
-                                  </tr>
-                                )
-                              }))
+                                        >
+                                          {evento.estado}
+                                        </span>
+                                      </td>
+                                      <td className='table-td flex gap-2'>
+                                        <ViewButton evento={evento} onView={showEvento} />
+                                        {evento.estado !== 'RECHAZADO' && (
+                                          <EditButton evento={evento} onEdit={onEdit} />
+                                        )}
+                                        <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
+                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
+                                          <RejectButton evento={evento} onReject={onReject} />
+                                        )}
+                                      </td>
+                                    </tr>
+                                  )
+                                }))
                               : (<tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>No se encontraron resultados</td></tr>)
                           }
                         </tbody>
@@ -217,7 +212,7 @@ export const Eventos = () => {
                 </div>
               </Card>
             </>
-          )
+            )
       }
     </>
   )

@@ -77,7 +77,7 @@ export const Create = () => {
   const sanitizeObject = (items) => {
     return Object.fromEntries(
       Object.entries(items).map(([key, value]) => {
-        if (value === '' ||  (Array.isArray(value) && value.length === 0)) {
+        if (value === '' || (Array.isArray(value) && value.length === 0)) {
           return [key, null]
         }
         return [key, value]

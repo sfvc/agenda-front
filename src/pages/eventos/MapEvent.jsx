@@ -15,7 +15,7 @@ const markerIcon = new L.Icon({
   shadowSize: [41, 41]
 })
 
-export const MapEvent = ({ isActive, events }) => {
+const MapEvent = ({ isActive, events }) => {
   const initialPosition = [
     -28.46867672033115,
     -65.77899050151645
@@ -51,7 +51,6 @@ export const MapEvent = ({ isActive, events }) => {
         <MapContainer
           scrollWheelZoom={false}
           center={position}
-          icon={markerIcon}
           zoom={14}
           style={{ height: '100%', width: '100%' }}
         >
@@ -60,6 +59,7 @@ export const MapEvent = ({ isActive, events }) => {
             <Marker
               key={index} // Idealmente un identificador único
               position={[item.latitud, item.longitud]}
+              icon={markerIcon}
               draggable={!isActive}
             >
               <Popup>{item.direccion}</Popup>
@@ -71,3 +71,5 @@ export const MapEvent = ({ isActive, events }) => {
     </>
   )
 }
+
+export default MapEvent
