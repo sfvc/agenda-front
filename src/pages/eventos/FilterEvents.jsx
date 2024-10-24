@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { SelectForm } from '@/components/agenda/forms'
 import { getCategory } from '@/services/categoryService'
-import { fetchLabels } from '../../services/labelsService'
+import { fetchLabelsBySelect } from '../../services/labelsService'
 
 const estados = [
   { id: 'PENDIENTE', nombre: 'Pendiente' },
@@ -69,7 +69,7 @@ export const FilterEvents = ({ onSearch }) => {
 
   const { data: labels } = useQuery({
     queryKey: ['labels'],
-    queryFn: () => fetchLabels(),
+    queryFn: () => fetchLabelsBySelect(),
     keepPreviousData: true
   })
 
@@ -126,6 +126,8 @@ export const FilterEvents = ({ onSearch }) => {
   useEffect(() => {
     setEtiquetas(listLabels)
   }, [listLabels])
+
+  console.log(labels)
 
   return (
     <>
@@ -188,7 +190,7 @@ export const FilterEvents = ({ onSearch }) => {
 
             <div className='col-span-4 flex flex-wrap gap-2'>
               {
-                                labels?.items.map((item) => (
+                                labels?.map((item) => (
                                   <button className={`p-2 border rounded-md dark:text-black ${listLabels.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:text-black'}`} key={item.id} onClick={() => { addLabels(item.id) }}>
                                     @{item.nombre.toUpperCase()}
                                   </button>

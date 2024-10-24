@@ -4,8 +4,8 @@
       "field": "id"
     },
     {
-      "label": "Nombre",
-      "field": "nombre"
+      "label": "Solicitante",
+      "field": "solicitante"
     },
    
     {
@@ -23,8 +23,8 @@
     },
    
     {
-      "label": "Categoría",
-      "field": "categoria"
+      "label": "Eje",
+      "field": "eje"
     },
     {
       "label": "Estado",

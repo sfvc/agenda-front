@@ -37,12 +37,12 @@ export const CategoryForm = ({ fnAction, refetchCategories, activeCategory, onCl
   const onSubmit = async (data) => {
     try {
       await fnAction(data)
-      toast.success('Categoría creada exitosamente')
+      toast.success('Eje creado exitosamente')
       refetchCategories()
       reset()
       onClose()
     } catch (error) {
-      toast.error('Hubo un error al crear la categoría')
+      toast.error('Hubo un error al crear el eje')
     }
   }
 

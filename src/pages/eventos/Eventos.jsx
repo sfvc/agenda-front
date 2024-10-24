@@ -28,10 +28,12 @@ export const Eventos = () => {
     keepPreviousData: true
   })
 
+  const eventosAMostrar = filteredEventos.length > 0 ? filteredEventos : (eventos?.items || [])
+
   if (isLoading) {
     return <Loading />
   }
-  const eventosAMostrar = filteredEventos.length > 0 ? filteredEventos : (eventos?.items || [])
+
   function addEvento () {
     navigate(`/eventos/crear?page=${currentPage}`)
   }
@@ -95,6 +97,7 @@ export const Eventos = () => {
       return 'Dirección no disponible'
     }
   }
+
   async function onSearch (e) {
     const myEventos = await getEventos(currentPage, e.circuito, e.state, e.category, e.fechIni, e.fechFin, e.barrio, e.etiquetas)
     if (myEventos.items.length === 0) {

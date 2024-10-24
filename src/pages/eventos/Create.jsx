@@ -246,6 +246,7 @@ export const Create = () => {
                 <div>
                   <label htmlFor='descripcion' className='form-label'>
                     Descripción
+                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <Textarea
                     name='descripcion'

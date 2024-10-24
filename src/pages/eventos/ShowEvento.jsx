@@ -10,7 +10,6 @@ import Loading from '@/components/Loading'
 import Modal from '@/components/ui/Modal'
 import { AddFile } from '../../components/agenda/forms/AddFile'
 
-
 const initialPosition = {
   latitud: -28.46867672033115,
   longitud: -65.77899050151645
@@ -121,6 +120,24 @@ export const ShowEvento = () => {
                                 className='capitalize text-base text-slate-600 dark:text-slate-50'
                               >
                                 {activeEvento.nombre_solicitante || '-'}
+                              </span>
+                            </div>
+                          </li>
+                        )}
+
+                        {activeEvento?.summary && (
+                          <li className='flex space-x-3 rtl:space-x-reverse'>
+                            <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                              <Icon icon='heroicons:clipboard' />
+                            </div>
+                            <div className='flex-1'>
+                              <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                                NOMBRE DEL EVENTO
+                              </div>
+                              <span
+                                className='capitalize text-base text-slate-600 dark:text-slate-50'
+                              >
+                                {activeEvento.summary || '-'}
                               </span>
                             </div>
                           </li>
