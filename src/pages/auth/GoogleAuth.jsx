@@ -14,7 +14,7 @@ const GoogleAuth = () => {
 
   return (
 
-    <div className='bg-gradient-to-b from-red-800 to-red-600 hover:bg-gradient-to-t hover:from-red-800 hover:to-red-600 p-3 text-center rounded-lg flex flex-col justify-center'>
+    <div className='mt-4 bg-gradient-to-b from-red-800 to-red-600 hover:bg-gradient-to-t hover:from-red-800 hover:to-red-600 p-3 text-center rounded-lg flex flex-col justify-center'>
       <div className='text-white text-md'>
         Para utilizar algunas funcionalidades del sistema es necesario que inicies sesión en Google.
       </div>
