@@ -6,20 +6,20 @@ import marker1 from '../../../node_modules/leaflet/dist/images/marker-icon.png'
 import marker2 from '../../../node_modules/leaflet/dist/images/marker-icon-2x.png'
 import marker3 from '../../../node_modules/leaflet/dist/images/marker-shadow.png'
 
+const markerIcon = new L.Icon({
+  iconUrl: marker1,
+  iconRetinaUrl: marker2,
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowUrl: marker3,
+  shadowSize: [41, 41]
+})
+
 export const MapEvent = ({ isActive, events }) => {
   const initialPosition = [
     -28.46867672033115,
     -65.77899050151645
   ]
-
-  const markerIcon = new L.Icon({
-    iconUrl: marker1,
-    iconRetinaUrl: marker2,
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowUrl: marker3,
-    shadowSize: [41, 41]
-  })
 
   const extractUbicaciones = (list) => {
     return list.map(item => {
