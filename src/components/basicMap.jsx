@@ -4,6 +4,19 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import React, { useState, useEffect, useRef } from 'react'
 import 'leaflet/dist/leaflet.css'
 import { initializeGeoData, checkPositionInCircuito, checkPositionInNeigh, checkPositionInSubNeigh } from '@/services/maps.js'
+import L from 'leaflet'
+import marker1 from '../../node_modules/leaflet/dist/images/marker-icon.png'
+import marker2 from '../../node_modules/leaflet/dist/images/marker-icon-2x.png'
+import marker3 from '../../node_modules/leaflet/dist/images/marker-shadow.png'
+
+const markerIcon = new L.Icon({
+  iconUrl: marker1,
+  iconRetinaUrl: marker2,
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowUrl: marker3,
+  shadowSize: [41, 41]
+})
 
 const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, handleCircuit, handleSub }) => {
   const initialPosition = {
@@ -59,6 +72,7 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
   useEffect(() => {
     const getAddressFromCoordinates = async (lat, lng) => {
       const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+
       try {
         const response = await fetch(url)
         const data = await response.json()
@@ -94,6 +108,7 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
         <Marker
           position={position}
           draggable={!isActive}
+          icon={markerIcon}
           eventHandlers={{
             dragend: handleMarkerDragEnd
           }}
