@@ -145,60 +145,64 @@ export const FilterEvents = ({ onSearch }) => {
         className={`transition-all duration-700 ease-in-out transform ${filtrar ? 'opacity-100 scale-100' : 'opacity-0 scale-0 hidden'} origin-top`}
       >
         {filtrar && (
-          <div className='grid grid-rows-4 grid-cols-4 items-center content-center gap-3'>
-            <div>
-              <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} value={state} />
-            </div>
+          <>
 
-            <div>
-              <SelectForm title='Ejes' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} value={category} />
-            </div>
-
-            <div>
-              <div className='flex flex-col'>
-                <label htmlFor='fechaInicio' className='form-label'>Fecha de Inicio</label>
-                <input
-                  type='date'
-                  id='fechaInicio'
-                  value={fechIni}
-                  className='form-control py-2'
-                  onChange={(e) => setFechIni(e.target.value)}
-                />
+            <div className='grid grid-rows-2 grid-cols-4 items-center content-center gap-3 '>
+              <div >
+                <SelectForm title='Estado' options={estados} onChange={(e) => setState(e.target.value)} value={state} />
               </div>
-            </div>
 
-            <div>
-              <div className='flex flex-col'>
-                <label htmlFor='fechaFin' className='form-label'>Fecha de Fin</label>
-                <input
-                  type='date'
-                  id='fechaFin'
-                  value={fechFin}
-                  className='form-control py-2'
-                  onChange={(e) => setFechFin(e.target.value)}
-                />
+              <div >
+                <SelectForm title='Ejes' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} value={category} />
               </div>
-            </div>
 
-            <div>
-              <SelectForm title='Barrio' options={barrios} onChange={(e) => setBarrio(e.target.value)} value={barrio} />
-            </div>
+              <div >
+                <div className='flex flex-col'>
+                  <label htmlFor='fechaInicio' className='form-label'>Fecha de Inicio</label>
+                  <input
+                    type='date'
+                    id='fechaInicio'
+                    value={fechIni}
+                    className='form-control py-2'
+                    onChange={(e) => setFechIni(e.target.value)}
+                  />
+                </div>
+              </div>
 
-            <div>
-              <SelectForm title='Circuito' options={circuitos} onChange={(e) => setCircuito(e.target.value)} value={circuito} />
-            </div>
+              <div >
+                <div className='flex flex-col'>
+                  <label htmlFor='fechaFin' className='form-label'>Fecha de Fin</label>
+                  <input
+                    type='date'
+                    id='fechaFin'
+                    value={fechFin}
+                    className='form-control py-2'
+                    onChange={(e) => setFechFin(e.target.value)}
+                  />
+                </div>
+              </div>
 
-            <div className='col-span-4 flex flex-wrap gap-2'>
+              <div >
+                <SelectForm title='Barrio' options={barrios} onChange={(e) => setBarrio(e.target.value)} value={barrio} />
+              </div>
+
+              <div >
+                <SelectForm title='Circuito' options={circuitos} onChange={(e) => setCircuito(e.target.value)} value={circuito} />
+              </div>
+
+
+            </div>
+            <div className=' flex flex-wrap gap-2 my-4'>
               {
-                                labels?.map((item) => (
-                                  <button className={`p-2 border rounded-md dark:text-black ${listLabels.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:text-black'}`} key={item.id} onClick={() => { addLabels(item.id) }}>
-                                    @{item.nombre.toUpperCase()}
-                                  </button>
-                                ))
-                            }
+                labels?.map((item) => (
+                  <button className={`p-2 border rounded-md dark:text-black ${listLabels.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:text-black'}`} key={item.id} onClick={() => { addLabels(item.id) }}>
+                    @{item.nombre.toUpperCase()}
+                  </button>
+                ))
+              }
             </div>
 
-            <div className='flex justify-end col-span-2 gap-3'>
+            <div className='flex justify-center mt-4  gap-3'>
               <button
                 type='button'
                 onClick={handleFilters}
@@ -207,9 +211,7 @@ export const FilterEvents = ({ onSearch }) => {
               >
                 {buttonFilter ? 'Seleccione un filtro' : 'Aplicar Filtros'}
               </button>
-            </div>
-
-            <div className='flex justify-start col-span-2 gap-3'>
+           
               <button
                 type='button'
                 className='bg-red-600 hover:bg-red-800 text-white py-2 px-6 rounded-lg mt-2 md:mt-0'
@@ -217,8 +219,7 @@ export const FilterEvents = ({ onSearch }) => {
               >
                 Limpiar filtros
               </button>
-            </div>
-          </div>
+            </div></>
         )}
       </div>
     </>
