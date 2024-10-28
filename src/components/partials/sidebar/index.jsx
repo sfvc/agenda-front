@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import SidebarLogo from './Logo'
 import Navmenu from './Navmenu'
-import { menuNormal } from '@/constant/data'
+import { menuNormal, menuItems } from '@/constant/data'
 import SimpleBar from 'simplebar-react'
 import useSidebar from '@/hooks/useSidebar'
 import useSemiDark from '@/hooks/useSemiDark'
@@ -9,10 +9,11 @@ import useSkin from '@/hooks/useSkin'
 import GoogleAuth from '../../../pages/auth/GoogleAuth'
 import { useSelector } from 'react-redux'
 
-const Sidebar = ({ user }) => {
+const Sidebar = () => {
   const scrollableNodeRef = useRef()
   const [scroll, setScroll] = useState(false)
   const { googleAuth } = useSelector(state => state.auth)
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,7 +57,7 @@ const Sidebar = ({ user }) => {
         />
         <SimpleBar className='sidebar-menu px-4 h-[calc(100%-80px)]' scrollableNodeProps={{ ref: scrollableNodeRef }}>
           {/* Opciones de menu */}
-          <Navmenu menus={menuNormal} />
+          <Navmenu menus={(user.rol === 'administrador' || user.rol === 'solicitante') ? menuItems : menuNormal} />
           {googleAuth ? null : <GoogleAuth />}
         </SimpleBar>
       </div>

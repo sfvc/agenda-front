@@ -51,7 +51,7 @@ const MapEvent = ({ isActive, events }) => {
         <MapContainer
           scrollWheelZoom={false}
           center={position}
-          zoom={14}
+          zoom={12}
           style={{ height: '100%', width: '100%' }}
         >
           <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />

@@ -21,6 +21,7 @@ export const Eventos = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const { googleAuth } = useSelector(state => state.auth)
   const [filteredEventos, setFilteredEventos] = useState([])
+  const { user } = useSelector((state) => state.auth)
 
   const { data: eventos, isLoading, refetch } = useQuery({
     queryKey: ['eventos', currentPage],
@@ -117,17 +118,19 @@ export const Eventos = () => {
                 <div className='mb-4 flex flex-col md:flex-row md:justify-between'>
                   <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Listado de Eventos</h1>
 
-                  <div className='flex flex-col md:flex-row items-start md:items-center gap-4 mt-4 md:mt-0'>
-                    <button
-                      type='button'
-                      onClick={addEvento}
-                      disabled={!googleAuth}
-                      className={`bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg 
-                      ${!googleAuth ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                      Agregar
-                    </button>
-                  </div>
+                  {user.rol !== 'visualizador' && (
+                    <div className='flex flex-col md:flex-row items-start md:items-center gap-4 mt-4 md:mt-0'>
+                      <button
+                        type='button'
+                        onClick={addEvento}
+                        disabled={!googleAuth}
+                        className={`bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg 
+                    ${!googleAuth ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      >
+                        Agregar
+                      </button>
+                    </div>
+                  )}
                 </div>
               </Card>
               <Card>
@@ -180,11 +183,13 @@ export const Eventos = () => {
                                       </td>
                                       <td className='table-td flex gap-2'>
                                         <ViewButton evento={evento} onView={showEvento} />
-                                        {evento.estado !== 'RECHAZADO' && (
+                                        {evento.estado !== 'RECHAZADO' && user.rol !== 'visualizador' && (
                                           <EditButton evento={evento} onEdit={onEdit} />
                                         )}
-                                        <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
-                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && (
+                                        {user.rol !== 'visualizador' && (
+                                          <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
+                                        )}
+                                        {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && user.rol !== 'visualizador' && (
                                           <RejectButton evento={evento} onReject={onReject} />
                                         )}
                                       </td>

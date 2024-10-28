@@ -4,6 +4,9 @@
 | --------- | ------------ |
 | Dashboard | ✅ |
 | Eventos   | ✅ |
+| Usuarios  | ✅ |
+| Ejes      | ✅ |
 | Categorias| ✅ |
 | Contactos | ✅ |
-| Usuarios  | ✅ |
+| Grupos    | ✅ |
+| Etiquetas | ✅ |

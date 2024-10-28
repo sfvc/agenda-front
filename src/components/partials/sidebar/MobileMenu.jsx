@@ -11,11 +11,13 @@ import logoCatamarcaClaro from '@/assets/images/logo/logo_CATACAPI_claro.png'
 import logoCatamarcaOscuro from '@/assets/images/logo/logo_CATACAPI_oscuro.png'
 import GoogleAuth from '../../../pages/auth/GoogleAuth'
 import { useSelector } from 'react-redux'
+import { menuItems } from '../../../constant/data'
 
-const MobileMenu = ({ className = 'custom-class', user }) => {
+const MobileMenu = ({ className = 'custom-class' }) => {
   const scrollableNodeRef = useRef()
   const [scroll, setScroll] = useState(false)
   const { googleAuth } = useSelector(state => state.auth)
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,7 +70,7 @@ const MobileMenu = ({ className = 'custom-class', user }) => {
         scrollableNodeProps={{ ref: scrollableNodeRef }}
       >
         {/* Opciones de menu */}
-        <Navmenu menus={menuNormal} />
+        <Navmenu menus={(user.rol === 'administrador' || user.rol === 'solicitante') ? menuItems : menuNormal} />
         {googleAuth ? null : <GoogleAuth />}
       </SimpleBar>
     </div>

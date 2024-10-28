@@ -9,6 +9,7 @@ import { Icon } from '@iconify/react/dist/iconify.js'
 import Loading from '@/components/Loading'
 import Modal from '@/components/ui/Modal'
 import { AddFile } from '../../components/agenda/forms/AddFile'
+import { useSelector } from 'react-redux'
 
 const initialPosition = {
   latitud: -28.46867672033115,
@@ -22,6 +23,7 @@ export const ShowEvento = () => {
   const navigate = useNavigate()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
+  const { user } = useSelector((state) => state.auth)
 
   const handleOpenModal = () => setIsModalOpen(true)
   const handleCloseModal = () => setIsModalOpen(false)
@@ -384,7 +386,8 @@ export const ShowEvento = () => {
                                   <tr key={contacto.id}>
                                     <td className='px-4 py-2 text-center font-medium text-gray-900 dark:text-gray-100'>{contacto.apellido} {contacto.nombre}</td>
                                     <td className='px-4 py-2 text-center font-medium text-gray-900 dark:text-gray-100'>{contacto.email}</td>
-                                    <td className='px-4 py-2 text-center font-medium text-gray-900 dark:text-gray-100'>{contacto.telefono}</td>
+                                    <td className='px-4 py-2 text-center font-medium text-gray-900 dark:text-gray-100'>{contacto.telefono}
+                                    </td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -396,18 +399,20 @@ export const ShowEvento = () => {
                   )}
                 </div>
 
-                <div className='mt-4 flex justify-end items-end gap-4 '>
-                  <button className='btn-danger items-center text-center py-2 px-6 rounded-lg' onClick={() => navigate('/eventos')}>
-                    Volver
-                  </button>
-                  <button
-                    type='button'
-                    onClick={handleOpenModal}
-                    className='bg-blue-600 hover:bg-blue-800 text-white py-2 px-6 rounded-lg max-h-10 min-w-max'
-                  >
-                    Agregar Documentos
-                  </button>
-                </div>
+                  <div className='mt-4 flex justify-end items-end gap-4 '>
+                    <button className='btn-danger items-center text-center py-2 px-6 rounded-lg' onClick={() => navigate('/eventos')}>
+                      Volver
+                    </button>
+                {user.rol !== 'visualizador' && (
+                    <button
+                      type='button'
+                      onClick={handleOpenModal}
+                      className='bg-blue-600 hover:bg-blue-800 text-white py-2 px-6 rounded-lg max-h-10 min-w-max'
+                    >
+                      Agregar Documentos
+                    </button>
+                )}
+                  </div>
               </Card>
             </>
             )

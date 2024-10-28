@@ -134,11 +134,11 @@ export const Create = () => {
         setValue('ubicacion', evento.ubicacion)
         setValue('location', evento.location)
         setValue('summary', evento.summary)
-        setValue('circuito', evento.circuito)
         setPosition(JSON.parse(evento.ubicacion))
         setTimeout(() => {
           setValue('barrio', evento.barrio)
           setValue('subbarrio', evento.subbarrio)
+          setValue('circuito', evento.circuito)
         }, 100)
         setValue('etiquetas_ids', evento.etiquetas)
       } catch (error) {

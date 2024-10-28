@@ -1,4 +1,4 @@
-export const menuNormal = [
+export const menuItems = [
   {
     isHeadr: true,
     title: 'menu'
@@ -49,6 +49,29 @@ export const menuNormal = [
     title: 'Etiquetas',
     icon: 'heroicons-outline:tag',
     link: 'etiquetas'
+  }
+]
+
+export const menuNormal = [
+  {
+    isHeadr: true,
+    title: 'menu'
+  },
+  {
+    title: 'Dashboard',
+    icon: 'heroicons-outline:presentation-chart-line',
+    link: 'dashboard'
+  },
+  {
+    title: 'Eventos',
+    icon: 'heroicons-outline:calendar-days',
+    link: 'eventos'
+  },
+  {
+    title: 'Revisar Calendario',
+    icon: 'heroicons-outline:calendar',
+    link: 'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwi1joyRlOOIAxUau5UCHSMoKWQQFnoECAkQAQ&url=https%3A%2F%2Fcalendar.google.com%2F&usg=AOvVaw3qtLJDBakUS11m3q0SFckJ&opi=89978449',
+    target: '_blank'
   }
 ]
 

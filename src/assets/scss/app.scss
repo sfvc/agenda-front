@@ -113,8 +113,6 @@
   @import "utility/full-calender";
   @import "components/print.scss";
 }
-@layer utilities {
-}
 
 .obligatorio {
   color: #f53333;
@@ -167,44 +165,4 @@ textarea {
   100% {
       background-position: 200% 0;
   }
-}
-
-.custom-marker-indigo {
-  background-color: indigo;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  border: 2px solid white;
-}
-
-.custom-marker-cyan {
-  background-color: cyan;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  border: 2px solid white;
-}
-
-.custom-marker-green {
-  background-color: green;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  border: 2px solid white;
-}
-
-.custom-marker-red {
-  background-color: red;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  border: 2px solid white;
-}
-
-.custom-marker-yellow {
-  background-color: yellow;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  border: 2px solid white;
 }
