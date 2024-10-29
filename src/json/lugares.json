@@ -1,0 +1,26 @@
+[
+    {
+      "nombre": "Centro Cultural Girardi",
+      "latitud": -28.470537437583282,
+      "longitud": -65.78754606245496,
+      "barrio": "VILLA CUBAS",
+      "subbarrio": "VILLA CUBAS",
+      "circuito": "2"
+    },
+    {
+      "nombre": "Plaza 25 de Mayo",
+      "latitud": -28.46889641731237,
+      "longitud": -65.7790743946056,
+      "barrio": "CENTRO",
+      "subbarrio": "CENTRO",
+      "circuito": "1"
+    },
+    {
+      "nombre": "Nodo Tecnologico",
+      "latitud": -28.476761974962628,
+      "longitud": -65.78642177831048,
+      "barrio": "LA TABLADA",
+      "subbarrio": "LA TABLADA",
+      "circuito": "3"
+    }
+  ]

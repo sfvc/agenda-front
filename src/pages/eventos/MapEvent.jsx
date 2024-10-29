@@ -23,22 +23,22 @@ const MapEvent = ({ isActive, events }) => {
 
   const extractUbicaciones = (list) => {
     return list.map(item => {
-      const ubicacion = JSON.parse(item.ubicacion)
+      const ubicacion = JSON.parse(item?.ubicacion)
 
       return {
-        latitud: ubicacion.latitud,
-        longitud: ubicacion.longitud,
-        direccion: separarTresPrimerosElementos(ubicacion.direccion)
+        latitud: ubicacion?.latitud,
+        longitud: ubicacion?.longitud,
+        direccion: separarTresPrimerosElementos(ubicacion?.direccion)
       }
     })
   }
   function separarTresPrimerosElementos (cadena) {
     // Divide la cadena por comas y recorta espacios adicionales
-    const elementos = cadena.split(',').map(elemento => elemento.trim())
+    const elementos = cadena?.split(',').map(elemento => elemento?.trim())
 
     // Toma los primeros tres elementos
-    const primerosTres = elementos.slice(0, 3)
-    const resultadoEnCadena = primerosTres.join(', ')
+    const primerosTres = elementos?.slice(0, 3)
+    const resultadoEnCadena = primerosTres?.join(', ')
     return resultadoEnCadena
   }
 
@@ -58,11 +58,11 @@ const MapEvent = ({ isActive, events }) => {
           {ubicaciones.map((item, index) => (
             <Marker
               key={index} // Idealmente un identificador único
-              position={[item.latitud, item.longitud]}
+              position={[item?.latitud, item?.longitud]}
               icon={markerIcon}
               draggable={!isActive}
             >
-              <Popup>{item.direccion}</Popup>
+              <Popup>{item?.direccion}</Popup>
             </Marker>
           ))}
 

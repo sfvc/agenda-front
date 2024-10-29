@@ -189,10 +189,14 @@ export const FilterEvents = ({ onSearch }) => {
               </div>
 
             </div>
-            <div className=' flex flex-wrap gap-2 my-4'>
+            <div className='flex flex-wrap gap-2 my-4'>
               {
                 labels?.map((item) => (
-                  <button className={`p-2 border rounded-md dark:text-black ${listLabels.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:bg-gray-300 dark:text-black'}`} key={item.id} onClick={() => { addLabels(item.id) }}>
+                  <button
+                    className={`px-2 py-1 text-sm border rounded-md dark:text-black ${listLabels.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:bg-gray-300 dark:text-black'}`}
+                    key={item.id}
+                    onClick={() => { addLabels(item.id) }}
+                  >
                     @{item.nombre.toUpperCase()}
                   </button>
                 ))

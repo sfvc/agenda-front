@@ -98,7 +98,7 @@ export const StagePerform = () => {
       setInvitados([...invitados, e])
       setContact([])
     } else {
-      toast.warning('El contacto ya esta en la lista')
+      toast.warning('El contacto ya está en la lista')
       setContact([])
       setSearch('')
     }

@@ -58,12 +58,11 @@ export const Eventos = () => {
         await nextStageEvent(id)
         toast.success('El evento pasó al estado REALIZADO')
         await refetch()
-        setFilteredEventos(prevEventos => prevEventos.map(evento => {
-          if (evento.id === id) {
-            return { ...evento }
-          }
-          return evento
-        }))
+        setFilteredEventos(prevEventos =>
+          prevEventos.map(evento =>
+            evento.id === id ? { ...evento, estado: 'REALIZADO' } : evento
+          )
+        )
       } catch (error) {
         console.error(error)
         toast.error('Hubo un error al intentar pasar el evento')
@@ -74,8 +73,13 @@ export const Eventos = () => {
   async function onReject (id) {
     try {
       await rejectEvent(id)
-      toast.success('El evento se desestimo')
+      toast.success('El evento se desestimó')
       await refetch()
+      setFilteredEventos(prevEventos =>
+        prevEventos.map(evento =>
+          evento.id === id ? { ...evento, estado: 'RECHAZADO' } : evento
+        )
+      )
     } catch (error) {
       console.error(error)
       toast.error('Hubo un error al intentar desestimar')
@@ -92,7 +96,7 @@ export const Eventos = () => {
   const parseUbicacion = (ubicacion) => {
     try {
       const parsed = JSON.parse(ubicacion)
-      const resultado = separarTresPrimerosElementos(parsed.direccion)
+      const resultado = separarTresPrimerosElementos(parsed?.direccion)
       return resultado || 'Dirección no disponible'
     } catch {
       return 'Dirección no disponible'
@@ -159,26 +163,26 @@ export const Eventos = () => {
                               ? (eventosAMostrar.map((evento) => {
                                   return (
                                     <tr key={evento.id}>
-                                      <td className='table-td'>{evento.id}</td>
-                                      <td className='table-td'>{evento.nombre_solicitante || '-'}</td>
-                                      <td className='table-td'>{evento.telefono_solicitante || '-'}</td>
-                                      <td className='table-td max-w-96'>{parseUbicacion(evento.ubicacion) || '-'}</td>
-                                      <td className='table-td'>{formatDate(evento.fecha) || '-'}</td>
-                                      <td className='table-td'>{evento.categoria?.nombre || '-'}</td>
+                                      <td className='table-td'>{evento?.id}</td>
+                                      <td className='table-td'>{evento?.nombre_solicitante || '-'}</td>
+                                      <td className='table-td'>{evento?.telefono_solicitante || '-'}</td>
+                                      <td className='table-td max-w-96'>{parseUbicacion(evento?.ubicacion) || '-'}</td>
+                                      <td className='table-td'>{formatDate(evento?.fecha) || '-'}</td>
+                                      <td className='table-td'>{evento?.categoria?.nombre || '-'}</td>
                                       <td className='table-td'>
                                         <span
                                           className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 
-                                            ${evento.estado === 'A_REALIZAR'
+                                            ${evento?.estado === 'A_REALIZAR'
                                             ? 'text-black bg-indigo-500 dark:bg-indigo-400'
-                                            : evento.estado === 'PENDIENTE'
+                                            : evento?.estado === 'PENDIENTE'
                                               ? 'text-black bg-cyan-500 dark:bg-cyan-500'
-                                              : evento.estado === 'REALIZADO'
+                                              : evento?.estado === 'REALIZADO'
                                                 ? 'text-black bg-green-500 dark:bg-green-400'
-                                                : evento.estado === 'RECHAZADO'
+                                                : evento?.estado === 'RECHAZADO'
                                                   ? 'text-black bg-red-500 dark:bg-red-400'
                                                   : 'text-black bg-warning-500 dark:bg-warning-500'}`}
                                         >
-                                          {evento.estado}
+                                          {evento?.estado}
                                         </span>
                                       </td>
                                       <td className='table-td flex gap-2'>
@@ -187,10 +191,10 @@ export const Eventos = () => {
                                           <EditButton evento={evento} onEdit={onEdit} />
                                         )}
                                         {user.rol !== 'visualizador' && (
-                                          <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} />
+                                          <AgendaButton evento={evento} onDelete={() => onDelete(evento.id, evento.estado)} refetch={refetch} />
                                         )}
                                         {evento.estado !== 'RECHAZADO' && evento.estado !== 'REALIZADO' && user.rol !== 'visualizador' && (
-                                          <RejectButton evento={evento} onReject={onReject} />
+                                          <RejectButton evento={evento} onReject={onReject} refetch={refetch} />
                                         )}
                                       </td>
                                     </tr>
