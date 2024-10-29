@@ -305,7 +305,6 @@ export const Create = () => {
                   <Textinput
                     name='circuito'
                     type='text'
-                    readonly
                     placeholder='El circuito se carga a partir del mapa'
                     register={register}
                     errors={errors.circuito}
