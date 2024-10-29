@@ -102,7 +102,7 @@ export const ContactSelect = ({ handleContact, oldContacts }) => {
             </div>
             : null}
           {contacts.length > 0
-            ? <div className='w-full flex flex-wrap items-center text-sm font-medium mt-5'>
+            ? <div className='w-full flex flex-wrap items-center text-sm font-medium mt-5 py-2'>
               {contacts.map((contactos) => {
                 return (
                   <span className='bg-base-100 border  text-md font-medium me-2 group font-mono  p-2 rounded-lg dark:bg-purple-900 dark:text-purple-300 flex uppercase' key={contactos.id}>

@@ -1,13 +1,14 @@
 [
     {
-      "label": "ID",
-      "field": "id"
+      "label": "Evento",
+      "field": "Evento"
     },
+
     {
       "label": "Solicitante",
       "field": "solicitante"
     },
-   
+
     {
       "label": "Teléfono",
       "field": "telefono_solicitante"

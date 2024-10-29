@@ -163,7 +163,7 @@ export const Eventos = () => {
                               ? (eventosAMostrar.map((evento) => {
                                   return (
                                     <tr key={evento.id}>
-                                      <td className='table-td'>{evento?.id}</td>
+                                      <td className='table-td'>{evento?.summary || '-'}</td>
                                       <td className='table-td'>{evento?.nombre_solicitante || '-'}</td>
                                       <td className='table-td'>{evento?.telefono_solicitante || '-'}</td>
                                       <td className='table-td max-w-96'>{parseUbicacion(evento?.ubicacion) || '-'}</td>
