@@ -8,11 +8,6 @@
       "label": "Solicitante",
       "field": "solicitante"
     },
-
-    {
-      "label": "Teléfono",
-      "field": "telefono_solicitante"
-    },
    
     {
       "label": "ubicacion",
