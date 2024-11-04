@@ -33,5 +33,10 @@ export const updateContact = async (id, contact, page) => {
   return response.data
 }
 
+export const deleteContact = async (id, contact) => {
+  const response = await agendaApi.delete(`/contacto/${id}`, contact)
+  return response.data
+}
+
 export const getContacts = fetchContact
 export const getContactsById = fetchContactById

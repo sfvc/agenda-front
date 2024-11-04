@@ -6,7 +6,7 @@ import Textinput from '@/components/ui/Textinput'
 import Button from '@/components/ui/Button'
 import { Label } from 'flowbite-react'
 import { toast } from 'react-toastify'
-// import { getEtiquetaById } from '@/services/labelsService'
+import { fetchLabelsById, updateLabels } from '../../../services/labelsService'
 
 const FormValidationSaving = yup
   .object({
@@ -25,7 +25,8 @@ export const LabelsForm = ({ fnAction, refetchLabel, activeLabel, onClose, id })
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset
+    reset,
+    setValue
   } = useForm({
     defaultValues: {
       nombre: activeLabel?.nombre || ''
@@ -35,11 +36,19 @@ export const LabelsForm = ({ fnAction, refetchLabel, activeLabel, onClose, id })
 
   const onSubmit = async (data) => {
     try {
-      await fnAction(data)
-      toast.success('Etiqueta creada exitosamente')
-      refetchLabel()
-      reset()
-      onClose()
+      if (!id) {
+        await fnAction(data)
+        toast.success('Etiqueta creada exitosamente')
+        refetchLabel()
+        reset()
+        onClose()
+      } else {
+        await updateLabels(id, data)
+        toast.info('Etiqueta editada exitosamente')
+        refetchLabel()
+        reset()
+        onClose()
+      }
     } catch (error) {
       toast.error('Hubo un error al crear la etiqueta')
     }
@@ -48,9 +57,9 @@ export const LabelsForm = ({ fnAction, refetchLabel, activeLabel, onClose, id })
   const loadCategory = async () => {
     if (id) {
       try {
-        // const etiqueta = await getEtiquetaById(id)
+        const etiqueta = await fetchLabelsById(id)
 
-        // setValue('nombre', etiqueta.nombre)
+        setValue('nombre', etiqueta.nombre)
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }

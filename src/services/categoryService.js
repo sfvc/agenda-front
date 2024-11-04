@@ -25,6 +25,11 @@ export const updateCategory = async (id, category, page) => {
   return response.data
 }
 
+export const deleteCategory = async (id, category) => {
+  const response = await agendaApi.delete(`/categoria/${id}`, category)
+  return response.data
+}
+
 export const getCategory = fetchCategory
 export const getCategoryById = fetchCategoryById
 export const getCategoryBySelect = fetchCategoryBySelect

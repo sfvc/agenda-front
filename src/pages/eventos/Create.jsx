@@ -332,6 +332,7 @@ export const Create = () => {
             <Card>
               <LabelsSelect handleLabels={handleLabels} oldLabels={etiquetas} />
             </Card>
+
             <div className='h-96 w-full'>
               <BasicMap onLocationChange={handleLocationChange} handleNeight={handleNeight} editPosition={position} handleCircuit={handleCircuit} handleSub={handleSub} />
             </div>

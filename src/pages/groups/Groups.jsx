@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { getGroup } from '../../services/groupService'
+import { deleteGroup, getGroup } from '@/services/groupService'
+import { toast } from 'react-toastify'
 import Loading from '@/components/Loading'
 import Card from '@/components/ui/Card'
 import Pagination from '@/components/ui/Pagination'
 import columnsGroup from '@/json/columnsGroup'
 import EditButton from '@/components/buttons/EditButton'
+import DeleteButton from '@/components/buttons/DeleteButton'
 
 export const Groups = () => {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
-  const { data: grupos, isLoading } = useQuery({
+  const { data: grupos, isLoading, refetch } = useQuery({
     queryKey: ['grupo', currentPage],
     queryFn: () => getGroup(currentPage),
     keepPreviousData: true
@@ -23,6 +25,17 @@ export const Groups = () => {
 
   async function onEdit (id) {
     navigate(`/grupos/editar/${id}`)
+  }
+
+  async function onDelete (id) {
+    try {
+      await deleteGroup(id)
+      toast.success('El grupo se eliminó')
+      await refetch()
+    } catch (error) {
+      console.error(error)
+      toast.error('Hubo un error al intentar eliminar')
+    }
   }
 
   if (isLoading) {
@@ -75,6 +88,7 @@ export const Groups = () => {
                                       <td className='table-td'>{grupo.nombre}</td>
                                       <td className='table-td flex gap-2'>
                                         <EditButton evento={grupo} onEdit={onEdit} />
+                                        <DeleteButton evento={grupo} onDelete={onDelete} refetch={refetch} />
                                       </td>
                                     </tr>
                                   )

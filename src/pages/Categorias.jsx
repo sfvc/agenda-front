@@ -1,16 +1,23 @@
 /* eslint-disable react/no-children-prop */
 import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { createCategory, updateCategory, getCategory } from '@/services/categoryService'
+import { CategoryForm } from '@/components/agenda/forms/CategoryForm'
+import { toast } from 'react-toastify'
+import { deleteCategory } from '../services/categoryService'
 import Card from '@/components/ui/Card'
 import Modal from '@/components/ui/Modal'
 import Loading from '@/components/Loading'
 import Pagination from '@/components/ui/Pagination'
-import { useQuery } from '@tanstack/react-query'
-import { createCategory, updateCategory, getCategory } from '@/services/categoryService'
-import { CategoryForm } from '@/components/agenda/forms/CategoryForm'
 import EditModal from '@/components/ui/EditModal'
 import EditButton from '@/components/buttons/EditButton'
+import DeleteButton from '../components/buttons/DeleteButton'
 
 const columns = [
+  {
+    label: 'ID',
+    field: 'id'
+  },
   {
     label: 'Nombre',
     field: 'nombre'
@@ -39,13 +46,24 @@ export const Categorias = () => {
     setSelectedCategory(null)
   }
 
-  if (isLoading) {
-    return <Loading />
-  }
-
   function onEdit (category) {
     setSelectedCategory(category)
     setIsEditModalOpen(true)
+  }
+
+  async function onDelete (id) {
+    try {
+      await deleteCategory(id)
+      toast.success('La categoría se eliminó')
+      await refetch()
+    } catch (error) {
+      console.error(error)
+      toast.error('Hubo un error al intentar eliminar')
+    }
+  }
+
+  if (isLoading) {
+    return <Loading />
   }
 
   return (
@@ -122,9 +140,11 @@ export const Categorias = () => {
                             (categorias?.items && categorias.items.length > 0)
                               ? (categorias.items.map((categoria) => (
                                 <tr key={categoria.id}>
+                                  <td className='table-td'>{categoria.id}</td>
                                   <td className='table-td'>{categoria.nombre}</td>
                                   <td className='table-td flex justify-start gap-2'>
                                     <EditButton evento={categoria} onEdit={onEdit} />
+                                    <DeleteButton evento={categoria} onDelete={onDelete} refetch={refetch} />
                                   </td>
                                 </tr>
                                 )))

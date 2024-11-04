@@ -15,7 +15,22 @@ export const fetchLabelsBySelect = async (nombre = null) => {
   }
 }
 
+export const fetchLabelsById = async (id) => {
+  const response = await agendaApi.get(`/etiqueta/${id}`)
+  return response.data
+}
+
 export const createLabels = async (label) => {
   const response = await agendaApi.post('/etiqueta', label)
+  return response.data
+}
+
+export const updateLabels = async (id, label, page) => {
+  const response = await agendaApi.put(`/etiqueta/${id}?page=${page}`, label)
+  return response.data
+}
+
+export const deleteLabels = async (id, label) => {
+  const response = await agendaApi.delete(`/etiqueta/${id}`, label)
   return response.data
 }

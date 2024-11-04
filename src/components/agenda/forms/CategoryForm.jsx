@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button'
 import { Label } from 'flowbite-react'
 import { toast } from 'react-toastify'
 import { getCategoryById } from '@/services/categoryService'
+import { updateCategory } from '../../../services/categoryService'
 
 const FormValidationSaving = yup
   .object({
@@ -36,13 +37,21 @@ export const CategoryForm = ({ fnAction, refetchCategories, activeCategory, onCl
 
   const onSubmit = async (data) => {
     try {
-      await fnAction(data)
-      toast.success('Eje creado exitosamente')
-      refetchCategories()
-      reset()
-      onClose()
+      if (!id) {
+        await fnAction(data)
+        toast.success('Eje creado exitosamente')
+        refetchCategories()
+        reset()
+        onClose()
+      } else {
+        await updateCategory(id, data)
+        toast.info('Eje editado exitosamente')
+        refetchCategories()
+        reset()
+        onClose()
+      }
     } catch (error) {
-      toast.error('Hubo un error al crear el eje')
+      toast.error('Hubo un error al crear la etiqueta')
     }
   }
 

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Card from '@/components/ui/Card'
 import EstadisticasDashboard from './EstadisticasDashboard'
-import { getEventos } from '@/services/eventService'
+import { fetchStats } from '../../services/eventService'
 
 const Dashboard = () => {
-  const [eventosSinPaginar, setEventosSinPaginar] = useState([])
+  const [estadisticas, setEstadisticas] = useState([])
   useEffect(() => {
     const fetchData = async () => {
-      const responseEventos = await getEventos()
-      setEventosSinPaginar(responseEventos.items)
+      const responseEventos = await fetchStats()
+      setEstadisticas(responseEventos)
     }
 
     fetchData()
@@ -24,7 +24,7 @@ const Dashboard = () => {
         </Card>
         <div className='mt-4 grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-4'>
           <EstadisticasDashboard
-            eventosSinPaginar={eventosSinPaginar}
+            estadisticas={estadisticas}
           />
         </div>
       </div>

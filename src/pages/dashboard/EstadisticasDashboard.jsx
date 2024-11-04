@@ -10,22 +10,14 @@ const estados = [
   { id: 'RECHAZADO', nombre: 'Rechazado', bg: 'bg-red-500', text: 'text-red-500', icon: 'heroicons-solid:x' }
 ]
 
-const EstadisticasDashboard = ({ eventosSinPaginar }) => {
+const EstadisticasDashboard = ({ estadisticas }) => {
   const [, setEventosActivos] = useState(0)
 
-  const countEventoPorEstado = (data) => {
-    const totals = {
-      totales: data.length
-    }
-
-    estados.forEach(estado => {
-      totals[estado.id] = data.filter(a => a.estado === estado.id).length
-    })
-
-    return totals
-  }
-
-  const totalsByEstado = useMemo(() => countEventoPorEstado(eventosSinPaginar), [eventosSinPaginar])
+  // Asignar directamente el objeto estadisticas al objeto totalsByEstado
+  const totalsByEstado = useMemo(() => ({
+    totales: Object.values(estadisticas).reduce((acc, val) => acc + val, 0), // Suma total de eventos
+    ...estadisticas
+  }), [estadisticas])
 
   useEffect(() => {
     const fetchActiveEvents = async () => {

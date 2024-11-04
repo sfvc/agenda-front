@@ -58,6 +58,11 @@ export const documentEvent = async (id, document, page) => {
   return response.status
 }
 
+export const fetchStats = async () => {
+  const response = await agendaApi.get('/evento/estadisticas')
+  return response.data
+}
+
 export const getEventos = fetchEvents
 export const getEventoById = fetchEventById
 export const createEvento = createEvent

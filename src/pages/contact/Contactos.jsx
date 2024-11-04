@@ -9,6 +9,9 @@ import columnContact from '@/json/columnsContact.json'
 import Pagination from '@/components/ui/Pagination'
 import Loading from '@/components/Loading'
 import EditButton from '@/components/buttons/EditButton'
+import DeleteButton from '../../components/buttons/DeleteButton'
+import { deleteContact } from '../../services/contactService'
+import { toast } from 'react-toastify'
 
 export const Contactos = () => {
   const navigate = useNavigate()
@@ -32,7 +35,7 @@ export const Contactos = () => {
       : getContacts(currentPage)
   }
 
-  const { data: contactos, isLoading } = useQuery({
+  const { data: contactos, isLoading, refetch } = useQuery({
     queryKey: ['contactos', currentPage, debouncedSearch],
     queryFn: fetchContacts,
     keepPreviousData: true
@@ -48,6 +51,17 @@ export const Contactos = () => {
 
   const addContact = () => {
     navigate('/contactos/crear')
+  }
+
+  async function onDelete (id) {
+    try {
+      await deleteContact(id)
+      toast.success('El contacto se eliminó')
+      await refetch()
+    } catch (error) {
+      console.error(error)
+      toast.error('Hubo un error al intentar eliminar')
+    }
   }
 
   if (isLoading) {
@@ -130,10 +144,11 @@ export const Contactos = () => {
                                       <td className='table-td'>{contacto.email}</td>
                                       <td className='table-td'>{contacto.telefono}</td>
                                       <td className='table-td'>
-                                        {contacto.grupos.map(grupo => grupo.nombre).join(', ')}
+                                        {contacto.grupos.map(grupo => grupo.nombre).join(', ') || '-'}
                                       </td>
                                       <td className='table-td flex justify-start gap-2'>
                                         <EditButton evento={contacto} onEdit={onEdit} />
+                                        <DeleteButton evento={contacto} onDelete={onDelete} refetch={refetch} />
                                       </td>
                                     </tr>
                                   )
