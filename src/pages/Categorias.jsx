@@ -15,10 +15,6 @@ import DeleteButton from '../components/buttons/DeleteButton'
 
 const columns = [
   {
-    label: 'ID',
-    field: 'id'
-  },
-  {
     label: 'Nombre',
     field: 'nombre'
   },
@@ -140,7 +136,6 @@ export const Categorias = () => {
                             (categorias?.items && categorias.items.length > 0)
                               ? (categorias.items.map((categoria) => (
                                 <tr key={categoria.id}>
-                                  <td className='table-td'>{categoria.id}</td>
                                   <td className='table-td'>{categoria.nombre}</td>
                                   <td className='table-td flex justify-start gap-2'>
                                     <EditButton evento={categoria} onEdit={onEdit} />
