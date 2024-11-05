@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { agendaApi } from '@/api'
 
-export const fetchEvents = async (page = 1, circuito = '', state = '', category = '', fecha_inicio = '', fecha_final = '', barrio = '', etiquetas_ids = '') => {
+export const fetchEvents = async (page = '', circuito = '', state = '', category = '', fecha_inicio = '', fecha_final = '', barrio = '', etiquetas_ids = '') => {
   const params = new URLSearchParams()
 
   // Solo agregar parámetros si tienen valor
@@ -30,7 +30,7 @@ export const fetchEventById = async (id, page) => {
   return response.data
 }
 
-export const createEvent = async (event, page) => {
+export const createEvent = async (event) => {
   const response = await agendaApi.post('/evento', event)
   return response.data
 }
