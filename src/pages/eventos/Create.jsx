@@ -290,7 +290,6 @@ export const Create = () => {
                   <Textinput
                     name='barrio'
                     type='text'
-                    readonly
                     placeholder='El barrio se carga a partir del mapa'
                     register={register}
                     errors={errors.barrio}
@@ -318,7 +317,6 @@ export const Create = () => {
                   <Textinput
                     name='subbarrio'
                     type='text'
-                    readonly
                     placeholder='El sub-barrio se carga a partir del mapa'
                     register={register}
                     errors={errors.subbarrio}
