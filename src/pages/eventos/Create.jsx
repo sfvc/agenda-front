@@ -15,6 +15,7 @@ import Textinput from '@/components/ui/Textinput'
 import Textarea from '@/components/ui/Textarea'
 import DatePicker from '@/components/ui/DatePicker'
 import BasicMap from '@/components/basicMap'
+import lugares from '@/json/lugares'
 
 const initialForm = {
   nombre_solicitante: null,
@@ -72,6 +73,36 @@ export const Create = () => {
 
   const handleLocationChange = (latitud, longitud, direccion) => {
     setValue('ubicacion', JSON.stringify({ latitud, longitud, direccion }))
+    console.log(longitud, latitud)
+  }
+
+  const handleLugarSelect = (selectedLugar) => {
+    setValue('location', selectedLugar.nombre)
+    setValue('barrio', selectedLugar.barrio)
+    setValue('subbarrio', selectedLugar.subbarrio)
+    setValue('circuito', selectedLugar.circuito)
+    setValue('ubicacion', JSON.stringify({
+      latitud: selectedLugar.latitud,
+      longitud: selectedLugar.longitud,
+      direccion: selectedLugar.nombre
+    }))
+    setPosition({ latitud: selectedLugar.latitud, longitud: selectedLugar.longitud })
+  }
+
+  const handleNeight = (e) => {
+    setValue('barrio', e)
+  }
+
+  const handleCircuit = (e) => {
+    setValue('circuito', e)
+  }
+
+  const handleSub = (e) => {
+    setValue('subbarrio', e)
+  }
+
+  const handleLabels = (e) => {
+    setValue('etiquetas_ids', e)
   }
 
   const sanitizeObject = (items) => {
@@ -102,22 +133,6 @@ export const Create = () => {
     } catch (error) {
       toast.error('Hubo un error al crear el evento')
     }
-  }
-
-  const handleNeight = (e) => {
-    setValue('barrio', e)
-  }
-
-  const handleCircuit = (e) => {
-    setValue('circuito', e)
-  }
-
-  const handleSub = (e) => {
-    setValue('subbarrio', e)
-  }
-
-  const handleLabels = (e) => {
-    setValue('etiquetas_ids', e)
   }
 
   const loadEvento = async () => {
@@ -270,6 +285,19 @@ export const Create = () => {
                 </div>
 
                 <div>
+                  <label htmlFor='lugares' className='form-label'>
+                    Lugares Recurrentes
+                  </label>
+                  <SelectForm
+                    options={lugares}
+                    onChange={(e) => {
+                      const selectedLugar = lugares.find(lugar => lugar.nombre === e.target.value)
+                      handleLugarSelect(selectedLugar)
+                    }}
+                  />
+                </div>
+
+                <div>
                   <label htmlFor='location' className='form-label'>
                     Localización
                     <strong className='obligatorio'>(*)</strong>
@@ -309,6 +337,7 @@ export const Create = () => {
                     errors={errors.circuito}
                   />
                 </div>
+
                 <div>
                   <label htmlFor='subbarrio' className='form-label'>
                     Sub-Barrio

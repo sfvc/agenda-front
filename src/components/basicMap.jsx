@@ -24,16 +24,11 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
     longitud: -65.77899050151645
   }
 
-  const [position, setPosition] = useState(() => {
-    if (editPosition) {
-      return [editPosition.latitud, editPosition.longitud]
-    }
-    return [initialPosition.latitud, initialPosition.longitud]
-  })
+  const [position, setPosition] = useState([editPosition ? editPosition.latitud : initialPosition.latitud, editPosition ? editPosition.longitud : initialPosition.longitud])
   const [geoData, setGeoData] = useState([])
   const [geoCircuitos, setGeoCircuitos] = useState([])
   const [geoSubBarrios, setGeoSubBarrios] = useState([])
-  const previousPosition = useRef(initialPosition)
+  const previousPosition = useRef([initialPosition.latitud, initialPosition.longitud])
   const [address, setAddress] = useState('')
 
   const handleMapClick = (event) => {
@@ -42,6 +37,7 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
       setPosition([lat, lng])
     }
   }
+
   useEffect(() => {
     const { barrios, sub, circuitos } = initializeGeoData()
     setGeoData(barrios)
@@ -82,14 +78,18 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
         console.error('Error:', error)
       }
     }
-    if (isActive) {
-      getAddressFromCoordinates(position[0], position[1])
-    }
-    if (position[0] !== previousPosition.current[0] || position[1] !== previousPosition.current[1]) {
+
+    if (isActive || (position[0] !== previousPosition.current[0] || position[1] !== previousPosition.current[1])) {
       getAddressFromCoordinates(position[0], position[1])
       previousPosition.current = position
     }
   }, [position, onLocationChange, isActive])
+
+  useEffect(() => {
+    if (editPosition) {
+      setPosition([editPosition.latitud, editPosition.longitud])
+    }
+  }, [editPosition])
 
   return (
     <div className='h-full'>
@@ -116,7 +116,6 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
           <Popup>{address}</Popup>
         </Marker>
       </MapContainer>
-
     </div>
   )
 }

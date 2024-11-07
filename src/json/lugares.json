@@ -1,26 +1,90 @@
 [
-    {
-      "nombre": "Centro Cultural Girardi",
-      "latitud": -28.470537437583282,
-      "longitud": -65.78754606245496,
-      "barrio": "VILLA CUBAS",
-      "subbarrio": "VILLA CUBAS",
-      "circuito": "2"
-    },
-    {
-      "nombre": "Plaza 25 de Mayo",
-      "latitud": -28.46889641731237,
-      "longitud": -65.7790743946056,
-      "barrio": "CENTRO",
-      "subbarrio": "CENTRO",
-      "circuito": "1"
-    },
-    {
-      "nombre": "Nodo Tecnologico",
-      "latitud": -28.476761974962628,
-      "longitud": -65.78642177831048,
-      "barrio": "LA TABLADA",
-      "subbarrio": "LA TABLADA",
-      "circuito": "3"
-    }
-  ]
+  {
+    "nombre": "Plaza 25 de Mayo",
+    "latitud": -28.468931799833353,
+    "longitud": -65.77901959419252,
+    "barrio": "CENTRO",
+    "subbarrio": "CENTRO",
+    "circuito": "1"
+  },
+  {
+    "nombre": "La Catedral",
+    "latitud": -28.468964809935677,
+    "longitud": -65.78021049499513,
+    "barrio": "CENTRO",
+    "subbarrio": "CENTRO",
+    "circuito": "1"
+  },
+  {
+    "nombre": "Cine Teatro Catamarca",
+    "latitud": -28.469667451095862,
+    "longitud": -65.77888548374177,
+    "barrio": "CENTRO",
+    "subbarrio": "CENTRO",
+    "circuito": "1"
+  },
+  {
+    "nombre": "La Alameda",
+    "latitud": -28.469667451095862,
+    "longitud": -65.78730225563051,
+    "barrio": "AVELLANEDA Y TULA",
+    "subbarrio": "AVELLANEDA Y TULA",
+    "circuito": "1"
+  },
+  {
+    "nombre": "Casa de Gobierno",
+    "latitud": -28.4598677787612,
+    "longitud": -65.76046407222749,
+    "barrio": "LA CHACARITA",
+    "subbarrio": "LA CHACARITA",
+    "circuito": "8"
+  },
+  {
+    "nombre": "Centro Cultural Girardi",
+    "latitud": -28.470537437583282,
+    "longitud": -65.78754606245496,
+    "barrio": "VILLA CUBAS",
+    "subbarrio": "VILLA CUBAS",
+    "circuito": "2"
+  },
+  {
+    "nombre": "Nodo Tecnologico",
+    "latitud": -28.476761974962628,
+    "longitud": -65.78642177831048,
+    "barrio": "LA TABLADA",
+    "subbarrio": "LA TABLADA",
+    "circuito": "3"
+  },
+  {
+    "nombre": "Predio Ferial",
+    "latitud": -28.44693161956387,
+    "longitud": -65.75607611754936,
+    "barrio": "LA CHACARITA",
+    "subbarrio": "LA CHACARITA",
+    "circuito": "8"
+  },
+  {
+    "nombre": "La Gruta",
+    "latitud": -28.418612424573308,
+    "longitud": -65.79934000968935,
+    "barrio": "CHOYA",
+    "subbarrio": "CHOYA",
+    "circuito": "7"
+  },
+  {
+    "nombre": "Camping Municipal",
+    "latitud": -28.46342368406287,
+    "longitud": -65.83341479301454,
+    "barrio": "LA QUEBRADA",
+    "subbarrio": "LA QUEBRADA",
+    "circuito": "7"
+  },
+  {
+    "nombre": "Pueblo Perdido",
+    "latitud": -28.4669983329928,
+    "longitud": -65.83262622356416,
+    "barrio": "LA QUEBRADA",
+    "subbarrio": "LA QUEBRADA",
+    "circuito": "7"
+  }
+]
