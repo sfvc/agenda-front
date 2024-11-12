@@ -240,6 +240,9 @@ export const Create = () => {
           setValue('circuito', evento.circuito)
         }, 100)
         setValue('etiquetas_ids', evento.etiquetas)
+        if (evento.contactos) {
+          setInvitados(evento.contactos)
+        }
       } catch (error) {
         console.error('Error al cargar el evento:', error)
       }
