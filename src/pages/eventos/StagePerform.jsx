@@ -1,8 +1,4 @@
 /* eslint-disable react/jsx-closing-tag-location */
-import Card from '@/components/ui/Card'
-import React, { useState } from 'react'
-import Loading from '@/components/Loading'
-import Button from '@/components/ui/Button'
 import { useNavigate, useParams } from 'react-router-dom'
 import { nextStageEvent } from '@/services/eventService'
 import { searchContactName, getContacts } from '@/services/contactService'
@@ -11,29 +7,11 @@ import { toast } from 'react-toastify'
 import { useQuery } from '@tanstack/react-query'
 import { SelectForm } from '@/components/agenda/forms'
 import { useForm } from 'react-hook-form'
-
-const columnContact = [
-  {
-    label: 'Apellido y Nombre',
-    field: 'apellido'
-  },
-  {
-    label: 'Correo Electronico',
-    field: 'email'
-  },
-  {
-    label: 'Telefono',
-    field: 'telefono'
-  },
-  {
-    label: 'Grupo',
-    field: 'grupo'
-  },
-  {
-    label: 'Borrar',
-    field: 'actions'
-  }
-]
+import Card from '@/components/ui/Card'
+import React, { useState } from 'react'
+import Loading from '@/components/Loading'
+import Button from '@/components/ui/Button'
+import columnContact from '@/json/columnsContact.json'
 
 export const StagePerform = () => {
   const {

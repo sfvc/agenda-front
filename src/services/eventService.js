@@ -63,6 +63,11 @@ export const fetchStats = async () => {
   return response.data
 }
 
+export const addContacts = async (id, event) => {
+  const response = await agendaApi.put(`/evento/${id}/contactos`, event)
+  return response.data
+}
+
 export const getEventos = fetchEvents
 export const getEventoById = fetchEventById
 export const createEvento = createEvent

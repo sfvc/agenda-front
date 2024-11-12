@@ -1,0 +1,22 @@
+const columnContact = [
+  {
+    label: 'Apellido y Nombre',
+    field: 'apellido'
+  },
+  {
+    label: 'Correo Electronico',
+    field: 'email'
+  },
+  {
+    label: 'Telefono',
+    field: 'telefono'
+  },
+  {
+    label: 'Grupo',
+    field: 'grupo'
+  },
+  {
+    label: 'Borrar',
+    field: 'actions'
+  }
+]
