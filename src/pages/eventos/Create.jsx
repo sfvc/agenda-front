@@ -1,14 +1,18 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable use-isnan */
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { SelectForm } from '@/components/agenda/forms'
-import { getEventoById, createEvento, updateEvento } from '@/services/eventService'
+import { getEventoById, createEvento, updateEvento, addContacts } from '@/services/eventService'
 import { useQuery } from '@tanstack/react-query'
 import { getCategoryBySelect } from '@/services/categoryService'
 import { LabelsSelect } from '@/components/agenda/forms/LabelsSelect'
 import { toast } from 'react-toastify'
+import { searchContactName, getContacts } from '@/services/contactService'
+import { getGroup, getGroupById } from '@/services/groupService'
+import { Checkbox } from 'flowbite-react'
 import Button from '@/components/ui/Button'
 import Loading from '@/components/Loading'
 import Card from '@/components/ui/Card'
@@ -18,9 +22,6 @@ import DatePicker from '@/components/ui/DatePicker'
 import BasicMap from '@/components/basicMap'
 import lugares from '@/json/lugares'
 import columnContact from '@/json/columnsContact.json'
-import { searchContactName, getContacts } from '@/services/contactService'
-import { getGroup, getGroupById } from '@/services/groupService'
-import { addContacts } from '../../services/eventService'
 
 const initialForm = {
   nombre_solicitante: null,
@@ -55,7 +56,10 @@ export const Create = () => {
   const [search, setSearch] = useState('')
   const [contacts, setContact] = useState([])
   const [invitados, setInvitados] = useState([])
-  // eslint-disable-next-line no-unused-vars
+  const [isSubmittingForm, setIsSubmittingForm] = useState(false)
+  const [isSubmittingContacts, setIsSubmittingContacts] = useState(false)
+  const [asistio, setAsistio] = useState(true)
+  const [eventoEstado, setEventoEstado] = useState(null)
   const { data: contactos } = useQuery({
     queryKey: ['contactos', currentPage],
     queryFn: () => getContacts(currentPage),
@@ -75,7 +79,7 @@ export const Create = () => {
 
   const {
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     handleSubmit,
     setValue,
     watch
@@ -87,6 +91,10 @@ export const Create = () => {
       ...prevState,
       [name]: value
     }))
+  }
+
+  const handleChangeAsistencia = () => {
+    setAsistio(!asistio)
   }
 
   const handleChangeContact = async (e) => {
@@ -142,13 +150,16 @@ export const Create = () => {
   }
 
   const onSubmitContacts = async () => {
-    const ids = obtenerIds(invitados)
+    setIsSubmittingContacts(true)
     try {
+      const ids = obtenerIds(invitados)
       await addContacts(id, { contactos: ids })
       toast.success('Se enviaron las invitaciones')
     } catch (error) {
       console.error(error)
       toast.error('Hubo un error al intentar pasar el evento')
+    } finally {
+      setIsSubmittingContacts(false)
     }
   }
 
@@ -201,10 +212,10 @@ export const Create = () => {
   }
 
   const onSubmit = async (items) => {
-    items.categoria_id = parseInt(items.categoria_id)
-    const newObject = sanitizeObject(items)
-
+    setIsSubmittingForm(true)
     try {
+      items.categoria_id = parseInt(items.categoria_id)
+      const newObject = sanitizeObject(items)
       if (!id) {
         await createEvento(newObject)
         toast.success('Evento creado exitosamente')
@@ -212,10 +223,11 @@ export const Create = () => {
         await updateEvento(id, newObject)
         toast.info('Evento editado exitosamente')
       }
-
       navigate('/eventos')
     } catch (error) {
       toast.error('Hubo un error al crear el evento')
+    } finally {
+      setIsSubmittingForm(false)
     }
   }
 
@@ -227,12 +239,14 @@ export const Create = () => {
         setValue('nombre_solicitante', evento.nombre_solicitante)
         setValue('email_solicitante', evento.email_solicitante)
         setValue('telefono_solicitante', evento.telefono_solicitante)
+        setEventoEstado(evento.estado)
         setValue('fecha', new Date(evento.fecha))
         setValue('categoria_id', evento.categoria_id)
         setValue('descripcion', evento.descripcion)
         setValue('ubicacion', evento.ubicacion)
         setValue('location', evento.location)
         setValue('summary', evento.summary)
+        setValue('intendente_fue', evento.intendente_fue)
         setPosition(JSON.parse(evento.ubicacion))
         setTimeout(() => {
           setValue('barrio', evento.barrio)
@@ -288,6 +302,7 @@ export const Create = () => {
                     placeholder='Seleccione la fecha del evento'
                     value={watch('fecha') ? new Date(watch('fecha')) : null}
                     onChange={handleDateChange}
+                    disabled={eventoEstado === 'REALIZADO'}
                   />
                 </div>
 
@@ -328,6 +343,7 @@ export const Create = () => {
                     options={categorias}
                     errors={errors.categoria_id}
                     onChange={handleChange}
+                    disabled={eventoEstado === 'REALIZADO'}
                   />
                 </div>
 
@@ -368,6 +384,7 @@ export const Create = () => {
                     placeholder='Ingrese un nombre al evento'
                     register={register}
                     errors={errors.summary}
+                    disabled={eventoEstado === 'REALIZADO'}
                   />
                 </div>
 
@@ -445,12 +462,30 @@ export const Create = () => {
 
             <div>
               <Card>
-                <LabelsSelect handleLabels={handleLabels} oldLabels={etiquetas} />
+                <div className='md:grid md:grid-cols-2'>
+                  <LabelsSelect handleLabels={handleLabels} oldLabels={etiquetas} />
+
+                  <div className='asistencia-container'>
+                    <label htmlFor='intendente_fue' className='form-label asistencia-label'>
+                      Asistió el intendente
+                    </label>
+                    <label className='asistencia-label'>
+                      <Checkbox
+                        checked={asistio}
+                        onChange={handleChangeAsistencia}
+                        className='asistencia-checkbox'
+                      />
+                      <span className={`asistencia-status ${asistio ? 'yes' : 'no'}`}>
+                        {asistio ? 'Sí' : 'No'}
+                      </span>
+                    </label>
+                  </div>
+                </div>
               </Card>
 
-              {id && (
+              {id && eventoEstado === 'A_REALIZAR' && (
                 <Card>
-                  <div className='w-full'>
+                  <div className='md:col-span-4 col-span-1 row-span-2 max-h-80 overflow-y-auto'>
                     <div className='flex flex-col md:flex-row'>
                       <div className='w-full md:w-1/2 md:mx-6 mb-6 relative'>
                         <label className='form-label'>Buscar Persona</label>
@@ -463,7 +498,7 @@ export const Create = () => {
                           <input type='search' onChange={handleChangeContact} id='default-search' className='block w-full ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' placeholder='Ingrese el nombre del invitado' value={search} />
                         </div>
                         {contacts.length > 0
-                          ? <div className='w-full text-sm font-medium text-gray-900 bg-white  border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white absolute'>
+                          ? <div className='w-full text-sm font-medium text-gray-900 bg-white  border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white absolute z-10'>
                             {contacts.map((contact) => {
                               return (
                                 <button
@@ -566,9 +601,9 @@ export const Create = () => {
                     <div className='ltr:text-right rtl:text-left'>
                       <Button
                         type='submit'
-                        text={isSubmitting ? 'Agregando' : 'Agregar'}
-                        className={`bg-indigo-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-indigo-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
-                        disabled={isSubmitting}
+                        text={isSubmittingContacts ? 'Agregando' : 'Agregar'}
+                        className={`bg-indigo-500 ${isSubmittingContacts ? 'cursor-not-allowed opacity-50' : 'hover:bg-indigo-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
+                        disabled={isSubmittingContacts}
                         onClick={handleSubmit(onSubmitContacts)}
                       />
                     </div>
@@ -593,9 +628,9 @@ export const Create = () => {
               <div className='ltr:text-right rtl:text-left'>
                 <Button
                   type='submit'
-                  text={isSubmitting ? 'Guardando' : 'Guardar'}
-                  className={`bg-green-500 ${isSubmitting ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
-                  disabled={isSubmitting}
+                  text={isSubmittingForm ? 'Guardando' : 'Guardar'}
+                  className={`bg-green-500 ${isSubmittingForm ? 'cursor-not-allowed opacity-50' : 'hover:bg-green-700'} text-white items-center text-center py-2 px-6 rounded-lg`}
+                  disabled={isSubmittingForm}
                   onClick={handleSubmit(onSubmit)}
                 />
               </div>

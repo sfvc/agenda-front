@@ -42,7 +42,7 @@ const DatePicker = ({ value, onChange, id, placeholder, disabled }) => {
   const handleBlur = () => {
     const inputValue = flatpickrRef && flatpickrRef.flatpickr.input.value
     if (inputValue) {
-      const date = flatpickrRef.flatpickr.parseDate(inputValue, 'd/m/Y')
+      const date = flatpickrRef.flatpickr.parseDate(inputValue, 'd-m-Y H:i')
       if (date) {
         onChange([date])
       } else {

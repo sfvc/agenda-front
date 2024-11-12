@@ -166,3 +166,41 @@ textarea {
       background-position: 200% 0;
   }
 }
+
+.asistencia-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.asistencia-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+}
+
+.asistencia-checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ff0000;
+  background-color: white;
+  cursor: pointer;
+}
+
+.asistencia-checkbox:checked {
+  background-color: #4CAF50;
+}
+
+.asistencia-status {
+  font-weight: bold;
+}
+
+.asistencia-status.yes {
+  color: green;
+}
+
+.asistencia-status.no {
+  color: red;
+}

@@ -314,7 +314,24 @@ export const ShowEvento = () => {
                             </div>
                           </li>
                         )}
+
+                        {activeEvento?.intendente_fue && (
+                          <li className='flex space-x-3 rtl:space-x-reverse'>
+                            <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+                              <Icon icon='heroicons:document-magnifying-glass' />
+                            </div>
+                            <div className='flex-1'>
+                              <div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+                                ASISTIÓ EL INTENDENTE
+                              </div>
+                              <div className='text-base text-slate-600 dark:text-slate-50'>
+                                {activeEvento.intendente_fue}
+                              </div>
+                            </div>
+                          </li>
+                        )}
                       </ul>
+
                       {activeEvento.etiquetas.length > 0
                         ? <div className='w-full flex flex-wrap items-start text-sm font-medium mt-5'>
                           {activeEvento.etiquetas.map((etiqueta) => {
