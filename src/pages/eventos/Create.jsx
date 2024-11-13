@@ -215,6 +215,7 @@ export const Create = () => {
     setIsSubmittingForm(true)
     try {
       items.categoria_id = parseInt(items.categoria_id)
+      items.intendente_fue = asistio
       const newObject = sanitizeObject(items)
       if (!id) {
         await createEvento(newObject)
@@ -465,21 +466,23 @@ export const Create = () => {
                 <div className='md:grid md:grid-cols-2'>
                   <LabelsSelect handleLabels={handleLabels} oldLabels={etiquetas} />
 
-                  <div className='asistencia-container'>
-                    <label htmlFor='intendente_fue' className='form-label asistencia-label'>
-                      Asistió el intendente
-                    </label>
-                    <label className='asistencia-label'>
-                      <Checkbox
-                        checked={asistio}
-                        onChange={handleChangeAsistencia}
-                        className='asistencia-checkbox'
-                      />
-                      <span className={`asistencia-status ${asistio ? 'yes' : 'no'}`}>
-                        {asistio ? 'Sí' : 'No'}
-                      </span>
-                    </label>
-                  </div>
+                  {eventoEstado === 'REALIZADO' && (
+                    <div className='asistencia-container'>
+                      <label htmlFor='intendente_fue' className='form-label asistencia-label'>
+                        Asistió el intendente
+                      </label>
+                      <label className='asistencia-label'>
+                        <Checkbox
+                          checked={asistio}
+                          onChange={handleChangeAsistencia}
+                          className='asistencia-checkbox'
+                        />
+                        <span className={`asistencia-status ${asistio ? 'yes' : 'no'}`}>
+                          {asistio ? 'Sí' : 'No'}
+                        </span>
+                      </label>
+                    </div>
+                  )}
                 </div>
               </Card>
 
