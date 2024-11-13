@@ -314,8 +314,6 @@ export const ShowEvento = () => {
                             </div>
                           </li>
                         )}
-
-                        {activeEvento?.intendente_fue && (
                           <li className='flex space-x-3 rtl:space-x-reverse'>
                             <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
                               <Icon icon='heroicons:hand-raised' />
@@ -329,7 +327,6 @@ export const ShowEvento = () => {
                               </div>
                             </div>
                           </li>
-                        )}
                       </ul>
 
                       {activeEvento.etiquetas.length > 0
