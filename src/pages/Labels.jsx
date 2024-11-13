@@ -1,16 +1,17 @@
 /* eslint-disable react/no-children-prop */
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { createLabels, deleteLabels, fetchLabels, updateLabels } from '../services/labelsService'
-import { LabelsForm } from '../components/agenda/forms/LabelsForm'
+import { createLabels, deleteLabels, fetchLabels, updateLabels } from '@/services/labelsService'
+import { LabelsForm } from '@/components/agenda/forms/LabelsForm'
 import { toast } from 'react-toastify'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Card from '@/components/ui/Card'
 import Modal from '@/components/ui/Modal'
 import Loading from '@/components/Loading'
 import Pagination from '@/components/ui/Pagination'
 import EditModal from '@/components/ui/EditModal'
 import EditButton from '@/components/buttons/EditButton'
-import DeleteButton from '../components/buttons/DeleteButton'
+import DeleteButton from '@/components/buttons/DeleteButton'
 
 const columns = [
   {
@@ -24,7 +25,11 @@ const columns = [
 ]
 
 export const Labels = () => {
-  const [currentPage, setCurrentPage] = useState(1)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage, setCurrentPage] = useState(initialPage)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [selectedLabel, setSelectedLabel] = useState(null)
@@ -39,6 +44,11 @@ export const Labels = () => {
     setIsModalOpen(false)
     setIsEditModalOpen(false)
     setSelectedLabel(null)
+  }
+
+  const onPageChange = (page) => {
+    setCurrentPage(page)
+    navigate(`?page=${page}`)
   }
 
   function onEdit (label) {
@@ -154,7 +164,7 @@ export const Labels = () => {
                             current: etiquetas.current,
                             totalPages: etiquetas.totalPages
                           }}
-                          onPageChange={(page) => setCurrentPage(page)}
+                          onPageChange={onPageChange}
                           text
                         />
                       </div>

@@ -1,22 +1,24 @@
 import { useState, useEffect } from 'react'
 import { DeleteModal } from '@/components/ui/DeleteModal'
 import { TextInput } from 'flowbite-react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { getContacts, searchContactName } from '@/services/contactService'
+import { getContacts, searchContactName, deleteContact } from '@/services/contactService'
+import { toast } from 'react-toastify'
 import Card from '@/components/ui/Card'
 import columnContact from '@/json/columnsContact.json'
 import Pagination from '@/components/ui/Pagination'
 import Loading from '@/components/Loading'
 import EditButton from '@/components/buttons/EditButton'
-import DeleteButton from '../../components/buttons/DeleteButton'
-import { deleteContact } from '../../services/contactService'
-import { toast } from 'react-toastify'
+import DeleteButton from '@/components/buttons/DeleteButton'
 
 export const Contactos = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage, setCurrentPage] = useState(initialPage)
   const [search, setSearch] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
   const [debouncedSearch, setDebouncedSearch] = useState(search)
 
   useEffect(() => {
@@ -41,16 +43,21 @@ export const Contactos = () => {
     keepPreviousData: true
   })
 
+  const onPageChange = (page) => {
+    setCurrentPage(page)
+    navigate(`?page=${page}`)
+  }
+
   const onSearch = (event) => {
     setSearch(event.target.value)
   }
 
-  const onEdit = (id) => {
-    navigate(`/contactos/editar/${id}`)
+  const addContact = () => {
+    navigate(`/contactos/crear?page=${currentPage}`)
   }
 
-  const addContact = () => {
-    navigate('/contactos/crear')
+  const onEdit = (id) => {
+    navigate(`/contactos/editar/${id}?page=${currentPage}`)
   }
 
   async function onDelete (id) {
@@ -165,7 +172,7 @@ export const Contactos = () => {
                             current: contactos.current,
                             totalPages: contactos.totalPages
                           }}
-                          onPageChange={(page) => setCurrentPage(page)}
+                          onPageChange={onPageChange}
                           text
                         />
                       </div>

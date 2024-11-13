@@ -3,7 +3,7 @@
 /* eslint-disable use-isnan */
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { SelectForm } from '@/components/agenda/forms'
 import { getEventoById, createEvento, updateEvento, addContacts } from '@/services/eventService'
 import { useQuery } from '@tanstack/react-query'
@@ -48,7 +48,10 @@ export const Create = () => {
   const [position, setPosition] = useState(initialPosition)
   const { id } = useParams()
   const navigate = useNavigate()
-  const [currentPage] = useState(1)
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage] = useState(initialPage)
   const [isLoading, setIsLoading] = useState(true)
   const [etiquetas, setEtiquetas] = useState([])
   const [, setFormData] = useState(initialForm)
@@ -220,11 +223,12 @@ export const Create = () => {
       if (!id) {
         await createEvento(newObject)
         toast.success('Evento creado exitosamente')
+        navigate('/eventos')
       } else {
         await updateEvento(id, newObject)
         toast.info('Evento editado exitosamente')
+        navigate(`/eventos?page=${currentPage}`)
       }
-      navigate('/eventos')
     } catch (error) {
       toast.error('Hubo un error al crear el evento')
     } finally {

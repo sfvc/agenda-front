@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Loading from '@/components/Loading'
 import Textinput from '@/components/ui/Textinput'
 import { useForm } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { nextStageEvent } from '@/services/eventService'
 import Button from '@/components/ui/Button'
 import { toast } from 'react-toastify'
@@ -13,7 +13,10 @@ const initialForm = {
 
 export const StageConsider = () => {
   const navigate = useNavigate()
-  const [currentPage] = useState(1)
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage] = useState(initialPage)
   const [isLoading] = useState(false)
   const [, setFormData] = useState(initialForm)
   const { id } = useParams()

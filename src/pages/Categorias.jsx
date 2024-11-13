@@ -12,6 +12,7 @@ import Pagination from '@/components/ui/Pagination'
 import EditModal from '@/components/ui/EditModal'
 import EditButton from '@/components/buttons/EditButton'
 import DeleteButton from '../components/buttons/DeleteButton'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const columns = [
   {
@@ -25,7 +26,11 @@ const columns = [
 ]
 
 export const Categorias = () => {
-  const [currentPage, setCurrentPage] = useState(1)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage, setCurrentPage] = useState(initialPage)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
@@ -40,6 +45,11 @@ export const Categorias = () => {
     setIsModalOpen(false)
     setIsEditModalOpen(false)
     setSelectedCategory(null)
+  }
+
+  const onPageChange = (page) => {
+    setCurrentPage(page)
+    navigate(`?page=${page}`)
   }
 
   function onEdit (category) {
@@ -155,7 +165,7 @@ export const Categorias = () => {
                             current: categorias.current,
                             totalPages: categorias.totalPages
                           }}
-                          onPageChange={(page) => setCurrentPage(page)}
+                          onPageChange={onPageChange}
                           text
                         />
                       </div>

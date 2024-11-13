@@ -6,7 +6,7 @@ import Pagination from '@/components/ui/Pagination'
 import { useQuery } from '@tanstack/react-query'
 import { getUser } from '@/services/userService'
 import EditButton from '@/components/buttons/EditButton'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const columns = [
   {
@@ -33,7 +33,10 @@ const columns = [
 
 export const Usuarios = () => {
   const navigate = useNavigate()
-  const [currentPage, setCurrentPage] = useState(1)
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage, setCurrentPage] = useState(initialPage)
   const { data: usuarios, isLoading } = useQuery({
     queryKey: ['usuarios', currentPage],
     queryFn: () => getUser(currentPage),
@@ -44,12 +47,17 @@ export const Usuarios = () => {
     return <Loading />
   }
 
-  async function onEdit (id) {
-    navigate(`/usuarios/editar/${id}`)
+  const onPageChange = (page) => {
+    setCurrentPage(page)
+    navigate(`?page=${page}`)
   }
 
   function addUser () {
-    navigate('/usuarios/crear')
+    navigate(`/usuarios/crear?page=${currentPage}`)
+  }
+
+  async function onEdit (id) {
+    navigate(`/usuarios/editar/${id}?page=${currentPage}`)
   }
 
   return (
@@ -116,7 +124,7 @@ export const Usuarios = () => {
                             current: usuarios.current,
                             totalPages: usuarios.totalPages
                           }}
-                          onPageChange={(page) => setCurrentPage(page)}
+                          onPageChange={onPageChange}
                           text
                         />
                       </div>

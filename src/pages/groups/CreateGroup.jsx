@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Button from '@/components/ui/Button'
 import Loading from '@/components/Loading'
@@ -31,6 +31,10 @@ const FormValidationUpdate = yup
 export const CreateGroup = ({ activeGroup }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [, setFormData] = useState(initialForm)
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage] = useState(initialPage)
   const [contacts, setContacts] = useState([])
   const navigate = useNavigate()
   const { id } = useParams()
@@ -57,11 +61,12 @@ export const CreateGroup = ({ activeGroup }) => {
       if (!id) {
         await createGroup(items)
         toast.success('Grupo creado exitosamente')
+        navigate('/grupos')
       } else {
         await updateGroup(id, items)
         toast.info('Grupo editado exitosamente')
+        navigate(`/grupos?page=${currentPage}`)
       }
-      navigate('/grupos')
     } catch (error) {
       toast.error('Hubo un error al crear el contacto')
     }
@@ -137,7 +142,7 @@ export const CreateGroup = ({ activeGroup }) => {
                 <div className='ltr:text-right rtl:text-left'>
                   <button
                     className='btn-danger items-center text-center py-2 px-6 rounded-lg'
-                    onClick={() => navigate('/grupos')}
+                    onClick={() => navigate(`/grupos?page=${currentPage}`)}
                   >
                     Volver
                   </button>

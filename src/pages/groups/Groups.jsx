@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { deleteGroup, getGroup } from '@/services/groupService'
 import { toast } from 'react-toastify'
@@ -12,19 +12,27 @@ import DeleteButton from '@/components/buttons/DeleteButton'
 
 export const Groups = () => {
   const navigate = useNavigate()
-  const [currentPage, setCurrentPage] = useState(1)
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage, setCurrentPage] = useState(initialPage)
   const { data: grupos, isLoading, refetch } = useQuery({
     queryKey: ['grupo', currentPage],
     queryFn: () => getGroup(currentPage),
     keepPreviousData: true
   })
 
+  const onPageChange = (page) => {
+    setCurrentPage(page)
+    navigate(`?page=${page}`)
+  }
+
   const addGroup = () => {
-    navigate('/grupos/crear')
+    navigate(`/grupos/crear?page=${currentPage}`)
   }
 
   async function onEdit (id) {
-    navigate(`/grupos/editar/${id}`)
+    navigate(`/grupos/editar/${id}?page=${currentPage}`)
   }
 
   async function onDelete (id) {
@@ -104,7 +112,7 @@ export const Groups = () => {
                             current: grupos.current,
                             totalPages: grupos.totalPages
                           }}
-                          onPageChange={(page) => setCurrentPage(page)}
+                          onPageChange={onPageChange}
                           text
                         />
                       </div>

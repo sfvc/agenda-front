@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Loading from '@/components/Loading'
 import Card from '@/components/ui/Card'
@@ -26,7 +26,10 @@ export const CreateUser = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [, setFormData] = useState(initialForm)
-  const [currentPage] = useState(1)
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage] = useState(initialPage)
   const navigate = useNavigate()
   const { id } = useParams()
   const {
@@ -53,11 +56,12 @@ export const CreateUser = () => {
       if (!id) {
         await createUser(items)
         toast.success('Usuario creado exitosamente')
+        navigate('/usuarios')
       } else {
         await updateUser(id, items)
         toast.info('Usuario editado exitosamente')
+        navigate(`/usuarios?page=${currentPage}`)
       }
-      navigate('/usuarios')
     } catch (error) {
       toast.error('Completa todos los campos')
     }

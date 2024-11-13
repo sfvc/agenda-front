@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getEventos, nextStageEvent, rejectEvent } from '@/services/eventService'
 import { formatDate } from '@/components/Format'
@@ -18,10 +18,14 @@ import { FilterEvents } from './FilterEvents'
 
 export const Eventos = () => {
   const navigate = useNavigate()
-  const [currentPage, setCurrentPage] = useState(1)
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage, setCurrentPage] = useState(initialPage)
   const { googleAuth } = useSelector(state => state.auth)
   const [filteredEventos, setFilteredEventos] = useState([])
   const { user } = useSelector((state) => state.auth)
+  const [totalPages, setTotalPages] = useState()
 
   const { data: eventos, isLoading, refetch } = useQuery({
     queryKey: ['eventos', currentPage],
@@ -35,9 +39,15 @@ export const Eventos = () => {
   }, [currentPage, refetch])
 
   const eventosAMostrar = filteredEventos.length > 0 ? filteredEventos : (eventos?.items || [])
+  // const totalPages = Math.ceil(filteredEventos.length / 10) || Math.ceil(eventos?.totalItems / 10)
 
   if (isLoading) {
     return <Loading />
+  }
+
+  const onPageChange = (page) => {
+    setCurrentPage(page)
+    navigate(`?page=${page}`)
   }
 
   function addEvento () {
@@ -93,10 +103,13 @@ export const Eventos = () => {
 
   async function onSearch (e) {
     const myEventos = await getEventos(currentPage, e.circuito, e.state, e.category, e.fechIni, e.fechFin, e.barrio, e.etiquetas)
+
     if (myEventos.items.length === 0) {
       toast.error('No se encontraron coincidencias')
     }
+
     setFilteredEventos(myEventos.items)
+    setTotalPages(myEventos.totalPages)
   }
 
   return (
@@ -198,9 +211,9 @@ export const Eventos = () => {
                       <Pagination
                         paginate={{
                           current: eventos.current,
-                          totalPages: eventos.totalPages
+                          totalPages
                         }}
-                        onPageChange={(page) => setCurrentPage(page)}
+                        onPageChange={onPageChange}
                         text
                       />
                     </div>

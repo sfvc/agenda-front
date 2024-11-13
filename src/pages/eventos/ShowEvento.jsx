@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-indent */
 import React, { useState, useEffect } from 'react'
 import { Card } from 'flowbite-react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { fetchEventById } from '@/services/eventService'
 import { formatDate } from '@/components/Format'
 import { AddFile } from '@/components/agenda/forms/AddFile'
@@ -22,9 +22,12 @@ export const ShowEvento = () => {
   const [position, setPosition] = useState(initialPosition)
   const [activeEvento, setActiveEvento] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [currentPage] = useState(1)
   const { id } = useParams()
   const { user } = useSelector((state) => state.auth)
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage] = useState(initialPage)
 
   const handleOpenModal = () => setIsModalOpen(true)
   const handleCloseModal = () => setIsModalOpen(false)

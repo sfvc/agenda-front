@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-closing-tag-location */
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { nextStageEvent } from '@/services/eventService'
 import { searchContactName, getContacts } from '@/services/contactService'
 import { getGroup, getGroupById } from '@/services/groupService'
@@ -24,7 +24,10 @@ export const StagePerform = () => {
   const [contacts, setContact] = useState([])
   const [invitados, setInvitados] = useState([])
   const { id } = useParams()
-  const [currentPage] = useState(1)
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialPage = parseInt(queryParams.get('page')) || 1
+  const [currentPage] = useState(initialPage)
   // eslint-disable-next-line no-unused-vars
   const { data: contactos, isLoading } = useQuery({
     queryKey: ['contactos', currentPage],
