@@ -4,12 +4,12 @@ import { Card } from 'flowbite-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { fetchEventById } from '@/services/eventService'
 import { formatDate } from '@/components/Format'
-import BasicMap from '@/components/basicMap'
+import { AddFile } from '@/components/agenda/forms/AddFile'
+import { useSelector } from 'react-redux'
 import { Icon } from '@iconify/react/dist/iconify.js'
+import BasicMap from '@/components/basicMap'
 import Loading from '@/components/Loading'
 import Modal from '@/components/ui/Modal'
-import { AddFile } from '../../components/agenda/forms/AddFile'
-import { useSelector } from 'react-redux'
 
 const initialPosition = {
   latitud: -28.46867672033115,
@@ -17,12 +17,13 @@ const initialPosition = {
 }
 
 export const ShowEvento = () => {
+  const navigate = useNavigate()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [position, setPosition] = useState(initialPosition)
   const [activeEvento, setActiveEvento] = useState(null)
-  const navigate = useNavigate()
-  const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
+  const [currentPage] = useState(1)
+  const { id } = useParams()
   const { user } = useSelector((state) => state.auth)
 
   const handleOpenModal = () => setIsModalOpen(true)
@@ -414,7 +415,7 @@ export const ShowEvento = () => {
                 </div>
 
                   <div className='mt-4 flex justify-end items-end gap-4 '>
-                    <button className='btn-danger items-center text-center py-2 px-6 rounded-lg' onClick={() => navigate('/eventos')}>
+                    <button className='btn-danger items-center text-center py-2 px-6 rounded-lg' onClick={() => navigate(`/eventos?page=${currentPage}`)}>
                       Volver
                     </button>
                 {user.rol !== 'visualizador' && (

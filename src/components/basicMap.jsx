@@ -96,7 +96,7 @@ const BasicMap = ({ onLocationChange, isActive, editPosition, handleNeight, hand
       <MapContainer
         center={position}
         zoom={15}
-        scrollWheelZoom
+        scrollWheelZoom={false}
         style={{ height: '100%', width: '100%' }}
         onClick={handleMapClick}
       >
