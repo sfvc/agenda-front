@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 import { createUser, getUserById, updateUser } from '@/services/userService'
 import { SelectForm } from '@/components/agenda/forms'
 import { Label } from 'flowbite-react'
+import { useSelector } from 'react-redux'
 
 const initialForm = {
   nombre: '',
@@ -32,6 +33,7 @@ export const CreateUser = () => {
   const [currentPage] = useState(initialPage)
   const navigate = useNavigate()
   const { id } = useParams()
+  const { user } = useSelector((state) => state.auth)
   const {
     register,
     formState: { errors, isSubmitting },
@@ -53,14 +55,17 @@ export const CreateUser = () => {
 
   const onSubmit = async (items) => {
     try {
-      if (!id) {
-        await createUser(items)
-        toast.success('Usuario creado exitosamente')
-        navigate('/usuarios')
-      } else {
+      if (id) {
+        if (!items.password) {
+          delete items.password
+        }
         await updateUser(id, items)
         toast.info('Usuario editado exitosamente')
         navigate(`/usuarios?page=${currentPage}`)
+      } else {
+        await createUser(items)
+        toast.success('Usuario creado exitosamente')
+        navigate('/usuarios')
       }
     } catch (error) {
       toast.error('Completa todos los campos')
@@ -85,6 +90,8 @@ export const CreateUser = () => {
   useEffect(() => {
     loadEvento()
   }, [id])
+
+  const isEditable = user.rol === 'administrador'
 
   return (
     <>
@@ -190,6 +197,7 @@ export const CreateUser = () => {
                         <SelectForm
                           options={roles}
                           register={register('rol')}
+                          disabled={!isEditable}
                         />
                       </div>
 

@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getUser } from '@/services/userService'
 import EditButton from '@/components/buttons/EditButton'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const columns = [
   {
@@ -37,6 +38,7 @@ export const Usuarios = () => {
   const queryParams = new URLSearchParams(location.search)
   const initialPage = parseInt(queryParams.get('page')) || 1
   const [currentPage, setCurrentPage] = useState(initialPage)
+  const { user } = useSelector((state) => state.auth)
   const { data: usuarios, isLoading } = useQuery({
     queryKey: ['usuarios', currentPage],
     queryFn: () => getUser(currentPage),
@@ -46,6 +48,8 @@ export const Usuarios = () => {
   if (isLoading) {
     return <Loading />
   }
+
+  const filteredUsers = user.rol === 'administrador' ? usuarios.items : usuarios.items.filter(users => users.id === user.id)
 
   const onPageChange = (page) => {
     setCurrentPage(page)
@@ -70,17 +74,20 @@ export const Usuarios = () => {
               <Card>
                 <div className='mb-4 md:flex md:justify-between'>
                   <h1 className='text-2xl font-semibold dark:text-white mb-4 md:mb-0'>Listado de Usuarios</h1>
-                  <div className='flex flex-col md:flex-row items-start md:items-center gap-4'>
-                    <div className='flex gap-2 items-center'>
-                      <button
-                        type='button'
-                        onClick={addUser}
-                        className='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg'
-                      >
-                        Agregar
-                      </button>
+
+                  {user.rol !== 'visualizador' && (
+                    <div className='flex flex-col md:flex-row items-start md:items-center gap-4'>
+                      <div className='flex gap-2 items-center'>
+                        <button
+                          type='button'
+                          onClick={addUser}
+                          className='bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg'
+                        >
+                          Agregar
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </Card>
 
@@ -100,8 +107,8 @@ export const Usuarios = () => {
                         </thead>
                         <tbody className='bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700'>
                           {
-                            (usuarios?.items && usuarios.items.length > 0)
-                              ? (usuarios.items.map((usuario) => (
+                            (filteredUsers && filteredUsers.length > 0)
+                              ? (filteredUsers.map((usuario) => (
                                 <tr key={usuario.id}>
                                   <td className='table-td'>{usuario.nombre}</td>
                                   <td className='table-td'>{usuario.apellido}</td>
