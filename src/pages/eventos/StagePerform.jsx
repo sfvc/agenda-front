@@ -2,7 +2,7 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { nextStageEvent } from '@/services/eventService'
 import { searchContactName, getContacts } from '@/services/contactService'
-import { getGroup, getGroupById } from '@/services/groupService'
+import { getGroup } from '@/services/groupService'
 import { toast } from 'react-toastify'
 import { useQuery } from '@tanstack/react-query'
 import { SelectForm } from '@/components/agenda/forms'
@@ -57,7 +57,7 @@ export const StagePerform = () => {
 
   const addContactFunction = async () => {
     try {
-      const { contactos, nombre } = await getGroupById(tags)
+      const { contactos, nombre } = await getGroup(tags)
       const nuevosContactos = contactos.filter((element) => {
         return !invitados.some((invitado) => invitado.id === element.id)
       }).map((contacto) => {
@@ -162,7 +162,7 @@ export const StagePerform = () => {
                         : ''}
                     </div>
                     <div className='w-full md:w-1/2 md:mx-6 mb-6 flex items-end justify-center gap-3'>
-                      <SelectForm title='Grupos' options={grupos} onChange={(e) => setTags(e.target.value)} />
+                      <SelectForm title='Grupos' options={grupos?.items} onChange={(e) => setTags(e.target.value)} />
                       <Button
                         type='submit'
                         text='Agregar Grupo'
