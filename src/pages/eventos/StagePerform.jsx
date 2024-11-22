@@ -162,7 +162,7 @@ export const StagePerform = () => {
                         : ''}
                     </div>
                     <div className='w-full md:w-1/2 md:mx-6 mb-6 flex items-end justify-center gap-3'>
-                      <SelectForm title='Grupos' options={grupos?.items} onChange={(e) => setTags(e.target.value)} />
+                      <SelectForm title='Grupos' options={grupos} onChange={(e) => setTags(e.target.value)} />
                       <Button
                         type='submit'
                         text='Agregar Grupo'
@@ -227,7 +227,6 @@ export const StagePerform = () => {
                                   : <tr><td colSpan='10' className='text-center py-2 dark:bg-gray-800'>Aun no tienes invitados</td></tr>
                               }
                             </tbody>
-
                           </table>
                         </div>
                       </div>
