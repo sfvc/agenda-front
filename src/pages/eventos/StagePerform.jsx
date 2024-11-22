@@ -2,7 +2,7 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { nextStageEvent } from '@/services/eventService'
 import { searchContactName, getContacts } from '@/services/contactService'
-import { getGroup } from '@/services/groupService'
+import { getGroup, getGroupById } from '@/services/groupService'
 import { toast } from 'react-toastify'
 import { useQuery } from '@tanstack/react-query'
 import { SelectForm } from '@/components/agenda/forms'
@@ -57,7 +57,7 @@ export const StagePerform = () => {
 
   const addContactFunction = async () => {
     try {
-      const { contactos, nombre } = await getGroup(tags)
+      const { contactos, nombre } = await getGroupById(tags)
       const nuevosContactos = contactos.filter((element) => {
         return !invitados.some((invitado) => invitado.id === element.id)
       }).map((contacto) => {
