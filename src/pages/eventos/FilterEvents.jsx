@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { SelectForm } from '@/components/agenda/forms'
-import { getCategory } from '@/services/categoryService'
 import { fetchLabelsBySelect } from '../../services/labelsService'
+import { fetchCategoryBySelect } from '../../services/categoryService'
 
 const estados = [
   { id: 'PENDIENTE', nombre: 'Pendiente' },
@@ -63,7 +63,7 @@ export const FilterEvents = ({ onSearch }) => {
   const [filtrar, setFiltrar] = useState(false)
   const { data: categorias } = useQuery({
     queryKey: ['categorias'],
-    queryFn: () => getCategory(),
+    queryFn: () => fetchCategoryBySelect(),
     keepPreviousData: true
   })
 
