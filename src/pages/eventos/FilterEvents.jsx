@@ -177,7 +177,7 @@ export const FilterEvents = ({ onSearch }) => {
               </div>
 
               <div>
-                <SelectForm title='Ejes' options={categorias?.items} onChange={(e) => setCategory(e.target.value)} value={category} />
+                <SelectForm title='Ejes' options={categorias} onChange={(e) => setCategory(e.target.value)} value={category} />
               </div>
 
               <div>
