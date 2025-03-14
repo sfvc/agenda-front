@@ -171,7 +171,7 @@ export const Create = () => {
   }
 
   const handleLocationChange = (latitud, longitud, direccion) => {
-    setValue('ubicacion', JSON.stringify({ latitud, longitud, direccion }))
+    setValue('ubicacion', { latitud, longitud, direccion })
   }
 
   const handleLugarSelect = (selectedLugar) => {
@@ -179,11 +179,11 @@ export const Create = () => {
     setValue('barrio', selectedLugar.barrio)
     setValue('subbarrio', selectedLugar.subbarrio)
     setValue('circuito', selectedLugar.circuito)
-    setValue('ubicacion', JSON.stringify({
+    setValue('ubicacion', {
       latitud: selectedLugar.latitud,
       longitud: selectedLugar.longitud,
       direccion: selectedLugar.nombre
-    }))
+    })
     setPosition({ latitud: selectedLugar.latitud, longitud: selectedLugar.longitud })
   }
 

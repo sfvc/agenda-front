@@ -23,8 +23,13 @@ const MapEvent = ({ isActive, events }) => {
 
   const extractUbicaciones = (list) => {
     return list.map(item => {
-      const ubicacion = JSON.parse(item?.ubicacion)
-
+      let ubicacion
+      if (typeof item.ubicacion === "string") {
+        ubicacion = JSON.parse(item?.ubicacion)
+      } else {
+        ubicacion = item?.ubicacion
+      }
+      console.log(ubicacion)
       return {
         latitud: ubicacion?.latitud,
         longitud: ubicacion?.longitud,
