@@ -252,7 +252,12 @@ export const Create = () => {
         setValue('summary', evento.summary)
         setEventoEstado(evento.estado)
         setAsistio(evento.intendente_fue)
-        setPosition(JSON.parse(evento.ubicacion))
+        if (typeof evento.ubicacion === 'string') {
+          setPosition(JSON.parse(evento.ubicacion))
+        } else {
+          setPosition(evento.ubicacion)
+        }
+
         setTimeout(() => {
           setValue('barrio', evento.barrio)
           setValue('subbarrio', evento.subbarrio)

@@ -29,7 +29,7 @@ const MapEvent = ({ isActive, events }) => {
       } else {
         ubicacion = item?.ubicacion
       }
-      console.log(ubicacion)
+
       return {
         latitud: ubicacion?.latitud,
         longitud: ubicacion?.longitud,

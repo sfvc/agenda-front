@@ -37,7 +37,11 @@ export const ShowEvento = () => {
     try {
       const evento = await fetchEventById(id)
       setActiveEvento(evento)
-      setPosition(JSON.parse(evento.ubicacion))
+      if (typeof evento.ubicacion === 'string') {
+        setPosition(JSON.parse(evento.ubicacion))
+      } else {
+        setPosition(evento.ubicacion)
+      }
     } catch (error) {
       console.error('Error fetching event:', error)
     } finally {
