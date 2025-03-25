@@ -55,7 +55,6 @@ export const Eventos = () => {
   }
 
   async function showEvento (id) {
-    await onEdit(id)
     navigate(`/eventos/ver/${id}?page=${currentPage}`)
   }
 

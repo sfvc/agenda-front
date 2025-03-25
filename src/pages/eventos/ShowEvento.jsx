@@ -322,6 +322,8 @@ export const ShowEvento = () => {
                             </div>
                           </li>
                         )}
+
+                        {activeEvento.estado === 'REALIZADO' && (
                           <li className='flex space-x-3 rtl:space-x-reverse'>
                             <div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
                               <Icon icon='heroicons:hand-raised' />
@@ -335,6 +337,7 @@ export const ShowEvento = () => {
                               </div>
                             </div>
                           </li>
+                        )}
                       </ul>
 
                       {activeEvento.etiquetas.length > 0
@@ -421,11 +424,11 @@ export const ShowEvento = () => {
                   )}
                 </div>
 
-                  <div className='mt-4 flex justify-end items-end gap-4 '>
-                    <button className='btn-danger items-center text-center py-2 px-6 rounded-lg' onClick={() => navigate(`/eventos?page=${currentPage}`)}>
-                      Volver
-                    </button>
-                {user.rol !== 'visualizador' && (
+                <div className='mt-4 flex justify-end items-end gap-4 '>
+                  <button className='btn-danger items-center text-center py-2 px-6 rounded-lg' onClick={() => navigate(`/eventos?page=${currentPage}`)}>
+                    Volver
+                  </button>
+                  {user.rol !== 'visualizador' && (
                     <button
                       type='button'
                       onClick={handleOpenModal}
@@ -433,8 +436,8 @@ export const ShowEvento = () => {
                     >
                       Agregar Documentos
                     </button>
-                )}
-                  </div>
+                  )}
+                </div>
               </Card>
             </>
             )

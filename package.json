@@ -10,9 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@headlessui/react": "^1.7.4",
     "@hookform/resolvers": "^2.9.10",
     "@iconify/react": "^4.0.0",
+    "@mui/material": "^6.4.8",
+    "@mui/styled-engine": "^6.4.8",
+    "@mui/styled-engine-sc": "^6.4.6",
+    "@mui/x-charts": "^7.28.0",
     "@reduxjs/toolkit": "^1.9.0",
     "@rollup/plugin-replace": "^5.0.2",
     "@tanstack/react-query": "^5.52.1",
@@ -56,6 +62,7 @@
     "redux": "^4.2.1",
     "sass": "^1.78.0",
     "simplebar-react": "^2.4.3",
+    "styled-components": "^6.1.16",
     "swiper": "^8.4.5",
     "yarn": "^1.22.19",
     "yup": "^0.32.11"
