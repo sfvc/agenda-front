@@ -28,10 +28,13 @@ const pieColors = [
 ]
 
 export const GraficoTorta = () => {
+  const [selectedPieChart, setSelectedPieChart] = useState('categoria')
   const eventosCategoria = EventosCategoriaService()
-  const [selectedPieChart, setSelectedPieChart] = useState()
   const [eje, setEje] = useState([])
   const valueFormatter = (item) => `${item.value}`
+
+  const eventosCategoriaOrdenados = [...eventosCategoria].sort((a, b) => b.value - a.value)
+  const ejeOrdenado = [...eje].sort((a, b) => b.value - a.value)
 
   return (
     <div className='flex-1 min-w-0 flex flex-col items-center'>
@@ -64,7 +67,7 @@ export const GraficoTorta = () => {
             <PieChart
               series={[
                 {
-                  data: eventosCategoria,
+                  data: eventosCategoriaOrdenados,
                   highlightScope: { fade: 'global', highlight: 'item' },
                   faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                   valueFormatter
@@ -77,13 +80,12 @@ export const GraficoTorta = () => {
                 }
               }}
               {...pieParams}
-              animate
             />
           </div>
 
           <div className='ml-6'>
             <ul className='space-y-2'>
-              {eventosCategoria.map((item, index) => (
+              {eventosCategoriaOrdenados.map((item, index) => (
                 <li key={index} className='flex items-center'>
                   <span
                     className='w-4 h-4 rounded-full inline-block mr-2'
@@ -115,7 +117,7 @@ export const GraficoTorta = () => {
                   <PieChart
                     series={[
                       {
-                        data: eje,
+                        data: ejeOrdenado,
                         highlightScope: { fade: 'global', highlight: 'item' },
                         faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                         valueFormatter
@@ -128,13 +130,12 @@ export const GraficoTorta = () => {
                       }
                     }}
                     {...pieParams}
-                    animate
                   />
                 </div>
 
                 <div className='ml-6'>
                   <ul className='space-y-2'>
-                    {eje.map((item, index) => (
+                    {ejeOrdenado.map((item, index) => (
                       <li key={index} className='flex items-center'>
                         <span
                           className='w-4 h-4 rounded-full inline-block mr-2'

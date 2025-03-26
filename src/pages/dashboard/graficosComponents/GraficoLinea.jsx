@@ -12,7 +12,7 @@ export const GraficoLinea = () => {
         series={[
           {
             dataKey: 'eventos',
-            label: 'Eventos por mes',
+            label: 'Eventos por Mes',
             valueFormatter: (value) => `${value}`,
             color: '#4f46e5',
             curve: 'linear',
@@ -23,9 +23,7 @@ export const GraficoLinea = () => {
         margin={{ left: 30, right: 30, top: 50, bottom: 50 }}
         grid={{ vertical: true, horizontal: true, stroke: '#555' }}
         tooltip={{ show: true }}
-        lineStyle={{ strokeWidth: 2 }}
         point={{ show: true, fill: '#4f46e5', radius: 4 }}
-        animate
       />
     </div>
   )

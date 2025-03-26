@@ -22,13 +22,21 @@ export const GraficoBarra = () => {
     <div className='text-center'>
       <div className='flex justify-center gap-4 mb-6'>
         <button
-          className='px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-700'
+          className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+            mostrarGrafico === 'intendente'
+              ? 'bg-cyan-600 text-white'
+              : 'bg-gray-200 text-gray-700 hover:bg-cyan-300'
+          }`}
           onClick={() => setMostrarGrafico('intendente')}
         >
           Asistencia del Intendente
         </button>
         <button
-          className='px-4 py-2 bg-fuchsia-500 text-white rounded-lg hover:bg-fuchsia-700'
+          className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+            mostrarGrafico === 'eventos'
+              ? 'bg-fuchsia-600 text-white'
+              : 'bg-gray-200 text-gray-700 hover:bg-fuchsia-300'
+          }`}
           onClick={() => setMostrarGrafico('eventos')}
         >
           Eventos por Barrio
@@ -63,7 +71,7 @@ export const GraficoBarra = () => {
 
       {mostrarGrafico === 'eventos' && (
         <div className='overflow-x-auto'>
-          <h3 className='text-lg font-semibold mb-4'>Eventos en Distintos Barrios</h3>
+          <h3 className='text-lg font-semibold mb-4'>Eventos por Barrio</h3>
           <BarChart
             dataset={eventosBarrio}
             yAxis={[{ scaleType: 'band', dataKey: 'barrio', labelStyle: { fill: '#ddd' } }]}
