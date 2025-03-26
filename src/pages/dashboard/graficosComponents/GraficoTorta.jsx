@@ -47,7 +47,7 @@ export const GraficoTorta = () => {
               : 'bg-gray-200 text-gray-700 hover:bg-red-300'
           }`}
         >
-          Eventos por Categoría
+          Eventos por Eje
         </button>
         <button
           onClick={() => setSelectedPieChart('mes')}

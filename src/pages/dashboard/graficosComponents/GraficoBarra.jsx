@@ -29,7 +29,7 @@ export const GraficoBarra = () => {
           }`}
           onClick={() => setMostrarGrafico('intendente')}
         >
-          Asistencia del Intendente
+          Asistencia del Intendente por Circuito
         </button>
         <button
           className={`px-4 py-2 rounded-lg transition-all duration-300 ${
@@ -45,7 +45,7 @@ export const GraficoBarra = () => {
 
       {mostrarGrafico === 'intendente' && (
         <div className='overflow-x-auto'>
-          <h3 className='text-lg font-semibold mb-4'>Asistencia del Intendente</h3>
+          <h3 className='text-lg font-semibold mb-4'>Asistencia del Intendente por Circuito</h3>
           <BarChart
             dataset={asistenciaIntendente}
             xAxis={[{ scaleType: 'band', dataKey: 'circuito', labelStyle: { fill: '#ddd' } }]}
