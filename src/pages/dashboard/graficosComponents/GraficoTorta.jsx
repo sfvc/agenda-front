@@ -89,7 +89,7 @@ export const GraficoTorta = () => {
                     className='w-4 h-4 rounded-full inline-block mr-2'
                     style={{ backgroundColor: pieColors[index] || '#ccc' }}
                   />
-                  {item.label}
+                  {item.label} ({item.value})
                 </li>
               ))}
             </ul>
@@ -133,7 +133,6 @@ export const GraficoTorta = () => {
                 </div>
 
                 <div className='ml-6'>
-                  <h3 className='text-lg font-semibold mb-2'>Eventos</h3>
                   <ul className='space-y-2'>
                     {eje.map((item, index) => (
                       <li key={index} className='flex items-center'>
@@ -141,7 +140,7 @@ export const GraficoTorta = () => {
                           className='w-4 h-4 rounded-full inline-block mr-2'
                           style={{ backgroundColor: pieColors[index] || '#ccc' }}
                         />
-                        {item.label} - <span style={{ color: pieColors[index] || '#ccc' }}>{pieColors[index] || '#ccc'}</span>
+                        {item.label} ({item.value})
                       </li>
                     ))}
                   </ul>
