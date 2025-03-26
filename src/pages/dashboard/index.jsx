@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Card from '@/components/ui/Card'
 import EstadisticasDashboard from './EstadisticasDashboard'
-// import GraficosDashboard from './GraficosDashboard'
+import GraficosDashboard from './GraficosDashboard'
 import { fetchStats } from '../../services/eventService'
 
 const Dashboard = () => {
@@ -28,7 +28,7 @@ const Dashboard = () => {
             estadisticas={estadisticas}
           />
         </div>
-        {/* <GraficosDashboard /> */}
+        <GraficosDashboard />
       </div>
     </>
   )
