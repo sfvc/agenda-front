@@ -4,8 +4,11 @@ FROM node:18-alpine AS build
 # Nuevas variables de entorno
 ARG PORT=80
 ARG VITE_API_URL
+ARG VITE_API_URL_GRAFICS
 ENV PORT=$PORT
 ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_API_URL_GRAFICS=$VITE_API_URL_GRAFICS
+
 
 # Establecer el directorio de trabajo
 WORKDIR /app
