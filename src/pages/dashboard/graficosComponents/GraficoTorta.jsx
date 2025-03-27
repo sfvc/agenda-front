@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts'
 import { EventosEjeService } from '../graficosService/EventosEjeService'
 import { EventosCategoriaService } from '../graficosService/EventosCategoriaService'
+import Loading from '@/components/Loading'
 
 const pieParams = {
   height: 500,
@@ -31,31 +32,37 @@ export const GraficoTorta = () => {
   const [selectedPieChart, setSelectedPieChart] = useState('categoria')
   const eventosCategoria = EventosCategoriaService()
   const [eje, setEje] = useState([])
+
   const valueFormatter = (item) => `${item.value}`
 
-  const eventosCategoriaOrdenados = [...eventosCategoria].sort((a, b) => b.value - a.value)
-  const ejeOrdenado = [...eje].sort((a, b) => b.value - a.value)
+  const eventosCategoriaOrdenados = eventosCategoria?.length
+    ? [...eventosCategoria].sort((a, b) => b.value - a.value)
+    : []
+
+  const ejeOrdenado = eje.length ? [...eje].sort((a, b) => b.value - a.value) : []
+
+  if (!eventosCategoria || eventosCategoria.length === 0) {
+    return <Loading />
+  }
 
   return (
     <div className='flex-1 min-w-0 flex flex-col items-center'>
       <div className='flex gap-4 mb-4'>
         <button
           onClick={() => setSelectedPieChart('categoria')}
-          className={`px-4 py-2 rounded-lg transition-all duration-300 ${
-            selectedPieChart === 'categoria'
+          className={`px-4 py-2 rounded-lg transition-all duration-300 ${selectedPieChart === 'categoria'
               ? 'bg-red-600 text-white'
               : 'bg-gray-200 text-gray-700 hover:bg-red-300'
-          }`}
+            }`}
         >
           Eventos por Eje
         </button>
         <button
           onClick={() => setSelectedPieChart('mes')}
-          className={`px-4 py-2 rounded-lg transition-all duration-300 ${
-            selectedPieChart === 'mes'
+          className={`px-4 py-2 rounded-lg transition-all duration-300 ${selectedPieChart === 'mes'
               ? 'bg-purple-600 text-white'
               : 'bg-gray-200 text-gray-700 hover:bg-purple-300'
-          }`}
+            }`}
         >
           Eventos por Mes y Año
         </button>

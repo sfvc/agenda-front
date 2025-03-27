@@ -45,7 +45,7 @@ export const GraficoBarra = () => {
 
       {mostrarGrafico === 'intendente' && (
         <div className='overflow-x-auto'>
-          <h3 className='text-lg font-semibold mb-4'>Asistencia del Intendente por Circuito</h3>
+          <h3 className='text-lg font-semibold mb-4 text-black'>Asistencia del Intendente por Circuito</h3>
           <BarChart
             dataset={asistenciaIntendente}
             xAxis={[{ scaleType: 'band', dataKey: 'circuito', labelStyle: { fill: '#ddd' } }]}
@@ -71,7 +71,7 @@ export const GraficoBarra = () => {
 
       {mostrarGrafico === 'eventos' && (
         <div className='overflow-x-auto'>
-          <h3 className='text-lg font-semibold mb-4'>Eventos por Barrio</h3>
+          <h3 className='text-lg font-semibold mb-4 text-black'>Eventos por Barrio</h3>
           <BarChart
             dataset={eventosBarrio}
             yAxis={[{ scaleType: 'band', dataKey: 'barrio', labelStyle: { fill: '#ddd' } }]}
