@@ -4,8 +4,8 @@ import { IntendenteAsistioService } from '../graficosService/IntendenteAsistioSe
 import { EventosBarrioService } from '../graficosService/EventosBarrioService'
 
 const barParams = {
-  height: 500,
-  width: 1000,
+  height: 600,
+  width: 1200,
   grid: {
     vertical: true,
     horizontal: true,
@@ -54,13 +54,13 @@ export const GraficoBarra = () => {
                 dataKey: 'asistio',
                 label: 'Asistió',
                 valueFormatter: (value) => `${value}`,
-                color: '#4CAF50'
+                color: '#1976D2'
               },
               {
                 dataKey: 'noAsistio',
                 label: 'No Asistió',
                 valueFormatter: (value) => `${value}`,
-                color: '#E53935'
+                color: '#E64A19'
               }
             ]}
             layout='vertical'
@@ -75,13 +75,20 @@ export const GraficoBarra = () => {
           <BarChart
             dataset={eventosBarrio}
             yAxis={[{ scaleType: 'band', dataKey: 'barrio', labelStyle: { fill: '#ddd' } }]}
+            xAxis={[{ scaleType: 'linear' }]}
             margin={{ left: 200 }}
             series={[
               {
-                dataKey: 'eventos',
-                label: 'Eventos',
+                dataKey: 'asistio',
+                label: 'Asistió',
                 valueFormatter: (value) => `${value}`,
-                color: '#3B82F6'
+                color: '#1976D2'
+              },
+              {
+                dataKey: 'noAsistio',
+                label: 'No Asistió',
+                valueFormatter: (value) => `${value}`,
+                color: '#E64A19'
               }
             ]}
             layout='horizontal'

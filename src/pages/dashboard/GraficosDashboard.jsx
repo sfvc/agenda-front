@@ -11,9 +11,9 @@ export default function GraficosDashboard () {
   return (
     <Card className='mt-4 p-6 shadow-lg dark:bg-gray-300 dark:text-black'>
       <div className='flex justify-center gap-4 mb-4'>
-        <button onClick={() => setSelectedChart('torta')} className='btn bg-orange-500 text-white hover:bg-orange-600'>Gráfico de Torta</button>
-        <button onClick={() => setSelectedChart('barra')} className='btn bg-green-500 text-white hover:bg-green-600 '>Gráfico de Barra</button>
-        <button onClick={() => setSelectedChart('linea')} className='btn bg-indigo-500 text-white hover:bg-indigo-600'>Gráfico de Línea</button>
+        <button onClick={() => setSelectedChart('torta')} className='btn bg-orange-500 text-white hover:bg-orange-600'>Eventos</button>
+        <button onClick={() => setSelectedChart('barra')} className='btn bg-green-500 text-white hover:bg-green-600 '>Asistencia</button>
+        <button onClick={() => setSelectedChart('linea')} className='btn bg-indigo-500 text-white hover:bg-indigo-600'>Cantidad</button>
       </div>
 
       <div className='md:flex flex-wrap gap-6 justify-center'>

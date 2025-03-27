@@ -22,6 +22,10 @@ const pieParams = {
   }
 }
 
+const getPieSize = () => {
+  return window.innerWidth < 768 ? { height: 300, width: 300 } : { height: 500, width: 500 }
+}
+
 const pieColors = [
   '#e16d48', '#f9c316', '#facc15', '#22c55e', '#14b8a6', '#3b82f6',
   '#8b5cf6', '#d946ef', '#ec4899', '#f43f5e', '#6b7280', '#10b981',
@@ -87,6 +91,7 @@ export const GraficoTorta = () => {
                 }
               }}
               {...pieParams}
+              {...getPieSize()}
             />
           </div>
 
@@ -137,6 +142,7 @@ export const GraficoTorta = () => {
                       }
                     }}
                     {...pieParams}
+                    {...getPieSize()}
                   />
                 </div>
 
