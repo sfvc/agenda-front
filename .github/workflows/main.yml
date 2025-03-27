@@ -26,6 +26,6 @@ jobs:
               docker stop agenda-front || true
               docker rm agenda-front || true
               docker rmi  municipalidad/agenda-front:latest || true
-              docker build --no-cache --pull --build-arg VITE_API_URL=${{vars.VITE_API_URL}} -t municipalidad/agenda-front:latest .    
+              docker build --no-cache --pull --build-arg VITE_API_URL=${{vars.VITE_API_URL}} --build-arg VITE_API_URL_GRAFICS=${{vars.VITE_API_URL_GRAFICS}}  -t municipalidad/agenda-front:latest .    
               docker run --restart=always -d -p 0.0.0.0:7013:80 --name agenda-front municipalidad/agenda-front:latest
               exit
