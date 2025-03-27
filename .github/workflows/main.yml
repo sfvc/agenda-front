@@ -24,8 +24,8 @@ jobs:
               git checkout ${{ secrets.MAIN_BRANCH }} 
               git pull 
               docker stop agenda-front || true
-              docker rm agenda-front || true
-              docker rmi  municipalidad/agenda-front:latest || true
+              docker rm agenda-front -f
+              docker rmi  municipalidad/agenda-front:latest -f
               docker build --no-cache --pull --build-arg VITE_API_URL=${{vars.VITE_API_URL}} --build-arg VITE_API_URL_GRAFICS=${{vars.VITE_API_URL_GRAFICS}}  -t municipalidad/agenda-front:latest .    
               docker run --restart=always -d -p 0.0.0.0:7013:80 --name agenda-front municipalidad/agenda-front:latest
               exit
