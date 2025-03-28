@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BarChart } from '@mui/x-charts'
 import { IntendenteAsistioService } from '../graficosService/IntendenteAsistioService'
 import { EventosBarrioService } from '../graficosService/EventosBarrioService'
+import Loading from '@/components/Loading'
 
 const barParams = {
   height: 600,
@@ -14,9 +15,13 @@ const barParams = {
 }
 
 export const GraficoBarra = () => {
-  const [mostrarGrafico, setMostrarGrafico] = useState(null)
+  const [mostrarGrafico, setMostrarGrafico] = useState('intendente')
   const asistenciaIntendente = IntendenteAsistioService()
   const eventosBarrio = EventosBarrioService()
+
+  if (!asistenciaIntendente || asistenciaIntendente.length === 0) {
+    return <Loading />
+  }
 
   return (
     <div className='text-center'>
