@@ -29,7 +29,10 @@ const getPieSize = () => {
 const pieColors = [
   '#e16d48', '#f9c316', '#facc15', '#22c55e', '#14b8a6', '#3b82f6',
   '#8b5cf6', '#d946ef', '#ec4899', '#f43f5e', '#6b7280', '#10b981',
-  '#fff500', '#ffa347', '#4682b4', '#32cd32', '#8a2be2', '#ff1493'
+  '#fff500', '#ffa347', '#4682b4', '#32cd32', '#8a2be2', '#ff1493',
+  '#ff4500', '#ff6347', '#dc143c', '#ff69b4', '#20b2aa', '#4169e1',
+  '#00ced1', '#ff8c00', '#8fbc8f', '#b8860b', '#c71585', '#2e8b57',
+  '#d2691e', '#ffdab9', '#708090', '#00ff7f', '#556b2f', '#ff00ff'
 ]
 
 export const GraficoTorta = () => {
@@ -44,6 +47,7 @@ export const GraficoTorta = () => {
     : []
 
   const ejeOrdenado = eje.length ? [...eje].sort((a, b) => b.value - a.value) : []
+  console.log(eventosCategoriaOrdenados)
 
   if (!eventosCategoria || eventosCategoria.length === 0) {
     return <Loading />
