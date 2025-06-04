@@ -70,8 +70,8 @@ export const Create = () => {
   })
 
   const { data: grupos } = useQuery({
-    queryKey: ['grupos', currentPage],
-    queryFn: () => getGroup(currentPage),
+    queryKey: ['grupos'],
+    queryFn: () => getGroup(),
     keepPreviousData: true
   })
 

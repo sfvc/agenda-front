@@ -1,7 +1,7 @@
 import { agendaApi } from '@/api'
 
-export const fetchGroup = async (page = 1) => {
-  const response = await agendaApi.get(`/grupo?page=${page}`)
+export const fetchGroup = async () => {
+  const response = await agendaApi.get('/grupo')
   return response.data
 }
 

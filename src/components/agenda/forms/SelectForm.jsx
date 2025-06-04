@@ -15,8 +15,10 @@ export const SelectForm = ({ register, title, options = [], error = null, disabl
         onChange={onChange}
       >
         <option value=''>Seleccione una opción</option>
-        {options.map(op => (
-          <option key={op.id} value={op.id}>{op.nombre}</option>
+        {options.map((op, index) => (
+          <option key={op?.id ?? `option-${index}`} value={op.id}>
+            {op.nombre}
+          </option>
         ))}
       </select>
       {error && <p className='mt-2 text-danger-500 block text-sm'>{error.message}</p>}
