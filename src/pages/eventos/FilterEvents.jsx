@@ -56,9 +56,11 @@ export const FilterEvents = ({ onSearch }) => {
   const [circuito, setCircuito] = useState('')
   const [barrio, setBarrio] = useState('')
   const [etiquetas, setEtiquetas] = useState('')
+  const [organizadores, setOrganizadores] = useState('')
   const [state, setState] = useState('')
   const [buttonFilter, setButtonFilter] = useState(false)
   const [listLabels, setListLabels] = useState([])
+  const [listOrganizers, setListOrganizers] = useState([])
 
   const [filtrar, setFiltrar] = useState(false)
   const { data: categorias } = useQuery({
@@ -81,7 +83,8 @@ export const FilterEvents = ({ onSearch }) => {
       fechFin,
       circuito,
       barrio,
-      etiquetas
+      etiquetas,
+      organizadores
     }
     onSearch(filters)
   }
@@ -92,40 +95,53 @@ export const FilterEvents = ({ onSearch }) => {
     setCircuito('')
     setBarrio('')
     setEtiquetas('')
+    setOrganizadores('')
     setState('')
     setListLabels([])
   }
 
   useEffect(() => {
     // Solo ejecuta los filtros cuando todos los estados han sido reseteados
-    if (category === '' && fechIni === '' && fechFin === '' && circuito === '' && barrio === '' && etiquetas === '' && state === '') {
+    if (category === '' && fechIni === '' && fechFin === '' && circuito === '' && barrio === '' && etiquetas === '' && organizadores === '' && state === '') {
       handleFilters()
     }
-  }, [category, fechIni, fechFin, circuito, barrio, etiquetas, state])
+  }, [category, fechIni, fechFin, circuito, barrio, etiquetas, organizadores, state])
 
   useEffect(() => {
-    if (state || category || fechIni || fechFin || circuito || barrio || etiquetas) {
+    if (state || category || fechIni || fechFin || circuito || barrio || etiquetas || organizadores) {
       setButtonFilter(false)
     } else {
       setButtonFilter(true)
     }
-  }, [state, category, fechIni, fechFin, circuito, barrio, etiquetas])
+  }, [state, category, fechIni, fechFin, circuito, barrio, etiquetas, organizadores])
 
   const addLabels = (e) => {
     const exists = listLabels.some((etiqueta) => etiqueta === e)
 
     if (exists) {
-      // Si ya existe, lo eliminamos filtrando los demás
       setListLabels(listLabels.filter((etiqueta) => etiqueta !== e))
     } else {
-      // Si no existe, lo agregamos a la lista
       setListLabels([...listLabels, e])
+    }
+  }
+
+  const addOrganizers = (e) => {
+    const exists = listOrganizers.some((etiqueta) => etiqueta === e)
+
+    if (exists) {
+      setListOrganizers(listOrganizers.filter((etiqueta) => etiqueta !== e))
+    } else {
+      setListOrganizers([...listOrganizers, e])
     }
   }
 
   useEffect(() => {
     setEtiquetas(listLabels)
   }, [listLabels])
+
+  useEffect(() => {
+    setOrganizadores(listOrganizers)
+  }, [listOrganizers])
 
   return (
     <>
@@ -198,6 +214,20 @@ export const FilterEvents = ({ onSearch }) => {
                     onClick={() => { addLabels(item.id) }}
                   >
                     @{item.nombre.toUpperCase()}
+                  </button>
+                ))
+              }
+            </div>
+
+            <div className='flex flex-wrap gap-2 my-4'>
+              {
+                organizadores?.map((item) => (
+                  <button
+                    className={`px-2 py-1 text-sm border rounded-md dark:text-black ${listOrganizers.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:bg-gray-300 dark:text-black'}`}
+                    key={item.id}
+                    onClick={() => { addOrganizers(item.id) }}
+                  >
+                    {item.nombre.toUpperCase()}
                   </button>
                 ))
               }

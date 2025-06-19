@@ -356,6 +356,23 @@ export const ShowEvento = () => {
                           })}
                           </div>
                         : null}
+
+                      {activeEvento.organizadores.length > 0
+                        ? <div className='w-full flex flex-wrap items-start text-sm font-medium mt-5'>
+                          {activeEvento.organizadores.map((organizador) => {
+                            return (
+                              <span key={organizador.id} className='bg-base-100 border text-md font-medium me-2 group font-mono p-2 rounded-lg dark:bg-purple-900 dark:text-purple-300 flex uppercase m-1'>
+                                <p className='text-blue-500 font-semibold'>
+                                  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='size-5'>
+                                    <path strokeLinecap='round' strokeLinejoin='round' d='M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25' />
+                                  </svg>
+                                </p>
+                                {organizador.nombre}
+                              </span>
+                            )
+                          })}
+                          </div>
+                        : null}
                     </Card>
                   </div>
 

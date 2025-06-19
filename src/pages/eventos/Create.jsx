@@ -22,6 +22,7 @@ import DatePicker from '@/components/ui/DatePicker'
 import BasicMap from '@/components/basicMap'
 import lugares from '@/json/lugares'
 import columnContact from '@/json/columnsContact.json'
+import { OrganizersSelect } from '../../components/agenda/forms/OrganizersSelect'
 
 const initialForm = {
   nombre_solicitante: null,
@@ -36,6 +37,7 @@ const initialForm = {
   barrio: null,
   circuito: null,
   etiquetas_ids: [],
+  organizadores_ids: [],
   subbarrio: null
 }
 
@@ -54,6 +56,7 @@ export const Create = () => {
   const [currentPage] = useState(initialPage)
   const [isLoading, setIsLoading] = useState(true)
   const [etiquetas, setEtiquetas] = useState([])
+  const [organizadores, setOrganizadores] = useState([])
   const [, setFormData] = useState(initialForm)
   const [tags, setTags] = useState('')
   const [search, setSearch] = useState('')
@@ -203,6 +206,10 @@ export const Create = () => {
     setValue('etiquetas_ids', e)
   }
 
+  const handleOrganizers = (e) => {
+    setValue('organizadores_ids', e)
+  }
+
   const sanitizeObject = (items) => {
     return Object.fromEntries(
       Object.entries(items).map(([key, value]) => {
@@ -241,6 +248,7 @@ export const Create = () => {
       try {
         const evento = await getEventoById(id)
         setEtiquetas(evento.etiquetas)
+        setOrganizadores(evento.organizadores)
         setValue('nombre_solicitante', evento.nombre_solicitante)
         setValue('email_solicitante', evento.email_solicitante)
         setValue('telefono_solicitante', evento.telefono_solicitante)
@@ -264,6 +272,7 @@ export const Create = () => {
           setValue('circuito', evento.circuito)
         }, 100)
         setValue('etiquetas_ids', evento.etiquetas)
+        setValue('organizadores_ids', evento.organizadores)
         if (evento.contactos) {
           setInvitados(evento.contactos)
         }
@@ -474,6 +483,8 @@ export const Create = () => {
               <Card>
                 <div className='md:grid md:grid-cols-2'>
                   <LabelsSelect handleLabels={handleLabels} oldLabels={etiquetas} />
+
+                  <OrganizersSelect handleOrganizers={handleOrganizers} oldOrganizers={organizadores} />
 
                   {eventoEstado === 'REALIZADO' && (
                     <div className='asistencia-container'>

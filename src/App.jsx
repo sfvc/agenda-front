@@ -10,6 +10,7 @@ import { CreateGroup } from './pages/groups/CreateGroup'
 import { CreateUser } from './pages/user/CreateUser'
 import { useAuthStore } from './thunks/useAuthStore'
 import { Labels } from './pages/Labels'
+import { Organizers } from './pages/Organizers'
 import Layout from './layout/Layout'
 import Error from './pages/404'
 import Login from './pages/auth/Login'
@@ -149,6 +150,9 @@ function App () {
 
                   {/* Etiquetas */}
                   <Route path='etiquetas' element={<Labels />} />
+
+                  {/* Organizadores */}
+                  <Route path='organizadores' element={<Organizers />} />
                 </Route>
 
                 <Route path='/404' element={<Error />} />

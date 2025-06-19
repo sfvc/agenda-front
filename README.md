@@ -10,3 +10,4 @@
 | Contactos | ✅ |
 | Grupos    | ✅ |
 | Etiquetas | ✅ |
+| Organizadores | ✅ |

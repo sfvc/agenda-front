@@ -101,7 +101,7 @@ export const Eventos = () => {
   }
 
   async function onSearch (e) {
-    const myEventos = await getEventos(currentPage, e.circuito, e.state, e.category, e.fechIni, e.fechFin, e.barrio, e.etiquetas)
+    const myEventos = await getEventos(currentPage, e.circuito, e.state, e.category, e.fechIni, e.fechFin, e.barrio, e.etiquetas, e.organizadores)
 
     if (myEventos.items.length === 0) {
       toast.error('No se encontraron coincidencias')
@@ -129,7 +129,7 @@ export const Eventos = () => {
                       type='button'
                       onClick={addEvento}
                       disabled={!googleAuth}
-                      className={`bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg 
+                      className={`bg-blue-600 hover:bg-blue-800 text-white items-center text-center py-2 px-6 rounded-lg
                       ${!googleAuth ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       Agregar
@@ -170,7 +170,7 @@ export const Eventos = () => {
                                   <td className='table-td'>{evento?.categoria?.nombre || '-'}</td>
                                   <td className='table-td'>
                                     <span
-                                      className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25 
+                                      className={`inline-block text-black px-3 min-w-[90px] text-center py-1 rounded-full bg-opacity-25
                                   ${evento?.estado === 'A_REALIZAR'
                                     ? 'text-black bg-indigo-500 dark:bg-indigo-400'
                                     : evento?.estado === 'PENDIENTE'

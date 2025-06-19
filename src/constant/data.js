@@ -49,6 +49,11 @@ export const menuItems = [
     title: 'Etiquetas',
     icon: 'heroicons-outline:tag',
     link: 'etiquetas'
+  },
+  {
+    title: 'Organizadores',
+    icon: 'heroicons-outline:megaphone',
+    link: 'organizadores'
   }
 ]
 
