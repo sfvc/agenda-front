@@ -349,7 +349,7 @@ export const ShowEvento = () => {
                                 key={etiqueta.id}
                                 className='inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 text-sm font-mono uppercase rounded-full border border-green-300 dark:bg-green-900 dark:text-green-200 dark:border-green-700'
                               >
-                                <Icon icon='mdi:tag' className='w-4 h-4 text-green-500 dark:text-purple-300' />
+                                <Icon icon='mdi:tag' className='w-4 h-4 text-green-500 dark:text-green-300' />
                                 {etiqueta.nombre}
                               </span>
                             ))}

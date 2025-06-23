@@ -1,9 +1,9 @@
 /* eslint-disable react/no-children-prop */
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { createOrganizers, deleteOrganizers, fetchOrganizers, updateOrganizers } from '@/services/organizersService'
+import { createOrganizers, fetchOrganizers, updateOrganizers } from '@/services/organizersService'
 import { OrganizersForm } from '@/components/agenda/forms/OrganizersForm'
-import { toast } from 'react-toastify'
+// import { toast } from 'react-toastify'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Card from '@/components/ui/Card'
 import Modal from '@/components/ui/Modal'
@@ -11,7 +11,7 @@ import Loading from '@/components/Loading'
 import Pagination from '@/components/ui/Pagination'
 import EditModal from '@/components/ui/EditModal'
 import EditButton from '@/components/buttons/EditButton'
-import DeleteButton from '@/components/buttons/DeleteButton'
+// import DeleteButton from '@/components/buttons/DeleteButton'
 
 const columns = [
   {
@@ -56,16 +56,16 @@ export const Organizers = () => {
     setIsEditModalOpen(true)
   }
 
-  async function onDelete (id) {
-    try {
-      await deleteOrganizers(id)
-      toast.success('El organizador se eliminó')
-      await refetch()
-    } catch (error) {
-      console.error(error)
-      toast.error('Hubo un error al intentar eliminar')
-    }
-  }
+  // async function onDelete (id) {
+  //   try {
+  //     await deleteOrganizers(id)
+  //     toast.success('El organizador se eliminó')
+  //     await refetch()
+  //   } catch (error) {
+  //     console.error(error)
+  //     toast.error('Hubo un error al intentar eliminar')
+  //   }
+  // }
 
   if (isLoading) {
     return <Loading />
@@ -148,7 +148,7 @@ export const Organizers = () => {
                                   <td className='table-td'>{organizador.nombre}</td>
                                   <td className='table-td flex justify-start gap-2'>
                                     <EditButton evento={organizador} onEdit={onEdit} />
-                                    <DeleteButton evento={organizador} onDelete={onDelete} refetch={refetch} />
+                                    {/* <DeleteButton evento={organizador} onDelete={onDelete} refetch={refetch} /> */}
                                   </td>
                                 </tr>
                                 )))
