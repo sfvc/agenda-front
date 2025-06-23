@@ -340,39 +340,41 @@ export const ShowEvento = () => {
                         )}
                       </ul>
 
-                      {activeEvento.etiquetas.length > 0
-                        ? <div className='w-full flex flex-wrap items-start text-sm font-medium mt-5'>
-                          {activeEvento.etiquetas.map((etiqueta) => {
-                            return (
-                              <span key={etiqueta.id} className='bg-base-100 border text-md font-medium me-2 group font-mono p-2 rounded-lg dark:bg-purple-900 dark:text-purple-300 flex uppercase m-1'>
-                                <p className='text-blue-500 font-semibold'>
-                                  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='size-5'>
-                                    <path strokeLinecap='round' strokeLinejoin='round' d='M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25' />
-                                  </svg>
-                                </p>
+                      {activeEvento.etiquetas.length > 0 && (
+                        <div className='w-full mt-5'>
+                          <p className='text-md font-semibold mb-2 text-gray-600 dark:text-gray-300'>ETIQUETAS</p>
+                          <div className='flex flex-wrap gap-2'>
+                            {activeEvento.etiquetas.map((etiqueta) => (
+                              <span
+                                key={etiqueta.id}
+                                className='inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 text-sm font-mono uppercase rounded-full border border-green-300 dark:bg-green-900 dark:text-green-200 dark:border-green-700'
+                              >
+                                <Icon icon='mdi:tag' className='w-4 h-4 text-green-500 dark:text-purple-300' />
                                 {etiqueta.nombre}
                               </span>
-                            )
-                          })}
+                            ))}
                           </div>
-                        : null}
+                        </div>
+                      )}
 
-                      {activeEvento.organizadores.length > 0
-                        ? <div className='w-full flex flex-wrap items-start text-sm font-medium mt-5'>
-                          {activeEvento.organizadores.map((organizador) => {
-                            return (
-                              <span key={organizador.id} className='bg-base-100 border text-md font-medium me-2 group font-mono p-2 rounded-lg dark:bg-purple-900 dark:text-purple-300 flex uppercase m-1'>
-                                <p className='text-blue-500 font-semibold'>
-                                  <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth={1.5} stroke='currentColor' className='size-5'>
-                                    <path strokeLinecap='round' strokeLinejoin='round' d='M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25' />
-                                  </svg>
-                                </p>
+                      {activeEvento.organizadores.length > 0 && (
+                        <div className='w-full mt-5'>
+                          <p className='text-md font-semibold mb-2 text-gray-600 dark:text-gray-300'>
+                            ORGANIZADORES
+                          </p>
+                          <div className='flex flex-wrap gap-2'>
+                            {activeEvento.organizadores.map((organizador) => (
+                              <span
+                                key={organizador.id}
+                                className='inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 text-sm font-mono uppercase rounded-full border border-blue-300 dark:bg-blue-900 dark:text-blue-200 dark:border-blue-700'
+                              >
+                                <Icon icon='mdi:account-tie' className='w-4 h-4 text-blue-500 dark:text-blue-300' />
                                 {organizador.nombre}
                               </span>
-                            )
-                          })}
+                            ))}
                           </div>
-                        : null}
+                        </div>
+                      )}
                     </Card>
                   </div>
 

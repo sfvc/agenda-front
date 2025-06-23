@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import { SelectForm } from '@/components/agenda/forms'
 import { fetchLabelsBySelect } from '../../services/labelsService'
 import { fetchCategoryBySelect } from '../../services/categoryService'
+import { fetchOrganizersBySelect } from '../../services/organizersService'
+import { Icon } from '@iconify/react/dist/iconify.js'
 
 const estados = [
   { id: 'PENDIENTE', nombre: 'Pendiente' },
@@ -75,6 +77,12 @@ export const FilterEvents = ({ onSearch }) => {
     keepPreviousData: true
   })
 
+  const { data: organizers } = useQuery({
+    queryKey: ['organizers'],
+    queryFn: () => fetchOrganizersBySelect(),
+    keepPreviousData: true
+  })
+
   const handleFilters = () => {
     const filters = {
       state,
@@ -88,6 +96,7 @@ export const FilterEvents = ({ onSearch }) => {
     }
     onSearch(filters)
   }
+
   const cleanFilters = () => {
     setCategory('')
     setFechIni('')
@@ -98,10 +107,10 @@ export const FilterEvents = ({ onSearch }) => {
     setOrganizadores('')
     setState('')
     setListLabels([])
+    setListOrganizers([])
   }
 
   useEffect(() => {
-    // Solo ejecuta los filtros cuando todos los estados han sido reseteados
     if (category === '' && fechIni === '' && fechFin === '' && circuito === '' && barrio === '' && etiquetas === '' && organizadores === '' && state === '') {
       handleFilters()
     }
@@ -126,10 +135,10 @@ export const FilterEvents = ({ onSearch }) => {
   }
 
   const addOrganizers = (e) => {
-    const exists = listOrganizers.some((etiqueta) => etiqueta === e)
+    const exists = listOrganizers.some((organizador) => organizador === e)
 
     if (exists) {
-      setListOrganizers(listOrganizers.filter((etiqueta) => etiqueta !== e))
+      setListOrganizers(listOrganizers.filter((organizador) => organizador !== e))
     } else {
       setListOrganizers([...listOrganizers, e])
     }
@@ -205,32 +214,53 @@ export const FilterEvents = ({ onSearch }) => {
               </div>
 
             </div>
-            <div className='flex flex-wrap gap-2 my-4'>
-              {
-                labels?.map((item) => (
-                  <button
-                    className={`px-2 py-1 text-sm border rounded-md dark:text-black ${listLabels.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:bg-gray-300 dark:text-black'}`}
-                    key={item.id}
-                    onClick={() => { addLabels(item.id) }}
-                  >
-                    @{item.nombre.toUpperCase()}
-                  </button>
-                ))
-              }
+
+            <div className='my-4'>
+              <p className='text-sm font-semibold mb-2'>Etiquetas</p>
+              <div className='flex flex-wrap gap-2'>
+                {
+                  labels?.map((item) => (
+                    <button
+                      className={`flex gap-1 px-2 py-1 text-sm border rounded-md dark:text-black ${listLabels.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:bg-gray-300 dark:text-black'}`}
+                      key={item.id}
+                      onClick={() => { addLabels(item.id) }}
+                    >
+                      <Icon
+                        icon='mdi:tag'
+                        className={`w-4 h-4 mt-1 ${listLabels.includes(item.id)
+                          ? 'text-white'
+                          : 'text-green-600 dark:text-green-400'
+                          }`}
+                      />
+                      {item.nombre.toUpperCase()}
+                    </button>
+                  ))
+                }
+              </div>
             </div>
 
-            <div className='flex flex-wrap gap-2 my-4'>
-              {
-                organizadores?.map((item) => (
-                  <button
-                    className={`px-2 py-1 text-sm border rounded-md dark:text-black ${listOrganizers.includes(item.id) ? 'bg-green-500 text-white dark:text-white' : 'bg-white dark:bg-gray-300 dark:text-black'}`}
-                    key={item.id}
-                    onClick={() => { addOrganizers(item.id) }}
-                  >
-                    {item.nombre.toUpperCase()}
-                  </button>
-                ))
-              }
+            <div className='my-4'>
+              <p className='text-sm font-semibold mb-2'>Organizadores</p>
+              <div className='flex flex-wrap gap-2'>
+                {
+                  organizers?.map((item) => (
+                    <button
+                      className={`flex gap-1 px-2 py-1 text-sm border rounded-md dark:text-black ${listOrganizers.includes(item.id) ? 'bg-blue-500 text-white dark:text-white' : 'bg-white dark:bg-gray-300 dark:text-black'}`}
+                      key={item.id}
+                      onClick={() => { addOrganizers(item.id) }}
+                    >
+                      <Icon
+                        icon='mdi:account-tie'
+                        className={`w-4 h-4 mt-0.5 ${listOrganizers.includes(item.id)
+                            ? 'text-white'
+                            : 'text-blue-600 dark:text-purple-400'
+                          }`}
+                      />
+                      {item.nombre.toUpperCase()}
+                    </button>
+                  ))
+                }
+              </div>
             </div>
 
             <div className='flex justify-center mt-4  gap-3'>

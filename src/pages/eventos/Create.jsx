@@ -9,6 +9,7 @@ import { getEventoById, createEvento, updateEvento, addContacts } from '@/servic
 import { useQuery } from '@tanstack/react-query'
 import { getCategoryBySelect } from '@/services/categoryService'
 import { LabelsSelect } from '@/components/agenda/forms/LabelsSelect'
+import { OrganizersSelect } from '@/components/agenda/forms/OrganizersSelect'
 import { toast } from 'react-toastify'
 import { searchContactName, getContacts } from '@/services/contactService'
 import { getGroup, getGroupById } from '@/services/groupService'
@@ -22,7 +23,6 @@ import DatePicker from '@/components/ui/DatePicker'
 import BasicMap from '@/components/basicMap'
 import lugares from '@/json/lugares'
 import columnContact from '@/json/columnsContact.json'
-import { OrganizersSelect } from '../../components/agenda/forms/OrganizersSelect'
 
 const initialForm = {
   nombre_solicitante: null,

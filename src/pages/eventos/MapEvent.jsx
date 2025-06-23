@@ -24,7 +24,7 @@ const MapEvent = ({ isActive, events }) => {
   const extractUbicaciones = (list) => {
     return list.map(item => {
       let ubicacion
-      if (typeof item.ubicacion === "string") {
+      if (typeof item.ubicacion === 'string') {
         ubicacion = JSON.parse(item?.ubicacion)
       } else {
         ubicacion = item?.ubicacion
