@@ -355,7 +355,6 @@ export const Create = () => {
                 <div>
                   <label htmlFor='categoria' className='form-label'>
                     Eje
-                    <strong className='obligatorio'>(*)</strong>
                   </label>
                   <SelectForm
                     register={register('categoria_id')}

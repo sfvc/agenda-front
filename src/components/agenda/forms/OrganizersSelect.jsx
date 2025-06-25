@@ -76,6 +76,7 @@ export const OrganizersSelect = ({ handleOrganizers, oldOrganizers }) => {
           <div>
             <label htmlFor='organizador' className='form-label'>
               Organizadores
+              <strong className='obligatorio'>(*)</strong>
             </label>
             <Textinput
               name='organizador'

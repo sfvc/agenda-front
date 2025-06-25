@@ -8,27 +8,34 @@
       "label": "Solicitante",
       "field": "solicitante"
     },
-   
+
+    {
+      "label": "Organizadores",
+      "field": "organizadores"
+    },
+
     {
       "label": "ubicacion",
       "field": "ubicacion"
     },
+
     {
       "label": "fecha",
       "field": "fecha"
     },
-   
+
     {
       "label": "Eje",
       "field": "eje"
     },
+
     {
       "label": "Estado",
       "field": "estado"
     },
+
     {
       "label": "Acciones",
       "field": "acciones"
     }
   ]
-  

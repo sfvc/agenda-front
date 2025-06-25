@@ -165,6 +165,11 @@ export const Eventos = () => {
                                 <tr key={evento.id}>
                                   <td className='table-td'>{evento?.summary || '-'}</td>
                                   <td className='table-td'>{evento?.nombre_solicitante || '-'}</td>
+                                  <td className='table-td'>
+                                    {evento?.organizadores?.length > 0
+                                      ? evento.organizadores.map(o => o.nombre).join(', ')
+                                      : '-'}
+                                  </td>
                                   <td className='table-td max-w-96'>{evento?.location || '-'}</td>
                                   <td className='table-td'>{formatDate(evento?.fecha) || '-'}</td>
                                   <td className='table-td'>{evento?.categoria?.nombre || '-'}</td>
