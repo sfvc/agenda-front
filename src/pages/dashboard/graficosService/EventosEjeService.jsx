@@ -28,7 +28,7 @@ export const EventosEjeService = ({ setEje }) => {
     }
 
     try {
-      const response = await graficosApi.get(`/visitas_por_eje?year=${year}&mes=${mes}`)
+      const response = await graficosApi.get(`/visitas_por_organizador?year=${year}&mes=${mes}`)
 
       const dataFormatted = Object.entries(response.data).map(([key, value], index) => ({
         id: index,

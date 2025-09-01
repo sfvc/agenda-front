@@ -7,7 +7,7 @@ export const EventosCategoriaService = () => {
   useEffect(() => {
     const fetchTorta = async () => {
       try {
-        const response = await graficosApi.get('/eventos_por_categoria')
+        const response = await graficosApi.get('/eventos_por_organizador')
         const dataFormatted = Object.entries(response.data).map(([key, value], index) => ({
           id: index,
           label: key.trim(),

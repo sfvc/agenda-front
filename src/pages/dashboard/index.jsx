@@ -23,15 +23,15 @@ const Dashboard = () => {
             <p className='text-lg mx-0 my-auto hidden md:flex'>Dashboard</p>
           </div>
         </Card>
-        {/* <div className='mt-4 grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-4'>
+        <div className='mt-4 grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-4'>
           <EstadisticasDashboard
             estadisticas={estadisticas}
           />
         </div>
-        <GraficosDashboard /> */}
-        <h1 className='text-2xl md:text-3xl font-semibold text-center text-gray-600 mt-10'>
+        <GraficosDashboard />
+        {/* <h1 className='text-2xl md:text-3xl font-semibold text-center text-gray-600 mt-10'>
           En desarrollo
-        </h1>
+        </h1> */}
       </div>
     </>
   )

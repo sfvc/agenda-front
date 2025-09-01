@@ -60,7 +60,7 @@ export const Categorias = () => {
   async function onDelete (id) {
     try {
       await deleteCategory(id)
-      toast.success('La categoría se eliminó')
+      toast.success('El eje se eliminó')
       await refetch()
     } catch (error) {
       console.error(error)

@@ -32,7 +32,12 @@ const pieColors = [
   '#fff500', '#ffa347', '#4682b4', '#32cd32', '#8a2be2', '#ff1493',
   '#ff4500', '#ff6347', '#dc143c', '#ff69b4', '#20b2aa', '#4169e1',
   '#00ced1', '#ff8c00', '#8fbc8f', '#b8860b', '#c71585', '#2e8b57',
-  '#d2691e', '#ffdab9', '#708090', '#00ff7f', '#556b2f', '#ff00ff'
+  '#d2691e', '#ffdab9', '#708090', '#00ff7f', '#556b2f', '#ff00ff',
+  '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085',
+  '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f39c12', '#d35400',
+  '#c0392b', '#7f8c8d', '#bdc3c7', '#95a5a6', '#e67e22', '#ffdead',
+  '#deb887', '#7fff00', '#ff7f50', '#da70d6', '#6495ed', '#40e0d0',
+  '#ee82ee', '#adff2f', '#ffd700', '#ffb6c1', '#00bfff', '#ffdead'
 ]
 
 export const GraficoTorta = () => {
@@ -47,7 +52,6 @@ export const GraficoTorta = () => {
     : []
 
   const ejeOrdenado = eje.length ? [...eje].sort((a, b) => b.value - a.value) : []
-  console.log(eventosCategoriaOrdenados)
 
   if (!eventosCategoria || eventosCategoria.length === 0) {
     return <Loading />
@@ -63,7 +67,7 @@ export const GraficoTorta = () => {
               : 'bg-gray-200 text-gray-700 hover:bg-red-300'
             }`}
         >
-          Eventos por Eje
+          Eventos por Organizadores
         </button>
         <button
           onClick={() => setSelectedPieChart('mes')}
@@ -77,7 +81,7 @@ export const GraficoTorta = () => {
       </div>
 
       {selectedPieChart === 'categoria' && (
-        <div className='flex flex-wrap justify-center items-center'>
+        <div className='flex flex-wrap justify-center items-start'>
           <div className='relative'>
             <PieChart
               series={[
@@ -99,18 +103,20 @@ export const GraficoTorta = () => {
             />
           </div>
 
-          <div className='ml-6'>
-            <ul className='space-y-2'>
+          <div className='ml-6 max-w-md'>
+            <div className='grid grid-cols-2 gap-x-6 gap-y-1'>
               {eventosCategoriaOrdenados.map((item, index) => (
-                <li key={index} className='flex items-center'>
+                <div key={index} className='flex items-center text-sm'>
                   <span
-                    className='w-4 h-4 rounded-full inline-block mr-2'
+                    className='w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0'
                     style={{ backgroundColor: pieColors[index] || '#ccc' }}
                   />
-                  {item.label} ({item.value})
-                </li>
+                  <span className='truncate'>
+                    {item.label} ({item.value})
+                  </span>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       )}
