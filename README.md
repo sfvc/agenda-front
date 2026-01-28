@@ -1,4 +1,4 @@
-# Sistema desarrollado para optimizar el control de la agenda del intendente.
+# Sistema desarrollado para optimizar el control de la agenda del intendente
 
 | Secciones | Implementada |
 | --------- | ------------ |
