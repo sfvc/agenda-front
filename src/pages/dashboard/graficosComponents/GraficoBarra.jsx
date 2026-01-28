@@ -19,7 +19,17 @@ export const GraficoBarra = () => {
   const asistenciaIntendente = IntendenteAsistioService()
   const eventosBarrio = EventosBarrioService()
 
-  if (!asistenciaIntendente || asistenciaIntendente.length === 0) {
+  if (
+    mostrarGrafico === 'intendente' &&
+  (!asistenciaIntendente || asistenciaIntendente.length === 0)
+  ) {
+    return <Loading />
+  }
+
+  if (
+    mostrarGrafico === 'eventos' &&
+  (!eventosBarrio || eventosBarrio.length === 0)
+  ) {
     return <Loading />
   }
 

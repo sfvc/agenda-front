@@ -8,14 +8,20 @@ export const EventosCategoriaService = () => {
     const fetchTorta = async () => {
       try {
         const response = await graficosApi.get('/eventos_por_organizador')
-        const dataFormatted = Object.entries(response.data).map(([key, value], index) => ({
+
+        // 👇 SOLO data, NO metadata
+        const rawData = response.data?.data ?? {}
+
+        const dataFormatted = Object.entries(rawData).map(([key, value], index) => ({
           id: index,
-          label: key.trim(),
-          value
+          label: key,
+          value: Number(value)
         }))
+
         setTorta(dataFormatted)
       } catch (error) {
         console.error('Error obteniendo categorías:', error)
+        setTorta([])
       }
     }
 

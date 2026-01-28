@@ -8,11 +8,15 @@ export const EventosBarrioService = () => {
     const fetchEventosPorBarrio = async () => {
       try {
         const response = await graficosApi.get('/eventos_por_barrio')
-        const eventosData = Object.entries(response.data).map(([barrio, valores]) => ({
-          barrio,
-          asistio: valores.true || 0,
-          noAsistio: valores.false || 0
-        }))
+
+        const eventosData = Object.entries(response.data.data).map(
+          ([barrio, valores]) => ({
+            barrio,
+            asistio: valores.true ?? 0,
+            noAsistio: valores.false ?? 0
+          })
+        )
+
         setEventosBarrio(eventosData)
       } catch (error) {
         console.error('Error obteniendo eventos por barrio:', error)

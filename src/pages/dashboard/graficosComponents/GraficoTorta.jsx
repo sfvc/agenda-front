@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts'
 import { EventosEjeService } from '../graficosService/EventosEjeService'
 import { EventosCategoriaService } from '../graficosService/EventosCategoriaService'
@@ -22,10 +22,6 @@ const pieParams = {
   }
 }
 
-const getPieSize = () => {
-  return window.innerWidth < 768 ? { height: 300, width: 300 } : { height: 500, width: 500 }
-}
-
 const pieColors = [
   '#e16d48', '#f9c316', '#facc15', '#22c55e', '#14b8a6', '#3b82f6',
   '#8b5cf6', '#d946ef', '#ec4899', '#f43f5e', '#6b7280', '#10b981',
@@ -44,14 +40,26 @@ export const GraficoTorta = () => {
   const [selectedPieChart, setSelectedPieChart] = useState('categoria')
   const eventosCategoria = EventosCategoriaService()
   const [eje, setEje] = useState([])
+  const [size, setSize] = useState({ width: 500, height: 500 })
 
   const valueFormatter = (item) => `${item.value}`
 
-  const eventosCategoriaOrdenados = eventosCategoria?.length
+  useEffect(() => {
+    const updateSize = () => {
+      setSize(window.innerWidth < 768 ? { width: 300, height: 300 } : { width: 500, height: 500 })
+    }
+    updateSize()
+    window.addEventListener('resize', updateSize)
+    return () => window.removeEventListener('resize', updateSize)
+  }, [])
+
+  const eventosCategoriaOrdenados = Array.isArray(eventosCategoria)
     ? [...eventosCategoria].sort((a, b) => b.value - a.value)
     : []
 
-  const ejeOrdenado = eje.length ? [...eje].sort((a, b) => b.value - a.value) : []
+  const ejeOrdenado = Array.isArray(eje)
+    ? [...eje].sort((a, b) => b.value - a.value)
+    : []
 
   if (!eventosCategoria || eventosCategoria.length === 0) {
     return <Loading />
@@ -62,19 +70,21 @@ export const GraficoTorta = () => {
       <div className='flex gap-4 mb-4'>
         <button
           onClick={() => setSelectedPieChart('categoria')}
-          className={`px-4 py-2 rounded-lg transition-all duration-300 ${selectedPieChart === 'categoria'
+          className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+            selectedPieChart === 'categoria'
               ? 'bg-red-600 text-white'
               : 'bg-gray-200 text-gray-700 hover:bg-red-300'
-            }`}
+          }`}
         >
           Eventos por Organizadores
         </button>
         <button
           onClick={() => setSelectedPieChart('mes')}
-          className={`px-4 py-2 rounded-lg transition-all duration-300 ${selectedPieChart === 'mes'
+          className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+            selectedPieChart === 'mes'
               ? 'bg-purple-600 text-white'
               : 'bg-gray-200 text-gray-700 hover:bg-purple-300'
-            }`}
+          }`}
         >
           Eventos por Mes y Año
         </button>
@@ -99,20 +109,20 @@ export const GraficoTorta = () => {
                 }
               }}
               {...pieParams}
-              {...getPieSize()}
+              {...size}
             />
           </div>
 
           <div className='ml-6 max-w-md'>
             <div className='grid grid-cols-2 gap-x-6 gap-y-1'>
               {eventosCategoriaOrdenados.map((item, index) => (
-                <div key={index} className='flex items-center text-sm'>
+                <div key={item.id ?? index} className='flex items-center text-sm'>
                   <span
                     className='w-3 h-3 rounded-full inline-block mr-2 flex-shrink-0'
                     style={{ backgroundColor: pieColors[index] || '#ccc' }}
                   />
                   <span className='truncate'>
-                    {item.label} ({item.value})
+                    {String(item.label)} ({item.value})
                   </span>
                 </div>
               ))}
@@ -127,7 +137,7 @@ export const GraficoTorta = () => {
             <EventosEjeService setEje={setEje} />
           </div>
 
-          {eje.length === 0
+          {ejeOrdenado.length === 0
             ? (
               <div className='text-center text-gray-500'>
                 Consultá por fecha para traer los eventos realizados por mes y año.
@@ -152,19 +162,19 @@ export const GraficoTorta = () => {
                       }
                     }}
                     {...pieParams}
-                    {...getPieSize()}
+                    {...size}
                   />
                 </div>
 
                 <div className='ml-6'>
                   <ul className='space-y-2'>
                     {ejeOrdenado.map((item, index) => (
-                      <li key={index} className='flex items-center'>
+                      <li key={item.id ?? index} className='flex items-center'>
                         <span
                           className='w-4 h-4 rounded-full inline-block mr-2'
                           style={{ backgroundColor: pieColors[index] || '#ccc' }}
                         />
-                        {item.label} ({item.value})
+                        {String(item.label)} ({item.value})
                       </li>
                     ))}
                   </ul>
